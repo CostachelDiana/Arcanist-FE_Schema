@@ -1,0 +1,60 @@
+<p>home works!</p>
+
+<style>
+    .container {
+      height: 90px;
+      position: relative;
+      border: 3px solid green; 
+    }
+    
+    .vertical-center {
+      margin: 0;
+      position: relative;
+      top: 10%;
+      left: 50%;
+    }
+  
+    .right-side{
+      margin: 0;
+      position: absolute;
+      left: 90%;
+    }
+  
+    .center {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+  }
+  </style>
+
+<div class="content" role="main">
+	<button class="right-side" md-button (click)="onClickLogin()">{{btnTxt.name}}</button>
+	<div>
+    <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"></button>	
+    <label>index:
+      <input placeholder="smth"/>
+		</label>
+	</div>
+</div>
+
+<div class="container">
+  <div class="center">
+    <p><span>Welcome</span></p>
+    <input type="text" placeholder="Search..">
+    <button type="submit"><i class="fa fa-search"></i></button>
+  </div>
+</div>
+
+<div class="container" role="main">
+  <div class="vertical-center">
+    <button>Search in Captures</button>
+  </div>
+  <div>
+    <button>Search in Protocols</button>
+    <button class="right-side">Search in Projects</button>
+  </div>
+</div>
+
+<div class="vertical-center" role="main">
+  <button (click)="goToPage('UploadCapture')">Upload Capture</button>
+</div>
