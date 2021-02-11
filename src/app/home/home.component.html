@@ -1,10 +1,7 @@
-<p>home works!</p>
-
 <style>
     .container {
-      height: 90px;
+      height: 110px;
       position: relative;
-      border: 3px solid green; 
     }
     
     .vertical-center {
@@ -22,27 +19,22 @@
   
     .center {
     margin: 0;
-    position: absolute;
+    position: relative;
     left: 50%;
   }
   </style>
 
 <div class="content" role="main">
-	<button class="right-side" md-button (click)="onClickLogin()">{{btnTxt.name}}</button>
-	<div>
-    <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"></button>	
-    <label>index:
-      <input placeholder="smth"/>
-		</label>
-	</div>
+	<button class="right-side" md-button (click)="onClickLogin()">Login</button>
 </div>
 
 <div class="container">
   <div class="center">
-    <p><span>Welcome</span></p>
-    <input type="text" placeholder="Search..">
-    <button type="submit"><i class="fa fa-search"></i></button>
-  </div>
+    <h1>Welcome guest</h1>
+  </div> 
+  <input type="text" placeholder="Search.." size="100%">
+  <button type="submit"><i class="fa fa-fw fa-search">SearchIcon</i></button>
+  
 </div>
 
 <div class="container" role="main">

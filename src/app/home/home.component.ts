@@ -7,11 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  public btnTxt: {
-	  name: string,
-	  idx: number
-  }
-  
   constructor() { }
 
   ngOnInit(): void {
