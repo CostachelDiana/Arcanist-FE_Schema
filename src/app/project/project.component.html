@@ -1,7 +1,59 @@
 <p>project works!</p>
 
 <style>
-
+/* Solid border */
+hr.solid {
+  border-top: 3px solid #bbb;
+}
 </style>
 
 <!--<h1>Project Name: {{selectedProj.name}}</h1>-->
+
+<div>
+    <form><h1 class="center">Project Name: {{this.getProjName()}}</h1></form>
+    <form>
+        <label><b>Project Details</b></label>
+        <hr class="solid">
+        
+        <label>Creation Date:  {{this.getProjCreationDate()}}</label> <br>
+        <label>Last Edited:    {{this.getProjLastEdited()}}</label> <br>
+        <label>Project Owner:  {{this.getProjProjectOwner()}}</label> <br>
+        
+    </form>
+    <form>
+        <br><br>
+        chenar<br>
+        <label>Project consists of <i>{{this.getProjProjDetails()}}</i> with the following protocols:</label> <br>
+
+        <ul>
+            <li *ngFor="let item of this.getProjProtocols(); let i = index">
+              {{i}}. {{item.type}} - {{item.fullName}}
+            </li>
+          </ul>
+    </form>
+
+    <form>
+        <br>
+        <b>Project Members</b>
+        <hr class="solid">
+        <ul>
+            <li *ngFor="let item of this.getProjMembers(); let i = index">
+              {{i}}. {{item.name}} {{item.surname}}
+            </li>
+          </ul>
+          <button>Add Member</button>
+    </form>
+
+    <form>
+        <br>
+        <label><b>Project Captures Sets  </b></label>
+        <button>Add new Capture Set</button>
+        <hr class="solid">
+        <br>
+        chenar - in progress<br>
+        <label>Protocol(type, RootName)</label>
+        <label>FullName Protocol</label>
+        <button>(+) Total Number: no.</button>
+        
+    </form>
+</div>

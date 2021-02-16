@@ -1,22 +1,37 @@
 
-interface IProtocol {
+export class Protocol {
   type: string;
   fullName: string;
+
+  constructor(type:string, fullName: string) {
+    this.type = type;
+    this.fullName = fullName;
+  }
+
 }
 
-interface IMember {
+export class Member {
   name: string;
   surname: string;
   email: string;
+
+  constructor(name:string, surname:string, email:string) {
+    this.name = name;
+    this.surname = surname;
+    this. email = email;
+  }
 }
 
-interface IProjectDetails {
+export class ProjectDetails {
   name: string;
   id: number;
   details: string;
-  creationDate: DataView;
-  lastEdited: DataView;
-  projectOwner: IMember;
-  projectMembers: IMember[];
-  protocols: IProtocol[]; 
+  creationDate: Date;
+  lastEdited: Date;
+  projectOwner: Member;
+  projectMembers: Member[];
+  protocols: Protocol[]; 
+
+  constructor() {}
+
 }
