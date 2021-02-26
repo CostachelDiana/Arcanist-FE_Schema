@@ -1,0 +1,22 @@
+1. You might have to install the angula CLI. Run next command in cmd:
+npm install -g @angular/cli
+
+2. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+ng serve --open
+
+This will open a web page of the project.
+
+===================================================================================
+
+Any saved change will be automaticly reloaded/projected to the web page.
+Any error, if there is one, can be seen in:
+1. VS Code - after you install the extension for js/angular
+2. in cmd
+3. on the web page (if the error is from code)
+4. by pressing F10 on the web page (if the error is on a button/click etc)
+
+===================================================================================
+
+Here is a link to the training page of the angular: https://angular.io/guide/setup-local
+
+Good Luck!
