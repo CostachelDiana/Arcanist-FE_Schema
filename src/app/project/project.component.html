@@ -1,4 +1,4 @@
-<p>project works!</p>
+<p>project workszor!</p>
 
 <style>
 /* Solid border */
@@ -14,35 +14,50 @@ hr.solid {
     <form>
         <label><b>Project Details</b></label>
         <hr class="solid">
-        
-        <label>Creation Date:  {{this.getProjCreationDate()}}</label> <br>
-        <label>Last Edited:    {{this.getProjLastEdited()}}</label> <br>
-        <label>Project Owner:  {{this.getProjProjectOwner()}}</label> <br>
-        
+		<table style="width:50%">
+			<tr>
+				<td>Creation Date:</td>
+				<td>{{this.getProjCreationDate()}}</td>			
+			</tr>
+			<tr>
+				<td>Last Edited:</td>
+				<td>{{this.getProjLastEdited()}}</td>
+			</tr>
+			<tr>
+				<td>Project Owner:</td>
+				<td>{{this.getProjProjectOwner()}}</td>
+			</tr>			
+		</table>
+		
+		<form>
+			<br>
+			<br>
+			<b> Project details </b>
+			<br>
+			<textarea id="user_comments" name="userComments" rows="10" cols="100">
+			{{this.getProjProjDetails()}}
+			</textarea>   
+		</form>
+		
+		<form>
+			<label><b>Project Members</b></label>
+			<hr class="solid">
+			<ul class="no-bullets">
+				<li *ngFor="let item of this.getProjMembers(); let i=index" >
+					<table style="width:10%" >
+						<tr>
+							<td> <button>Remove</button> </td>
+							<td>{{item.name}} {{item.surname}}</td>							
+							<td>{{item.role}} </td>
+						</tr>
+					</table>
+				</li>
+			</ul>
+			<button> Add Member </button>
+		</form>
+	
     </form>
-    <form>
-        <br><br>
-        chenar<br>
-        <label>Project consists of <i>{{this.getProjProjDetails()}}</i> with the following protocols:</label> <br>
-
-        <ul>
-            <li *ngFor="let item of this.getProjProtocols(); let i = index">
-              {{i}}. {{item.type}} - {{item.fullName}}
-            </li>
-          </ul>
-    </form>
-
-    <form>
-        <br>
-        <b>Project Members</b>
-        <hr class="solid">
-        <ul>
-            <li *ngFor="let item of this.getProjMembers(); let i = index">
-              {{i}}. {{item.name}} {{item.surname}}
-            </li>
-          </ul>
-          <button>Add Member</button>
-    </form>
+    
 
     <form>
         <br>
@@ -50,10 +65,58 @@ hr.solid {
         <button>Add new Capture Set</button>
         <hr class="solid">
         <br>
+		
+		<ul class="no-bullets">
+			<li *ngFor="let item of this.getCaptureSets()">								
+				<table style="Width 100%">
+					<tr>
+						<td> <button>Remove</button></td>
+						<td> {{item.name}}</td>
+						<td> {{item.X2Protocol}}</td>
+						<td> {{item.X3Protocol}}</td>
+						<td> <button>(-) Total Number: {{item.capNumber}}</button></td>
+						<td> <button>Add Capture</button> </td>
+						<td> <button>Play All</button> </td>
+					</tr>
+				</table>
+					
+					<table style="Width 50%">
+						<tr>
+							<th>Capture Name</th>
+							<th>Capture Type</th>
+							<th>Switch Date</th>
+							<th>IC</th>							
+							<th></th><!-- Info -->
+							<th></th><!-- Play -->
+							<th></th><!-- Settings -->
+							<th></th><!-- Download -->
+							<th></th><!-- Remove -->
+						</tr>
+						<ul class="no-bullets">							
+							<li *ngFor="let cap of item.getCaptureInfos()" >
+								<tr>
+									<td>{{cap.captureName}}</td>
+									<td>{{cap.captureType}}</td>
+									<td>{{cap.switchDate}}</td>
+									<td>{{cap.captureIC}}: {{cap.captureICVal}}</td>
+									<td><button>Info</button></td>
+									<td><button>Play</button></td>
+									<td><button>Settings</button></td>
+									<td><button>Download</button></td>
+									<td><button>Remove</button></td>
+								</tr>
+							</li>
+						</ul>
+					</table>
+			</li>
+		</ul>
+		
+		<!--
         chenar - in progress<br>
         <label>Protocol(type, RootName)</label>
         <label>FullName Protocol</label>
         <button>(+) Total Number: no.</button>
+		-->
         
     </form>
 </div>

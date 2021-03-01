@@ -29,4 +29,5 @@ export class AppComponent {
   goToPage(pageName:string): void{
     //this.router.navigate(['${pageName}'], {});
   }
+  // public arcanistLogoUrl = require ("./assets/Resources/
 }
