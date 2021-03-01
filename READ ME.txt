@@ -1,14 +1,25 @@
-1. You might have to install the angula CLI. Run next command in cmd:
+1. Install NodeJS from here
+https://nodejs.org/en/download/
+- windows installer (.msi, x64 -bit)
+- default path
+
+2. run command:
+npm install -g npm 
+
+3. You might have to install the angula CLI. Run next command in cmd:
 npm install -g @angular/cli
 
-2. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+4. Install angular dev packge:
+npm install --save-dev @angular-devkit/build-angular
+
+5. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
 ng serve --open
 
 This will open a web page of the project.
 
 ===================================================================================
 
-Any saved change will be automaticly reloaded/projected to the web page.
+Any saved change will be automaticaly reloaded/projected to the web page.
 Any error, if there is one, can be seen in:
 1. VS Code - after you install the extension for js/angular
 2. in cmd
