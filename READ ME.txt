@@ -1,10 +1,17 @@
-1. You might have to install the angula CLI. Run next command in cmd:
+1. Install Node JS
+
+2. Install the angula CLI. Run next command in cmd:
 npm install -g @angular/cli
 
-2. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+3. Install Angular Dev package
+npm install --save-dev @angular-devkit/build-angular
+
+4. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
 ng serve --open
 
 This will open a web page of the project.
+
+The site will be available in http://localhost:4200/
 
 ===================================================================================
 
