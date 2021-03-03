@@ -14,6 +14,7 @@ export class Member {
   name: string;
   surname: string;
   email: string;
+  role: string; //enum: Contributor, ProjectOwner
 
   constructor(name:string, surname:string, email:string) {
     this.name = name;

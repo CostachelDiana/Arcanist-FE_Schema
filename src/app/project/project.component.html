@@ -5,6 +5,49 @@
 hr.solid {
   border-top: 3px solid #bbb;
 }
+
+table {
+  border: 1px solid #dddddd;
+  font-family: arial, sans-serif;
+  width: 100%;
+  border-spacing: 10px;
+}
+
+tr {
+  border: 1px solid #3af552;
+  text-align: right;
+  padding: 18px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 5px;
+}
+
+.collapsible {
+  text-align: left;
+}
+
+.collapsible-content {
+  padding: 0 5px;
+  max-height: 0;
+  display: none;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #ffffff;
+}
+
+.collapsible:after {
+  content: "(\002B)";
+  color: rgb(0, 0, 0);
+  float: right;
+}
+
+.active:after {
+  content: "(\2212)";
+}
+
 </style>
 
 <!--<h1>Project Name: {{selectedProj.name}}</h1>-->
@@ -44,16 +87,53 @@ hr.solid {
           <button>Add Member</button>
     </form>
 
-    <form>
-        <br>
-        <label><b>Project Captures Sets  </b></label>
-        <button>Add new Capture Set</button>
-        <hr class="solid">
-        <br>
-        chenar - in progress<br>
-        <label>Protocol(type, RootName)</label>
-        <label>FullName Protocol</label>
-        <button>(+) Total Number: no.</button>
+    <br>
+    <label><b>Project Captures Sets  </b></label>
+    <button>Add new Capture Set</button>
+    <hr class="solid">
+    <br>
         
-    </form>
+    <table>
+        <tr *ngFor="let item of this.captureSets">
+            <td>{{item.setName}}</td>
+            <td>Protocol: {{item.setProtocol}}</td>
+                <td><button class="collapsible">Total Number: {{item.captureSets.length}}</button>
+                    <div class="collapsible-content">
+                        <p>content collaps-at</p>
+                    </div>
+                </td>
+            <td><button>Add Capture</button></td>
+            <td><button>Play all</button></td>
+        </tr>
+    </table>
+
 </div>
+
+<button class="collapsible">Total Number: </button>
+<div class="collapsible-content">
+    <p>content collaps-at</p>
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+
+            if (content.style.maxHeight){
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } 
+        });
+    }
+</script>

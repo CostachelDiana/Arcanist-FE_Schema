@@ -1,5 +1,6 @@
 import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import { CaptureDetails, CaptureSets } from './ICapture';
 import { Member, ProjectDetails, Protocol } from './IProject';
 
 @Component({
@@ -11,10 +12,66 @@ import { Member, ProjectDetails, Protocol } from './IProject';
 export class ProjectComponent implements OnInit {
 
   private projDetails: ProjectDetails;
+  public captureSets: CaptureSets [];
 
   constructor() { 
     //this.getProjDetails("LeoRx"); 
     this.projDetails = new ProjectDetails();
+    
+    //for testing
+    this.captureSets = [];
+
+    //first Set
+    let tempSetName = "SetName: Protocol(type, RootName) CS - ETSI 102 232 - 5 ";
+    let tempSetProtocol = "FullName Protocol ETSI 102 232 - 5 v331";
+    let tempCapture = new CaptureDetails();
+    tempCapture.name = "ETSI 102 232 DTMF Cell";
+    tempCapture.type = "CD&CC";
+    tempCapture.switchDate = new Date;
+    tempCapture.LIID = "321123";
+
+    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
+
+    //second Set
+    tempCapture = new CaptureDetails();
+    tempCapture.name = "ETSI 102 232 Incomming Call Frame";
+    tempCapture.type = "CD&CC";
+    tempCapture.switchDate = new Date;
+    tempCapture.LIID = "321123";
+    
+    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
+
+    //third set
+    tempSetName = "VoLTE  - ETSI 102 232";
+    tempSetProtocol = "ETSI 102 232 - 5v 331";
+    tempCapture = new CaptureDetails();
+    tempCapture.name = "ETSI 102 232 DTMF Cell";
+    tempCapture.type = "CD&CC";
+    tempCapture.switchDate = new Date;
+    tempCapture.LIID = "321123";
+
+    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
+  }
+
+  private addNewSet(setName: string, setProtocol: string, capDetails: CaptureDetails): void {
+    if (this.captureSets.length == 0) {
+      this.captureSets.push(new CaptureSets(setName, setProtocol, capDetails));
+    }
+    else if (this.captureSets.length != 0) {
+      let foundMatch = false;
+      for(let item of this.captureSets) {
+        if (item.setName == setName && item.setProtocol == setProtocol) {
+          //add the Capture Details to the current items' array; foundMatch => true;
+          foundMatch = true;
+          item.captureSets.push(capDetails);
+        }
+      }
+
+      if (!foundMatch) {
+        // add a new capture set, as there is no match for pair (setName, setProtocol)
+        this.captureSets.push(new CaptureSets(setName, setProtocol, capDetails));
+      }
+    }
   }
 
   private getProjDetails(projName: string): void {

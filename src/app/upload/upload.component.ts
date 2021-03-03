@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICaptureDetails } from '../project/ICapture'
+import { CaptureDetails } from '../project/ICapture'
 
 @Component({
   selector: 'app-upload',
@@ -9,7 +9,7 @@ import { ICaptureDetails } from '../project/ICapture'
 
 export class UploadComponent implements OnInit {
 
-  capture2Upload: ICaptureDetails;
+  capture2Upload: CaptureDetails;
 
   constructor() { }
 

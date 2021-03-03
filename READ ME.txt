@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1. Install NodeJS from here
 https://nodejs.org/en/download/
 - windows installer (.msi, x64 -bit)
@@ -13,9 +14,22 @@ npm install -g @angular/cli
 npm install --save-dev @angular-devkit/build-angular
 
 5. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+=======
+1. Install Node JS
+
+2. Install the angula CLI. Run next command in cmd:
+npm install -g @angular/cli
+
+3. Install Angular Dev package
+npm install --save-dev @angular-devkit/build-angular
+
+4. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+>>>>>>> 4613a784a8e805413b658d9e4645194a5c6ab96b
 ng serve --open
 
 This will open a web page of the project.
+
+The site will be available in http://localhost:4200/
 
 ===================================================================================
 
