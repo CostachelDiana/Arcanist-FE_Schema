@@ -1,148 +1,53 @@
-<p>project works!</p>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-/* Solid border */
-hr.solid {
-  border-top: 3px solid #bbb;
-}
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
 
-table {
-  border: 1px solid #dddddd;
-  font-family: arial, sans-serif;
-  width: 100%;
-  border-spacing: 10px;
-}
 
-tr {
-  border: 1px solid #3af552;
-  text-align: right;
-  padding: 18px;
-}
+<body>
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: center;
-  padding: 5px;
-}
+	
+	<main role="main">
+	<h1 class="text-center"> Project: {{this.getProjectName()}}</h1>
+	<!--  href="#ProjDetails" -->
+		<p class="font-weight-bold">		
 
-.collapsible {
-  text-align: left;
-}
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#projDetailsSection" aria-expanded="true" aria-controls="projDetailsSection"> Expand </button>
+			Project Details			
+		</p>
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		
+		<div class="card card-body">
+		
+		<!-- <div class="collapse" id="projDetailsSection"> -->
+			<div class="card card-body" >
+				<p>Creation date: {{this.getProjectCreationDate()}}</p>
+				<p>Last update: {{this.getProjectLastEdited()}}</p>
+				<p>Project Owner: {{this.getProjectOwnerName()}}</p>
+			</div>
+		<!-- </div>-->
+		<br>
+		<br>
+		<p class="font-weight-bold">
+			ProjectMembers
+		</p>
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		<div class ="card card-body">
+		
+			
+			<button class="btn btn-primary" type="button">Add Member</button>
+		</div>
+		
+		</div>
+				  	
+	</main>
 
-.collapsible-content {
-  padding: 0 5px;
-  max-height: 0;
-  display: none;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
-}
+</body>
 
-.collapsible:after {
-  content: "(\002B)";
-  color: rgb(0, 0, 0);
-  float: right;
-}
 
-.active:after {
-  content: "(\2212)";
-}
-
-</style>
-
-<!--<h1>Project Name: {{selectedProj.name}}</h1>-->
-
-<div>
-    <form><h1 class="center">Project Name: {{this.getProjName()}}</h1></form>
-    <form>
-        <label><b>Project Details</b></label>
-        <hr class="solid">
-        
-        <label>Creation Date:  {{this.getProjCreationDate()}}</label> <br>
-        <label>Last Edited:    {{this.getProjLastEdited()}}</label> <br>
-        <label>Project Owner:  {{this.getProjProjectOwner()}}</label> <br>
-        
-    </form>
-    <form>
-        <br><br>
-        chenar<br>
-        <label>Project consists of <i>{{this.getProjProjDetails()}}</i> with the following protocols:</label> <br>
-
-        <ul>
-            <li *ngFor="let item of this.getProjProtocols(); let i = index">
-              {{i}}. {{item.type}} - {{item.fullName}}
-            </li>
-          </ul>
-    </form>
-
-    <form>
-        <br>
-        <b>Project Members</b>
-        <hr class="solid">
-        <ul>
-            <li *ngFor="let item of this.getProjMembers(); let i = index">
-              {{i}}. {{item.name}} {{item.surname}}
-            </li>
-          </ul>
-          <button>Add Member</button>
-    </form>
-
-    <br>
-    <label><b>Project Captures Sets  </b></label>
-    <button>Add new Capture Set</button>
-    <hr class="solid">
-    <br>
-        
-    <table>
-        <tr *ngFor="let item of this.captureSets">
-            <td>{{item.setName}}</td>
-            <td>Protocol: {{item.setProtocol}}</td>
-                <td>
-                  <!--<button class="collapsible">Total Number: {{item.captureSets.length}}</button>
-                    <div class="collapsible-content">
-                        <p>content collaps-at</p>
-                    </div>-->
-                    <ngb-accordion>
-                      <ngb-panel id="toggle-1" title="Total Number: {{item.captureSets.length}}">
-                        <ng-template ngbPanelContent>
-                          Test paragraph 1
-                        </ng-template>
-                      </ngb-panel>
-                    </ngb-accordion>
-                </td>
-            <td><button>Add Capture</button></td>
-            <td><button>Play all</button></td>
-        </tr>
-    </table>
-
-</div>
-
-<button class="collapsible">Total Number: </button>
-<div class="collapsible-content">
-    <p>content collaps-at</p>
-</div>
-
-<script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-
-            if (content.style.maxHeight){
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            } 
-        });
-    }
-</script>
+</html>

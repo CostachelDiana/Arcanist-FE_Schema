@@ -1,19 +1,18 @@
 import {ProjPageInfo } from './projectPageComponents'
 
-export interface IProject {
-	initProjectPage(info: ProjPageInfo ): void;
-	setBEAbstraction(be: IBEAbstraction ): void;
-	refresh(): void;
+interface IProject {
+	public initProjectPage(ProjPageInfo info): void;
+	public setBEAbstraction(IBEAbstraction be): void;
 }
 
-export interface IBEAbstraction {
-	sendBEUpdate(info: ProjPageInfo): void;
-	setProject(prj: IProject): void;
+interface IBEAbstraction {
+	public sendBEUpdate(ProjPageInfo info): void;
+	public setProject(IProject prj): void;
 }
 
 
 
-/*export class Protocol {
+export class Protocol {
   type: string;
   fullName: string;
 
@@ -49,6 +48,6 @@ export class ProjectDetails {
 
   constructor() {}
 
-}*/
+}
 
 // export class 

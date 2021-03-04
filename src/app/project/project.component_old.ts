@@ -1,12 +1,7 @@
 import { stringify } from '@angular/compiler/src/util';
-import { Component } from '@angular/core';
-
-// import { CaptureDetails, CaptureSets } from './ICapture';
-// import { Member, ProjectDetails, Protocol } from './IProject';
-
-import {InjectionSettings, ProjPageCaptureInfo, CaptureSet,ProjMember,ProjPageInfo} from './projectPageComponents'
-import {IProject, IBEAbstraction} from './IProject'
-
+import { Component, OnInit } from '@angular/core';
+import { CaptureDetails, CaptureSets } from './ICapture';
+import { Member, ProjectDetails, Protocol } from './IProject';
 
 @Component({
   selector: 'app-project',
@@ -14,116 +9,12 @@ import {IProject, IBEAbstraction} from './IProject'
   styleUrls: ['./project.component.css']
 })
 
-export class ProjectComponent implements IProject {
-	
-	projInfo: ProjPageInfo ;
-	BEAbs: IBEAbstraction;
-	
-	
-	
-	// initing methods
-	constructor() {
-		this.projInfo=null;
-		this.BEAbs=null;
-		
-		this.testInit();
-	}
-	
-	public testInit(): void {
-		this.projInfo = new ProjPageInfo("Test Proj RX","DK3bA5");
-		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
-		
-		this.projInfo.projOwner=new ProjMember("Marius");
-		this.projInfo.projOwner.surname="Aldea";
-		
-	}
-	
-	public initProjectPage(info: ProjPageInfo): void {
-		this.projInfo = info;
-	}
-	
-	public refresh():void {
-		// nothing to do right now
-	}
-	public setBEAbstraction(be: IBEAbstraction): void {
-		this.BEAbs = be;		
-	}
-	
-	// button hooks
-	public onAddCaptureClick(setN: number): void {
-		
-	}
-	public onRemoveCaptureClick(setN: number, capN: number): void {
-		
-	}
-	public onAddSetClick(): void {
-		
-	}
-	public onRemoveSetClick(setN: number): void {
-		
-	}
-	public onRemoveMemberClick(memN: number): void {
-		
-	}
-	
-	public onSetOwnerClick(): void {
-		
-	}
-	
-	public onCaptureInfoClick(capN: number, setN:number): void {
-	}
-	public onCaptureInjectClick(capN:number, setN:number): void {
-	}
-	public onCaptureSettingsClick(capN:number, setN:number): void {
-	}
-	
-	public onPlayAllClick(setN: number): void {
-	}
-	
-	public onExpandCollapseSetClick(setN: number): void {
-		
-	}
-	
-	public onSubmitChangesClick(): void {
-		if (this.BEAbs !=null )
-		{
-			this.BEAbs.sendBEUpdate(this.projInfo);
-		}
-	}
-	
-	// debug buttons
-	public onSimulateBEUpdateClick(): void {
-	}
-	
-	// info getters / setters
-	
-	public getProjectName(): string {
-		return this.projInfo.projName;
-	}
-	
-	public getProjectCreationDate(): string {
-		return this.projInfo.projCreationDate;
-	}
+export class ProjectComponent implements OnInit {
 
-	public getProjectLastEdited(): string {
-		return this.projInfo.projLastEdit;
-	}
-
-	public getProjectOwnerName(): string{
-		return this.projInfo.projOwner.surname + ", " +
-		this.projInfo.projOwner.name;
-	}
-
-	public getProjDetails(): string{
-		return this.projInfo.projDetails;
-	}
-	
-}
-/*
-export class ProjectComponent implements IProject {
+  private projDetails: ProjectDetails;
+  public captureSets: CaptureSets [];
 
   constructor() { 
-
     //this.getProjDetails("LeoRx"); 
     this.projDetails = new ProjectDetails();
     
@@ -226,7 +117,7 @@ export class ProjectComponent implements IProject {
     return this.projDetails.details;
   }
 
- public getProjProtocols(): string{
+  /*public getProjProtocols(): string{
     let tempStr = "";
     for (let protocol of this.projDetails.protocols) {
       tempStr = protocol.type + "-" + protocol.fullName;
@@ -234,7 +125,7 @@ export class ProjectComponent implements IProject {
     //tempStr = this.projDetails.protocols[0].type + " " + this.projDetails.protocols[0].fullName;
     //tempStr += "   |   " + this.projDetails.protocols[1].type + " " + this.projDetails.protocols[1].fullName;
     return tempStr;
-  }
+  }*/
 
   public getProjProtocols(): Protocol[] {
     return this.projDetails.protocols;
@@ -249,4 +140,4 @@ export class ProjectComponent implements IProject {
     this.getProjDetails("LeoRx"); 
   }
 
-}*/
+}
