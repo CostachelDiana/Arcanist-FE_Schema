@@ -9,6 +9,7 @@ import { SearchComponent } from './search/search.component';
 import { UploadComponent } from './upload/upload.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ProjectComponent } from './project/project.component';
   imports: [
     BrowserModule,
 	BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
