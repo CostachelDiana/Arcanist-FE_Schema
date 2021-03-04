@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CaptureDetails } from '../project/ICapture'
 
 @Component({
-  selector: 'app-upload',
+  selector: 'ngbd-accordion-static',//'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })
@@ -16,4 +16,8 @@ export class UploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
+}
+
+export class NgbdAccordionStatic {
+  
 }

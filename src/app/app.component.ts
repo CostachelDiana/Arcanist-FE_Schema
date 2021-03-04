@@ -26,7 +26,4 @@ export class AppComponent {
 		this.index += 1;
 	}
 
-  goToPage(pageName:string): void{
-    //this.router.navigate(['${pageName}'], {});
-  }
 }

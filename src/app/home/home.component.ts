@@ -14,7 +14,4 @@ export class HomeComponent implements OnInit {
 
   onClickLogin() {	}
 
-  goToPage(pageName:string): void{
-    //this.router.navigate(['${pageName}'], {});
-  }
 }

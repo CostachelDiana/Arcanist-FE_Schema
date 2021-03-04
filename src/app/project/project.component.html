@@ -36,6 +36,7 @@ td, th {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: #ffffff;
+  border: 1px solid #dddddd;
 }
 
 .collapsible:after {
@@ -97,10 +98,18 @@ td, th {
         <tr *ngFor="let item of this.captureSets">
             <td>{{item.setName}}</td>
             <td>Protocol: {{item.setProtocol}}</td>
-                <td><button class="collapsible">Total Number: {{item.captureSets.length}}</button>
+                <td>
+                  <!--<button class="collapsible">Total Number: {{item.captureSets.length}}</button>
                     <div class="collapsible-content">
                         <p>content collaps-at</p>
-                    </div>
+                    </div>-->
+                    <ngb-accordion>
+                      <ngb-panel id="toggle-1" title="Total Number: {{item.captureSets.length}}">
+                        <ng-template ngbPanelContent>
+                          Test paragraph 1
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
                 </td>
             <td><button>Add Capture</button></td>
             <td><button>Play all</button></td>

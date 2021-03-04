@@ -1,3 +1,149 @@
+<style>
+    .collapsible {
+      background-color: #777;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+    }
+    
+    .active, .collapsible:hover {
+      background-color: #555;
+    }
+    
+    .content {
+      padding: 0 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      background-color: #f1f1f1;
+    }
+
+    hr.solid {
+  border-top: 3px solid #bbb;
+}
+</style>
+
 <h1>Upload Capture</h1>
 
-<p>upload works!</p>
+<label><b>Name of capture</b></label>
+<button>Inject Capture</button>
+<br>
+Basic Info
+<hr class="solid">
+<table>
+    <tr>
+        <td><table>
+            <tr>
+                <th>Capture Name</th>
+                <td><label>name of capture</label></td>
+            </tr>
+            <tr>
+                <th>CD Protocol</th>
+                <td>
+                    dropdown list
+                </td>
+            </tr>
+            <tr>
+                <th>CC Protocol</th>
+                <td>
+                    dropdown list
+                </td>
+            </tr>
+            <tr>
+                <th>Technology</th>
+                <td>
+                    dropdown list
+                </td>
+            </tr>
+        </table></td>
+
+        <td><table>
+            <tr>
+                <th>Capture Szie</th>
+                <td>size</td>
+            </tr>
+            <tr>
+                <th>Captre Length</th>
+                <td>1:43 minutes</td>
+            </tr>
+            <tr>
+                <th>Uploaded by</th>
+                <td>user/Anonymus</td>
+                <td>at date</td>
+            </tr>
+            <tr>
+                <th>Verified by</th>
+                <td>user</td>
+            </tr>
+            <tr>
+                <th>Last update by</th>
+                <td>user</td>
+                <td>at date</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>verifies/unchecked/etc</td>
+            </tr>
+        </table></td>
+    </tr>
+</table>
+
+
+
+<br><br><br><br><br>
+<h2>Collapsible lists examples</h2>
+<br>
+
+<ngb-accordion [closeOthers]="true" activeIds="static-1">
+    <ngb-panel id="static-1" title="Simple">
+      <ng-template ngbPanelContent>
+        Test paragraph 1
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-2">
+      <ng-template ngbPanelTitle>
+        <span>&#9733; <b>Fancy</b> title &#9733;</span>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        Test Paragraph 2
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="static-3" title="Disabled" [disabled]="true">
+      <ng-template ngbPanelContent>
+        Test paragraph 3 - disabled
+      </ng-template>
+    </ngb-panel>
+</ngb-accordion>
+
+<br><br>
+
+  <button class="collapsible">Open Section 1</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+<button class="collapsible">Open Section 2</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } 
+      });
+    }
+    </script>
