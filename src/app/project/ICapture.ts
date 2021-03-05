@@ -1,10 +1,25 @@
 import { TimeInterval, Timestamp } from "rxjs";
 
-export class Protocol {
-
-    constructor() {}
-
+export enum eMemberRole {
+    Contributor,
+    ProjectOwner
 }
+
+export enum eStatus {
+    Unchecked,
+    Verified
+}
+
+export class Protocol {
+    type: string;
+    fullName: string;
+  
+    constructor(type:string, fullName: string) {
+      this.type = type;
+      this.fullName = fullName;
+    }
+  
+  }
 
 export class Frame {
 

@@ -1,6 +1,6 @@
-import {ProjPageInfo } from './projectPageComponents'
+import { ProjPageInfo } from './projectPageComponents'
 
-interface IProject {
+/*interface IProject {
 	public initProjectPage(ProjPageInfo info): void;
 	public setBEAbstraction(IBEAbstraction be): void;
 }
@@ -8,9 +8,7 @@ interface IProject {
 interface IBEAbstraction {
 	public sendBEUpdate(ProjPageInfo info): void;
 	public setProject(IProject prj): void;
-}
-
-
+}*/
 
 export class Protocol {
   type: string;
