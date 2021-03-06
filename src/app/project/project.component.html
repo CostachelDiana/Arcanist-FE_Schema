@@ -38,13 +38,84 @@
 		</p>
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 		<div class ="card card-body">
-		
+			<ul style="list-style:none">
+				<div class="card card-body">
+					<tr>
+						<td> <button class="btn btn-secondary" type="button"> Change </button> </td>
+						<td> {{this.getProjectOwnerName()}}</td>
+					</tr>
+				</div>
+				<li *ngFor="let member of this.getProjMembers(); let idx = index">
+				<div class="card card-body">
+					<tr>					
+						<td> <button class="btn btn-secondary" type="button"> Remove </button> </td>
+						<td> {{member.surname}}, {{member.name}} - {{member.role}} </td>
+					</tr>
+				</div>
+				</li>
+			</ul>
 			
 			<button class="btn btn-primary" type="button">Add Member</button>
 		</div>
 		
 		</div>
-				  	
+		
+		<br>
+		<br>
+		<br>
+		
+		<p class="font-weight-bold">		
+
+			<button class="btn btn-primary"> Expand </button>
+			Project Capture Sets ({{this.getProjCaptureSetsNumber()}})
+			<button class="btn btn-primary"> Add new Capture Set </button>
+		</p>
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />		
+		<div class="card card-body" id="capSetsBody">
+			<ul style="list-style:none">
+				<li *ngFor="let capSet of this.getProjCaptureSets(); let idx = index">
+					<div class="card card-body" id="capSet#idx">
+						<table class="table">
+							<tbody>
+								<th scope="col"><button class="btn btn-secondary" type="button"> Remove </button> </th>
+								<th scope="col">{{capSet.capSetName}}</th>
+								<th scope="col">{{capSet.capSetX2Protocol}}</th>
+								<th scope="col">{{capSet.capSetX3Protocol}}</th>
+								<th scope="col"> <button class="btn btn-primary"> (+) Total Number :{{capSet.getCapNumber()}} </button> </th>
+								<th scope="col"><button class="btn btn-primary" type="button"> Add Capture </button> </th>
+								<th scope="col"><button class="btn btn-primary" type="button"> Play All </button></th>
+							</tbody>
+						</table>
+						<!--
+						<div class="row">
+							<div class="col-md-2">
+								<button class="btn btn-secondary" type="button"> Remove </button>
+							</div>
+							<div class="col-md-2">
+								{{capSet.capSetName}}
+							</div>
+							<div class="col-md-2">
+								{{capSet.capSetX2Protocol}}
+							</div>
+							<div class="col-md-2">
+								{{capSet.capSetX3Protocol}}
+							</div>
+							<div class="col-md-2">
+								(+) Total Number :{{capSet.ProjPageCaptureInfo.length}}
+							</div>
+							<div class="col-md-2">
+								<button class="btn btn-secondary" type="button"> Add Capture </button>
+							</div>
+							<div class="col-md-2">
+								<button class="btn btn-secondary" type="button"> Play All </button>
+							</div>
+						</div>
+						-->
+					</div>
+				</li>
+			</ul>
+		</div>
+		
 	</main>
 
 </body>

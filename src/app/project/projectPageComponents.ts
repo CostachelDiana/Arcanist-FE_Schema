@@ -76,6 +76,8 @@ export class CaptureSet {
 	
 	constructor (name:string) {
 		this.capSetCaptures = [];
+		this.capSetX2Protocol="unknown";
+		this.capSetX3Protocol="unknown";
 	}
 	public addCapture(cap: ProjPageCaptureInfo):void {
 		this.capSetCaptures.push(cap);
@@ -89,6 +91,9 @@ export class CaptureSet {
 	public getCapNumber(): number {
 		return this.capSetCaptures.length;
 	}
+	public getCaptures(): ProjPageCaptureInfo[] {
+		return this.capSetCaptures;
+	}
 }
 
 export class ProjMember {
@@ -96,12 +101,15 @@ export class ProjMember {
 	name: string;
 	surname: string;
 	email: string;
-	id: number;
+	id: string;
 	role: string;
 	
 	constructor (nm: string) {
 		this.name=nm;
 		this.role="Contributor";
+		this.surname="";
+		this.email="";
+		this.id="";
 	}	
 }
 

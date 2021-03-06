@@ -36,6 +36,22 @@ export class ProjectComponent implements IProject {
 		this.projInfo.projOwner=new ProjMember("Marius");
 		this.projInfo.projOwner.surname="Aldea";
 		
+		// add project members
+		var aMember = new ProjMember("Daniel");
+		aMember.surname="Ciotoracu";
+		
+		this.projInfo.projMembers.push(aMember);
+		
+		aMember = new ProjMember("Mihai");
+		aMember.surname="Cuatu";
+		this.projInfo.projMembers.push(aMember);
+		
+		
+		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
+		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
+		aCapSet.capSetX3Protocol="ULIC RTP";
+		
+		this.projInfo.projCapSets.push(aCapSet);
 	}
 	
 	public initProjectPage(info: ProjPageInfo): void {
@@ -97,6 +113,8 @@ export class ProjectComponent implements IProject {
 	
 	// info getters / setters
 	
+	
+	// project details 
 	public getProjectName(): string {
 		return this.projInfo.projName;
 	}
@@ -116,6 +134,19 @@ export class ProjectComponent implements IProject {
 
 	public getProjDetails(): string{
 		return this.projInfo.projDetails;
+	}
+	// Members 
+	public getProjMembers(): ProjMember[] {
+		return this.projInfo.projMembers;
+	}
+	
+	// capture sets 
+	public getProjCaptureSetsNumber(): number {
+		return this.projInfo.projCapSets.length;
+	}
+	
+	public getProjCaptureSets(): CaptureSet[] {
+		return this.projInfo.projCapSets;
 	}
 	
 }
