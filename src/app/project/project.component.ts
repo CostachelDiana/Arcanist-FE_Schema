@@ -51,6 +51,83 @@ export class ProjectComponent implements IProject {
 		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
 		aCapSet.capSetX3Protocol="ULIC RTP";
 		
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE simple call","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6001";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="LIID";
+		aCapture.captureICVal="442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
+		aCapture.captureX2Port="5005";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="0000";
+		aCapture.captureX3Transport="unknown";
+		aCapture.captureX3Protocol="unknown";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD";
+		aCapture.captureIC="Phone";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6005";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="MSISDN";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		this.projInfo.projCapSets.push(aCapSet);
+		
+		aCapSet = new CaptureSet("MPD Orage UMD");
+		aCapSet.capSetX2Protocol="ETSI 33 108 v271";
+		aCapSet.capSetX3Protocol="ULIC EPS";
+		
+		var aCapture = new ProjPageCaptureInfo("Leo MPD Browsing","ADGr123");
+		aCapture.captureX2Port="22";
+		aCapture.captureX2Transport="FTP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6001";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC EPS";
+		aCapture.switchDate="18-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="IMSI";
+		aCapture.captureICVal="34312561";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		var aCapture = new ProjPageCaptureInfo("Leo MPD on/off","ADGr123");
+		aCapture.captureX2Port="22";
+		aCapture.captureX2Transport="FTP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="0000";
+		aCapture.captureX3Transport="unkonwn";
+		aCapture.captureX3Protocol="unknown";
+		aCapture.switchDate="18-01-2011";
+		aCapture.captureType="CD";
+		aCapture.captureIC="IMSI";
+		aCapture.captureICVal="34312561";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
 		this.projInfo.projCapSets.push(aCapSet);
 	}
 	
