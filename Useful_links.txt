@@ -1,0 +1,8 @@
+Link-uri utile:
+-	Documentul de overview,tools and resources: https://docs.google.com/document/d/1SP_K1bSImladSLgQaOr1GdWSdw1mguVc9U7wFLfUQQg/edit?usp=sharing
+-	Documentul de requirements si design: https://docs.google.com/document/d/1FRXMuXxQLzwPKEqQXahKT--fBsQ3vsgcOBzqJY8wECg/edit?usp=sharing
+-	Diagrama de overview: https://drive.google.com/file/d/10D9_1FU7KAk1682mq72L1oUmTAJklSpb/view?usp=sharing
+-	Diagrama de FrontEnd: https://drive.google.com/file/d/125aW-TnvJUFqVl8K7Bf5nQzTavoFQALM/view?usp=sharing
+-	Diagrama de BackEnd: https://drive.google.com/file/d/13ONIWZ7mN3nXE7Y7FFxqo0AyEwHO0cL3/view?usp=sharing
+-	Diagrama de Workers: https://drive.google.com/file/d/1va4PE08gGpTdzfO_9uM4Ur3zfZkvJUog/view?usp=sharing
+-	Diagrama de Flow-uri: https://drive.google.com/file/d/1QF1sC6zA7oSD97ZB1Z0AprBtVInxsPXH/view?usp=sharing
