@@ -41,20 +41,20 @@
 			<ul style="list-style:none">
 				<div class="card card-body">
 					<tr>
-						<td> <button class="btn btn-secondary" type="button"> Change </button>  &nbsp; {{this.getProjectOwnerName()}}  </td>
+						<td> <button class="btn btn-secondary" type="button " (click)="onSetOwnerClick()"> Change </button>  &nbsp; {{this.getProjectOwnerName()}}  </td>
 						
 					</tr>
 				</div>
 				<li *ngFor="let member of this.getProjMembers(); let idx = index">
 				<div class="card card-body">
 					<tr>					
-						<td> <button class="btn btn-secondary" type="button"> Remove </button> &nbsp; {{member.surname}}, {{member.name}} - {{member.role}}  </td>						
+						<td> <button class="btn btn-secondary" type="button" (click)="onRemoveMemberClick(idx)"> Remove </button> &nbsp; {{member.surname}}, {{member.name}} - {{member.role}}  </td>						
 					</tr>
 				</div>
 				</li>
 			</ul>
 			
-			<button class="btn btn-primary" type="button">Add Member</button>
+			<button class="btn btn-primary" type="button" (click)="onAddMemberClick()">Add Member</button>
 		</div>
 		
 		</div>
@@ -69,7 +69,7 @@
 			Project Capture Sets ({{this.getProjCaptureSetsNumber()}})
 			
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button class="btn btn-primary"> Add new Capture Set </button>
+			<button class="btn btn-primary" (click)="onAddSetClick()"> Add new Capture Set </button>
 		</p>
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />		
 		<div class="card card-body" id="capSetsBody">
@@ -78,12 +78,12 @@
 					<div class="card card-body" style="border: 1px solid black;">
 						<table class="table">
 							<tr>
-								<th scope="col"><button class="btn btn-secondary" type="button"> Remove </button> </th>
+								<th scope="col"><button class="btn btn-secondary" type="button" (click)="onRemoveSetClick(idx)"> Remove </button> </th>
 								<th scope="col">{{capSet.capSetName}}</th>
 								<th scope="col">{{capSet.capSetX2Protocol}}</th>
 								<th scope="col">{{capSet.capSetX3Protocol}}</th>
 								<th scope="col"> <button class="btn btn-primary"> (+) Total Number :{{capSet.getCapNumber()}} </button> </th>
-								<th scope="col"><button class="btn btn-primary" type="button"> Add Capture </button> </th>
+								<th scope="col"><button class="btn btn-primary" type="button" (click)="onAddCaptureClick(idx)"> Add Capture </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button"> Play All </button></th>
 							</tr>							
 						
@@ -121,7 +121,7 @@
 											&nbsp;
 											<button class="btn btn-secondary" type="button"> Info </button>											
 											&nbsp;
-											<button class="btn btn-secondary" type="button"> Remove </button>
+											<button class="btn btn-secondary" type="button" (click)="onRemoveCaptureClick(idx,ii)"> Remove </button>
 										</td>
 									</tr>									
 								</tbody>

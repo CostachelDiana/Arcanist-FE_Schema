@@ -1,11 +1,13 @@
 import { stringify } from '@angular/compiler/src/util';
 import { Component } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 // import { CaptureDetails, CaptureSets } from './ICapture';
 // import { Member, ProjectDetails, Protocol } from './IProject';
 
 import {InjectionSettings, ProjPageCaptureInfo, CaptureSet,ProjMember,ProjPageInfo} from './projectPageComponents'
 import {IProject, IBEAbstraction} from './IProject'
+import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
 
 
 @Component({
@@ -18,11 +20,11 @@ export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
 	BEAbs: IBEAbstraction;
-	
+	// userSelectDialogue: MatDialog;
 	
 	
 	// initing methods
-	constructor() {
+	constructor(public userSelectDialogue: MatDialog) {
 		this.projInfo=null;
 		this.BEAbs=null;
 		
@@ -142,25 +144,131 @@ export class ProjectComponent implements IProject {
 		this.BEAbs = be;		
 	}
 	
+	// callbacks 
+	public onChangeOwnerCback(aMember: ProjMember)
+	{
+		
+		this.projInfo.projOwner.name=aMember.name;
+		this.projInfo.projOwner.surname=aMember.surname;
+		this.projInfo.projOwner.id=aMember.id;
+		this.projInfo.projOwner.email=aMember.email;		
+	}
+	
+	public onAddMemberCBack(aMember: ProjMember)
+	{
+		this.projInfo.addProjectMember(aMember);
+	}
+	
 	// button hooks
 	public onAddCaptureClick(setN: number): void {
+	
+		// CMS Debug
 		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6005";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="MSISDN";
+		aCapture.captureICVal="+31332442312";
+		
+		if (setN > -1 && setN < this.projInfo.projCapSets.length)
+			this.projInfo.projCapSets[setN].addCapture(aCapture);
 	}
 	public onRemoveCaptureClick(setN: number, capN: number): void {
 		
+		if (setN > -1 && setN < this.projInfo.projCapSets.length)
+			this.projInfo.projCapSets[setN].removeCapture(capN);
+				
 	}
 	public onAddSetClick(): void {
 		
+		
+		// CMS Debug
+		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
+		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
+		aCapSet.capSetX3Protocol="ULIC RTP";
+		
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE simple call","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6001";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="LIID";
+		aCapture.captureICVal="442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
+		aCapture.captureX2Port="5005";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="0000";
+		aCapture.captureX3Transport="unknown";
+		aCapture.captureX3Protocol="unknown";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD";
+		aCapture.captureIC="Phone";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6005";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="MSISDN";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.capSetCaptures.push(aCapture);
+		
+		this.projInfo.projCapSets.push(aCapSet);
 	}
 	public onRemoveSetClick(setN: number): void {
 		
+		this.projInfo.removeCaptureSet(setN);
 	}
 	public onRemoveMemberClick(memN: number): void {
 		
+		this.projInfo.removeProjectMember(memN);
 	}
 	
+	
+	public onAddMemberClick(): void {
+		
+		
+		var dialogRef = this.userSelectDialogue.open(SelectUserDialogue, 
+		{width:'400px',
+		height:'300px',
+		 data: {callback: this.onAddMemberCBack.bind(this)}
+		}
+		);
+		// this.userSelectDialogue.userSelectedCallback=this.onAddMemberCBack.bind(this);
+		
+		// CMS debug		
+		var aMember = new ProjMember("Catalin");
+		aMember.surname="Spataru";
+		this.projInfo.addProjectMember(aMember);
+	}
 	public onSetOwnerClick(): void {
 		
+		// CMS debug 
+		this.projInfo.projOwner.name="Monsieur";
+		this.projInfo.projOwner.surname="Luffy";
 	}
 	
 	public onCaptureInfoClick(capN: number, setN:number): void {
@@ -227,134 +335,3 @@ export class ProjectComponent implements IProject {
 	}
 	
 }
-/*
-export class ProjectComponent implements IProject {
-
-  constructor() { 
-
-    //this.getProjDetails("LeoRx"); 
-    this.projDetails = new ProjectDetails();
-    
-    //for testing
-    this.captureSets = [];
-
-    //first Set
-    let tempSetName = "SetName: Protocol(type, RootName) CS - ETSI 102 232 - 5 ";
-    let tempSetProtocol = "FullName Protocol ETSI 102 232 - 5 v331";
-    let tempCapture = new CaptureDetails();
-    tempCapture.name = "ETSI 102 232 DTMF Cell";
-    tempCapture.type = "CD&CC";
-    tempCapture.switchDate = new Date;
-    tempCapture.LIID = "321123";
-
-    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
-
-    //second Set
-    tempCapture = new CaptureDetails();
-    tempCapture.name = "ETSI 102 232 Incomming Call Frame";
-    tempCapture.type = "CD&CC";
-    tempCapture.switchDate = new Date;
-    tempCapture.LIID = "321123";
-    
-    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
-
-    //third set
-    tempSetName = "VoLTE  - ETSI 102 232";
-    tempSetProtocol = "ETSI 102 232 - 5v 331";
-    tempCapture = new CaptureDetails();
-    tempCapture.name = "ETSI 102 232 DTMF Cell";
-    tempCapture.type = "CD&CC";
-    tempCapture.switchDate = new Date;
-    tempCapture.LIID = "321123";
-
-    this.addNewSet(tempSetName, tempSetProtocol, tempCapture);
-  }
-
-  private addNewSet(setName: string, setProtocol: string, capDetails: CaptureDetails): void {
-    if (this.captureSets.length == 0) {
-      this.captureSets.push(new CaptureSets(setName, setProtocol, capDetails));
-    }
-    else if (this.captureSets.length != 0) {
-      let foundMatch = false;
-      for(let item of this.captureSets) {
-        if (item.setName == setName && item.setProtocol == setProtocol) {
-          //add the Capture Details to the current items' array; foundMatch => true;
-          foundMatch = true;
-          item.captureSets.push(capDetails);
-        }
-      }
-
-      if (!foundMatch) {
-        // add a new capture set, as there is no match for pair (setName, setProtocol)
-        this.captureSets.push(new CaptureSets(setName, setProtocol, capDetails));
-      }
-    }
-  }
-
-  private getProjDetails(projName: string): void {
-    //let tempProjDetails: IProjectDetails;
-    //tempProjDetails.name = "LeoRx Test";
-    //this.projDetails = tempProjDetails;
-    this.projDetails.name = projName;
-    this.projDetails.creationDate = new Date();
-    this.projDetails.lastEdited = new Date();
-
-    this.projDetails.projectOwner = new Member("John", "Doe", "john.doe@cognyte.com");
-    this.projDetails.projectMembers = [];
-    this.projDetails.projectMembers.push(new Member("John", "Doe", "john.doe@cognyte.com"));
-
-    this.projDetails.details = "4 Front End UMDs";
-    this.projDetails.protocols = [];
-    this.projDetails.protocols.push(new Protocol("CS", "ETSI 102 232 - 5"));
-    this.projDetails.protocols.push(new Protocol("CS", "CALEA JSTD0025A"));
-
-    this.projDetails.projectMembers.push(new Member("Jane", "Doe", "john.doe@cognyte.com"));
-    this.projDetails.projectMembers.push(new Member("Mirica", "Jo", "john.doe@cognyte.com"));
-
-  };
-
-  public getProjName(): string {
-    return this.projDetails.name;
-  }
-
-  public getProjCreationDate(): Date{
-    return this.projDetails.creationDate;
-  }
-
-  public getProjLastEdited(): Date{
-    return this.projDetails.lastEdited;
-  }
-
-  public getProjProjectOwner(): string{
-    return this.projDetails.projectOwner.name + " " +
-    this.projDetails.projectOwner.surname;
-  }
-
-  public getProjProjDetails(): string{
-    return this.projDetails.details;
-  }
-
- public getProjProtocols(): string{
-    let tempStr = "";
-    for (let protocol of this.projDetails.protocols) {
-      tempStr = protocol.type + "-" + protocol.fullName;
-    }
-    //tempStr = this.projDetails.protocols[0].type + " " + this.projDetails.protocols[0].fullName;
-    //tempStr += "   |   " + this.projDetails.protocols[1].type + " " + this.projDetails.protocols[1].fullName;
-    return tempStr;
-  }
-
-  public getProjProtocols(): Protocol[] {
-    return this.projDetails.protocols;
-  }
-
-  public getProjMembers(): Member[] {
-    return this.projDetails.projectMembers;
-  }
-
-  ngOnInit(): void {
-    
-    this.getProjDetails("LeoRx"); 
-  }
-
-}*/

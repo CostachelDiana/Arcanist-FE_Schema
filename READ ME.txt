@@ -16,10 +16,14 @@ npm install --save-dev @angular-devkit/build-angular
 5. Install boostrap
 npm install bootstrap
 
-6. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and build the project 
+6. Install angular materials
+ng add @angular/material
+npm install --save @angular/material @angular/cdk
+
+7. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and build the project 
 ng build 
 
-7. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+8. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
 ng serve --open
 
 This will open a web page of the project.

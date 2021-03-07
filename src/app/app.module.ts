@@ -9,7 +9,11 @@ import { SearchComponent } from './search/search.component';
 import { UploadComponent } from './upload/upload.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
+import {SelectUserDialogue} from './dialogues/SelectUserDialogue.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import  {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field'
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -18,14 +22,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SearchComponent,
     UploadComponent,
     HomeComponent,
-    ProjectComponent
+    ProjectComponent,
+	SelectUserDialogue
   ],
   imports: [
     BrowserModule,
 	BrowserAnimationsModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+	MatDialogModule,
+	MatFormFieldModule,
+    MatInputModule
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })
