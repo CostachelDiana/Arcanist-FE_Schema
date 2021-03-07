@@ -6,11 +6,12 @@ import {ProjPageCaptureInfo, InjectionSettings} from "../project/projectPageComp
 
 
 export interface InjectCapturesDialogueData {
-	callback: (setts:InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean) => void,
+	callback: (setts:InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean, setIdx:number) => void,
 	cap: ProjPageCaptureInfo[],
 	set: InjectionSettings[],
-	justSetting: boolean;
-
+	setIdx:number,
+	justSetting: boolean
+	
 }
 
 
@@ -34,16 +35,46 @@ export class InjectCapturesDialogue {
 
 	
 	public onSubmitClick(email: string): void {
+		
+		var ips=document.querySelectorAll(".clientIP");
+		var x2prts=document.querySelectorAll(".x2prt");
+		var x2trans=document.querySelectorAll(".x2trans");
+		var x3prts=document.querySelectorAll(".x3prt");
+		var x3trans=document.querySelectorAll(".x3trans");
+		
+		var tmpInj : InjectionSettings[];
+		
+		if (this.isSettingsMode())
+		{
+			tmpInj = this.data.set;
+			
+		} else {
+			// use a clone for injection 
+			tmpInj = [];
+			
+			this.data.set.forEach(val => tmpInj.push(Object.assign({},val)));			
+		}
+		
+		for (var i=0;i< ips.length;i++)
+		{
+			tmpInj[i].clientIP =(<HTMLInputElement>ips[i]).value;
+			tmpInj[i].X2Port= (<HTMLInputElement>x2prts[i]).value;
+			tmpInj[i].X2Transport= (<HTMLInputElement>x2trans[i]).value;
+			tmpInj[i].X3Port= (<HTMLInputElement>x3prts[i]).value;
+			tmpInj[i].X3Transport= (<HTMLInputElement>x3trans[i]).value;
+		}
+		
 		// Resolve 			
 		if (this.data.callback != null)
-			this.data.callback(this.data.set, this.data.cap, this.isSequential);
+			this.data.callback(tmpInj, this.data.cap, this.isSequential,this.data.setIdx);
+		
 		
 		this.dialogRef.close();
 	}
 	
 	public getPageTitle() {
 		if (this.data.justSetting)
-			return "Set Default Settings for Capture(s)";
+			return "Set Default Injection Settings for Captures";
 		else 
 			return "Set Injection Parameters";
 	}
@@ -52,7 +83,7 @@ export class InjectCapturesDialogue {
 		this.isSequential = !this.isSequential;
 	}
 	
-	public getCaptures():ProjPageCaptureInfo[] {
+	public getCaptures():ProjPageCaptureInfo[] {		
 		return this.data.cap;
 	}
 	public getSettingsForCapture(idx: number): InjectionSettings {
@@ -61,7 +92,7 @@ export class InjectCapturesDialogue {
 	
 	public getSubmitTitle() {
 		if (this.data.justSetting)
-			return "Apply default settings";
+			return "Apply settings";
 		else
 		{
 			if (this.isSequential)
@@ -69,5 +100,8 @@ export class InjectCapturesDialogue {
 			else 
 				return "Inject simultaneously";
 		}
+	}
+	public isSettingsMode(): boolean {
+		return this.data.justSetting;
 	}
 }

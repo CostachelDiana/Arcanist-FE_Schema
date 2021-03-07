@@ -11,8 +11,11 @@
 
 <body>
 
-	
-	<main role="main">
+	<div class="card card-body" *ngIf="!this.isPageReady()">
+		<button class="btn btn-primary" type="button" (click)="onFetchProjectClick()"> Fetch Project Page From Backend</button>
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Project Page</button>
+	</div>
+	<main role="main" *ngIf="this.isPageReady()">
 	<h1 class="text-center"> Project: {{this.getProjectName()}}</h1>
 	<!--  href="#ProjDetails" -->
 		<p class="font-weight-bold">		
@@ -30,6 +33,11 @@
 				<p>Last update: {{this.getProjectLastEdited()}}</p>
 				<p>Project Owner: {{this.getProjectOwnerName()}}</p>
 			</div>
+			
+			<div class="card card-body" >
+			<p class="text-center"> Project Notes </p>
+				<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value="{{this.getProjDetails()}}"></textarea>
+			</div>
 		<!-- </div>-->
 		<br>
 		<br>
@@ -41,7 +49,7 @@
 			<ul style="list-style:none">
 				<div class="card card-body">
 					<tr>
-						<td> <button class="btn btn-secondary" type="button " (click)="onSetOwnerClick()"> Change </button>  &nbsp; {{this.getProjectOwnerName()}}  </td>
+						<td> <button class="btn btn-secondary" type="button " (click)="onSetOwnerClick()"> Change </button>  &nbsp; {{this.getProjectOwnerName()}} - Owner </td>
 						
 					</tr>
 				</div>
@@ -82,8 +90,9 @@
 								<th scope="col">{{capSet.capSetName}}</th>
 								<th scope="col">{{capSet.capSetX2Protocol}}</th>
 								<th scope="col">{{capSet.capSetX3Protocol}}</th>
-								<th scope="col"> <button class="btn btn-primary"> (+) Total Number :{{capSet.getCapNumber()}} </button> </th>
+								<th scope="col"> <button class="btn btn-primary"> (+) Total Number:{{capSet.getCapNumber()}} </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button" (click)="onAddCaptureClick(idx)"> Add Capture </button> </th>
+								<th scope="col"><button class="btn btn-primary" type="button" (click)="onInjectionSettingsClick(idx)"> Injection Settings </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button" (click)="onPlayAllClick(idx)"> Play All </button></th>
 							</tr>							
 						
@@ -113,9 +122,9 @@
 										<td>{{cap.captureX2Protocol}}@{{cap.captureX2Transport}}:{{cap.captureX2Port}}</td>
 										<td>{{cap.captureX3Protocol}}@{{cap.captureX3Transport}}:{{cap.captureX3Port}}</td>
 										<td>
-											<button class="btn btn-secondary" type="button"> Inject </button>
+											<button class="btn btn-secondary" type="button" (click)="onSinglePlayClick(idx,ii)"> Inject </button>
 											&nbsp;
-											<button class="btn btn-secondary" type="button"> Settings </button>
+											<button class="btn btn-secondary" type="button" (click)="onSingleCaptureSettingsClick(idx,ii)"> Settings </button>
 											&nbsp;
 											<button class="btn btn-secondary" type="button"> Download </button>
 											&nbsp;
@@ -133,7 +142,7 @@
 		</div>
 		
 		<div class="text-center">
-			<button class="btn btn-primary align-center" type="button"> Apply changes </button>
+			<button class="btn btn-primary align-center" type="button" (click)="onSubmitChangesClick()"> Apply changes </button>
 		</div>
 	</main>
 

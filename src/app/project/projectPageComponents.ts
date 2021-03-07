@@ -70,6 +70,7 @@ export class ProjPageCaptureInfo {
 // grouping of captures according to protocol 
 export class CaptureSet {
 	capSetName: string;
+	capSetID:string;
 	capSetX2Protocol: string;
 	capSetX3Protocol: string;
 	capSetCaptures: ProjPageCaptureInfo[];
@@ -77,7 +78,7 @@ export class CaptureSet {
 	
 	constructor (name:string) {
 		this.capSetName=name;
-		this.capSetCaptures = [];
+		this.capSetCaptures=[];
 		this.capInjectionSett=[];
 		this.capSetX2Protocol="unknown";
 		this.capSetX3Protocol="unknown";
@@ -103,6 +104,18 @@ export class CaptureSet {
 	}
 	public getCaptureInjectionSettings(): InjectionSettings[] {
 		return this.capInjectionSett;
+	}
+	public setNewDefaultSettings(setts: InjectionSettings[]): void {
+		if (setts.length == this.capSetCaptures.length)
+			this.capInjectionSett = setts;
+		// CMS debug mismatch here
+	}
+	public updateInjectionSettings(setts: InjectionSettings, idx:number): void {
+		if (idx >-1 && idx < this.capSetCaptures.length)
+		{
+			this.capInjectionSett[idx] = setts;
+		}
+		// cms debug invalid here 
 	}
 }
 
@@ -133,8 +146,8 @@ export class ProjPageInfo {
 	projMembers: ProjMember[];
 	projCapSets: CaptureSet[];
 	
-	constructor (name:string, id : string) {	
-		this.projName = name;
+	constructor (id : string) {	
+	
 		this.projID = id;
 	}
 	

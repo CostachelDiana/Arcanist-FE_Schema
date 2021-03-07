@@ -12,7 +12,9 @@ import { ProjectComponent } from './project/project.component';
 import {SelectUserDialogue} from './dialogues/SelectUserDialogue.component';
 import {SelectCaptureDialogue} from './dialogues/SelectCaptureDialogue';
 import {InjectCapturesDialogue} from './dialogues/InjectCapturesDialogue';
+import {SingleInjectCaptureDialogue} from './dialogues/SingleInjectCaptureDialogue';
 import {AddCapturesSetDialogue} from './dialogues/AddCapturesSetDialogue';
+
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import  {MatDialogModule} from '@angular/material/dialog';
@@ -30,7 +32,10 @@ import {MatInputModule} from '@angular/material/input';
 	SelectUserDialogue,
 	SelectCaptureDialogue,
 	InjectCapturesDialogue,
-	AddCapturesSetDialogue
+	SingleInjectCaptureDialogue,
+	AddCapturesSetDialogue,
+
+	
   ],
   imports: [
     BrowserModule,

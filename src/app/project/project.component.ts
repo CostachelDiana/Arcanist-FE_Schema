@@ -11,6 +11,10 @@ import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
 import {SelectCaptureDialogue} from '../dialogues/SelectCaptureDialogue'
 import {InjectCapturesDialogue} from '../dialogues/InjectCapturesDialogue'
 import {AddCapturesSetDialogue} from '../dialogues/AddCapturesSetDialogue'
+import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
+import {ProjectPageEventSerializer} from './projectPageEventSerializer'
+import {ProjectBEAbstraction} from './projectBEAbstraction'
+
 
 
 @Component({
@@ -22,23 +26,50 @@ import {AddCapturesSetDialogue} from '../dialogues/AddCapturesSetDialogue'
 export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
-	BEAbs: IBEAbstraction;	
+	 
+	BEAbs: ProjectBEAbstraction;
+	serializer: ProjectPageEventSerializer;
 	
+	// CMS debug purposes
+	projNotes: HTMLInputElement;
+	
+	pageInited: boolean;
 	
 	// initing methods
 	constructor(public dialogue: MatDialog) {
 		this.projInfo=null;
-		this.BEAbs=null;
 		
-		this.testInit();
+		this.pageInited=false;
+		this.serializer = new ProjectPageEventSerializer();
+		this.BEAbs= new ProjectBEAbstraction();
+		this.BEAbs.setProject(this);
+		this.BEAbs.connect("121.69.69.666","4040");
+		
+				 
 	}
 	
+	public onFetchProjectClick(): void {
+		var aJson = this.serializer.serializeProjectPageRequest("projIDPlaceholder");
+		this.BEAbs.request(aJson);
+	}
+	
+	public onGeneratePageClick(): void {
+		this.testInit();
+		this.pageInited=true;
+	}
+	
+	public isPageReady(): boolean {
+		return this.pageInited;
+	}
+	
+	
 	public testInit(): void {
-		this.projInfo = new ProjPageInfo("Test Proj RX","DK3bA5");
+		this.projInfo = new ProjPageInfo("projIDPlaceholder");
 		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
 		
 		this.projInfo.projOwner=new ProjMember("Marius");
 		this.projInfo.projOwner.surname="Aldea";
+		this.projInfo.projDetails="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 		
 		// add project members
 		var aMember = new ProjMember("Daniel");
@@ -144,7 +175,7 @@ export class ProjectComponent implements IProject {
 		// nothing to do right now
 	}
 	public setBEAbstraction(be: IBEAbstraction): void {
-		this.BEAbs = be;		
+		
 	}
 	
 	// callbacks 
@@ -160,6 +191,10 @@ export class ProjectComponent implements IProject {
 	public onAddMemberCBack(aMember: ProjMember)
 	{
 		this.projInfo.addProjectMember(aMember);
+		
+		
+		// console.log(" prj notes "+this.projNotes.value);
+		// this.projNotes.value="sadassd";
 	}
 	
 	public onAddCaptureCallback(aCap: ProjPageCaptureInfo, setN: number)
@@ -173,10 +208,66 @@ export class ProjectComponent implements IProject {
 		this.projInfo.addCaptureSet(aSet);
 	}
 	
-	public onInjectCapturesSetCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean)
+	public onInjectCapturesSetCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean,setIdx:number)
 	{
 		// CMS to do send to backend 
 		// this.projInfo.projName = "Injecting captures" + setts.length;
+		
+		var jSon = this.serializer.serializeCaptureInject(this.projInfo,setts,cap,isSeq,
+		this.projInfo.projCapSets[setIdx].capSetName,
+		this.projInfo.projCapSets[setIdx].capSetID);
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+	}
+	
+	// similar but with different functionality
+	public onSetDefaultCaptureSettingsCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean,setIdx:number)
+	{
+		// CMS to do send to backend
+		
+		// CMS pointers used, no need to update values
+		// this.projInfo.projCapSets[setIdx].setNewDefaultSettings(sett);
+		var jSon = this.serializer.serializeCaptureSettingsChange(this.projInfo,setts,cap,
+		this.projInfo.projCapSets[setIdx].capSetName,
+		this.projInfo.projCapSets[setIdx].capSetID);
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+		
+	}
+	
+	// single capture callbacks
+	public onSingleInjectCapCb(sett: InjectionSettings, cap:ProjPageCaptureInfo,setIdx:number, capIdx:number)
+	{
+		
+		var setArr: InjectionSettings[];
+		setArr = [];
+		setArr.push(sett);
+		
+		var capArr: ProjPageCaptureInfo[];
+		capArr=[];
+		capArr.push(cap);
+		
+		console.log("serializing");
+		var jSon = this.serializer.serializeCaptureInject(this.projInfo,setArr,capArr,true,"","");
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+	}
+	public onSingleInjectSettingCb(sett: InjectionSettings, cap:ProjPageCaptureInfo, setIdx:number, capIdx:number)
+	{
+		// CMS since everything here is pointer, no need to update anything
+		// this.projInfo.projCapSets[setIdx].updateInjectionSettings(sett,capIdx);
+		// CMS send to backend 
+		
+		var setArr: InjectionSettings[];
+		setArr = [];
+		setArr.push(sett);
+		
+		var capArr: ProjPageCaptureInfo[];
+		capArr=[];
+		capArr.push(cap);
+		
+		var jSon = this.serializer.serializeCaptureSettingsChange(this.projInfo,setArr,capArr,"","");
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;		
 	}
 	
 	// button hooks
@@ -298,9 +389,27 @@ export class ProjectComponent implements IProject {
 	
 	public onCaptureInfoClick(capN: number, setN:number): void {
 	}
-	public onCaptureInjectClick(capN:number, setN:number): void {
-	}
+	
 	public onCaptureSettingsClick(capN:number, setN:number): void {
+		
+		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onSetDefaultCaptureSettingsCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:true,
+		 setIdx:setN}
+		}
+		);	
+	}
+	
+	public onInjectionSettingsClick(setN:number): void {
+		
+		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onSetDefaultCaptureSettingsCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:true,
+		 setIdx:setN}
+		}
+		);	
 	}
 	
 	public onPlayAllClick(setN: number): void {
@@ -308,7 +417,28 @@ export class ProjectComponent implements IProject {
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
 		{width:'900px',
 		height:'800px',
-		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false}
+		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false, setIdx:setN}
+		}
+		);
+	}
+	
+	public onSingleCaptureSettingsClick(setN: number, capN:number): void {
+		
+		
+		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onSingleInjectSettingCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:true, setIdx:setN, capN: capN}
+		}
+		);
+	}
+	
+	public onSinglePlayClick(setN: number, capN:number): void {
+		
+		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:false, setIdx:setN, capN: capN}
 		}
 		);
 	}
@@ -318,9 +448,16 @@ export class ProjectComponent implements IProject {
 	}
 	
 	public onSubmitChangesClick(): void {
+		
+		
+		this.projNotes = (<HTMLInputElement> document.querySelector(".usrNotes"));
+		this.projInfo.projDetails= this.projNotes.value;
+		var jSon = this.serializer.serializeFullProjectUpdate(this.projInfo);
+		this.projNotes.value = jSon;
+		
 		if (this.BEAbs !=null )
 		{
-			this.BEAbs.sendBEUpdate(this.projInfo);
+			this.BEAbs.sendBEUpdate(jSon);
 		}
 	}
 	
@@ -364,6 +501,21 @@ export class ProjectComponent implements IProject {
 	
 	public getProjCaptureSets(): CaptureSet[] {
 		return this.projInfo.projCapSets;
+	}
+	
+	public onBEEventReceived(evtJson: string): void {
+		
+		var jObj = JSON.parse(evtJson);
+		var evtType = jObj["event-type"];
+		console.log("received BE Update! evt ["+evtType+"]");
+		if (evtType == "connection-success") {
+			console.log("connection established! server says"+jObj["message"]);
+		} else if (evtType == "project-fetched") {
+			console.log("project page received!");
+			this.projInfo = new ProjPageInfo("projIDPlaceholder");
+			this.serializer.deserializeProjectPageUpdate(this.projInfo,jObj);
+			this.pageInited=true;
+		}
 	}
 	
 }
