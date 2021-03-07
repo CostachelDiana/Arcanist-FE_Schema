@@ -4,6 +4,14 @@ export class InjectionSettings {
 	X3Port: string;
 	X3Transport: string;
 	clientIP: string;
+	
+	constructor () {
+		this.X2Port="0000";
+		this.X2Transport="TCP";
+		this.X3Port="1111";
+		this.X3Transport="TCP";
+		this.clientIP="127.0.0.1";
+	}
 }
 
 // keeps info relevant to the capture
@@ -14,7 +22,7 @@ export class ProjPageCaptureInfo {
 	captureIC: string;
 	captureICVal: string;
 	switchDate: string;
-	injectionSet: InjectionSettings;
+	
 	captureX2Port: string;
 	captureX2Transport: string;
 	captureX3Port: string;
@@ -27,8 +35,7 @@ export class ProjPageCaptureInfo {
 	constructor (capName:string, id:string)
 	{
 		this.captureName=capName;
-		this.captureID = id;
-		this.injectionSet=null;
+		this.captureID = id;		
 	}
 	
 	public setCaptureParameters(
@@ -58,13 +65,6 @@ export class ProjPageCaptureInfo {
 		this.captureLength = capLen;
 	}
 	
-	public setCaptureInjectionSettings(setts: InjectionSettings): void {
-		this.injectionSet = setts;
-	}
-	
-	public getInjectionSettings(): InjectionSettings {
-		return this.injectionSet;
-	}
 }
 
 // grouping of captures according to protocol 
@@ -73,19 +73,26 @@ export class CaptureSet {
 	capSetX2Protocol: string;
 	capSetX3Protocol: string;
 	capSetCaptures: ProjPageCaptureInfo[];
+	capInjectionSett: InjectionSettings[];
 	
 	constructor (name:string) {
+		this.capSetName=name;
 		this.capSetCaptures = [];
+		this.capInjectionSett=[];
 		this.capSetX2Protocol="unknown";
 		this.capSetX3Protocol="unknown";
+		
 	}
 	public addCapture(cap: ProjPageCaptureInfo):void {
 		this.capSetCaptures.push(cap);
+		var aSet = new InjectionSettings();
+		this.capInjectionSett.push(aSet);
 	}
 	public removeCapture(idx: number): void	{
 		if (idx > -1 && idx < this.capSetCaptures.length)
 		{
 			this.capSetCaptures.splice(idx,1);
+			this.capInjectionSett.splice(idx,1);
 		}
 	}
 	public getCapNumber(): number {
@@ -93,6 +100,9 @@ export class CaptureSet {
 	}
 	public getCaptures(): ProjPageCaptureInfo[] {
 		return this.capSetCaptures;
+	}
+	public getCaptureInjectionSettings(): InjectionSettings[] {
+		return this.capInjectionSett;
 	}
 }
 

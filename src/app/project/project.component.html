@@ -73,7 +73,7 @@
 		</p>
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />		
 		<div class="card card-body" id="capSetsBody">
-			<ul style="list-style:none">			
+			<ul style="list-style:none">
 				<li *ngFor="let capSet of this.getProjCaptureSets(); let idx = index">
 					<div class="card card-body" style="border: 1px solid black;">
 						<table class="table">
@@ -84,12 +84,12 @@
 								<th scope="col">{{capSet.capSetX3Protocol}}</th>
 								<th scope="col"> <button class="btn btn-primary"> (+) Total Number :{{capSet.getCapNumber()}} </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button" (click)="onAddCaptureClick(idx)"> Add Capture </button> </th>
-								<th scope="col"><button class="btn btn-primary" type="button"> Play All </button></th>
+								<th scope="col"><button class="btn btn-primary" type="button" (click)="onPlayAllClick(idx)"> Play All </button></th>
 							</tr>							
 						
 						</table>
 					</div>
-					<div class="card card-body" iid="capSet#idx">
+					<div class="card card-body" iid="capSet{{idx}}">
 						<table class="table">
 								<thead>
 									<tr>

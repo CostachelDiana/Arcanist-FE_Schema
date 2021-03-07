@@ -13,18 +13,18 @@
 
 	<main role="main">
 	<div class="card card-style">
-		<p class="center-block">Enter user email</p>
+		<p class="center-block">Enter capture id or link</p>
 		<br>
 		<br>
 		<mat-form-field>
-			<mat-label>user email</mat-label>
-			<input matInput #userMail>			
+			<mat-label>Capture ID / link</mat-label>
+			<input matInput #captureID>			
 		</mat-form-field>
 		<br>
 		<br>
 		&nbsp;
 		&nbsp;
-		<button class="btn btn-primary" type="button" (click)="onSubmitClick(userMail.value)">Submit</button>	
+		<button class="btn btn-primary" type="button" (click)="onSubmitClick(captureID.value)">Submit</button>	
 	</div>
 	</main>
 

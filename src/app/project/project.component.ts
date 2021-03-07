@@ -8,6 +8,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import {InjectionSettings, ProjPageCaptureInfo, CaptureSet,ProjMember,ProjPageInfo} from './projectPageComponents'
 import {IProject, IBEAbstraction} from './IProject'
 import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
+import {SelectCaptureDialogue} from '../dialogues/SelectCaptureDialogue'
+import {InjectCapturesDialogue} from '../dialogues/InjectCapturesDialogue'
+import {AddCapturesSetDialogue} from '../dialogues/AddCapturesSetDialogue'
 
 
 @Component({
@@ -19,12 +22,11 @@ import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
 export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
-	BEAbs: IBEAbstraction;
-	// userSelectDialogue: MatDialog;
+	BEAbs: IBEAbstraction;	
 	
 	
 	// initing methods
-	constructor(public userSelectDialogue: MatDialog) {
+	constructor(public dialogue: MatDialog) {
 		this.projInfo=null;
 		this.BEAbs=null;
 		
@@ -66,7 +68,8 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="LIID";
 		aCapture.captureICVal="442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		
+		aCapSet.addCapture(aCapture);
 		
 		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
 		aCapture.captureX2Port="5005";
@@ -80,7 +83,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="Phone";
 		aCapture.captureICVal="+31332442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
 		aCapture.captureX2Port="5001";
@@ -94,7 +97,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="MSISDN";
 		aCapture.captureICVal="+31332442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		this.projInfo.projCapSets.push(aCapSet);
 		
@@ -114,7 +117,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="IMSI";
 		aCapture.captureICVal="34312561";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		var aCapture = new ProjPageCaptureInfo("Leo MPD on/off","ADGr123");
 		aCapture.captureX2Port="22";
@@ -128,7 +131,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="IMSI";
 		aCapture.captureICVal="34312561";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		this.projInfo.projCapSets.push(aCapSet);
 	}
@@ -159,25 +162,35 @@ export class ProjectComponent implements IProject {
 		this.projInfo.addProjectMember(aMember);
 	}
 	
+	public onAddCaptureCallback(aCap: ProjPageCaptureInfo, setN: number)
+	{
+		if (setN > -1 && setN < this.projInfo.projCapSets.length)
+		 this.projInfo.projCapSets[setN].addCapture(aCap);
+	}
+	
+	public onAddCaptureSetCallback(aSet:CaptureSet)
+	{
+		this.projInfo.addCaptureSet(aSet);
+	}
+	
+	public onInjectCapturesSetCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean)
+	{
+		// CMS to do send to backend 
+		// this.projInfo.projName = "Injecting captures" + setts.length;
+	}
+	
 	// button hooks
 	public onAddCaptureClick(setN: number): void {
 	
 		// CMS Debug
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6005";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="MSISDN";
-		aCapture.captureICVal="+31332442312";
-		
-		if (setN > -1 && setN < this.projInfo.projCapSets.length)
-			this.projInfo.projCapSets[setN].addCapture(aCapture);
+		var dialogRef = this.dialogue.open(SelectCaptureDialogue, 
+		{width:'600px',
+		height:'300px',
+		 data: {callback: this.onAddCaptureCallback.bind(this), capSet: setN}
+		}
+		);
+	
 	}
 	public onRemoveCaptureClick(setN: number, capN: number): void {
 		
@@ -188,7 +201,18 @@ export class ProjectComponent implements IProject {
 	public onAddSetClick(): void {
 		
 		
+			
+		var dialogRef = this.dialogue.open(AddCapturesSetDialogue, 
+		{width:'600px',
+		height:'500px',
+		 data: {callback: this.onAddCaptureSetCallback.bind(this)}
+		}
+		);
+		
+		
 		// CMS Debug
+		
+		/*
 		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
 		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
 		aCapSet.capSetX3Protocol="ULIC RTP";
@@ -206,7 +230,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="LIID";
 		aCapture.captureICVal="442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
 		aCapture.captureX2Port="5005";
@@ -220,7 +244,7 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="Phone";
 		aCapture.captureICVal="+31332442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
 		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
 		aCapture.captureX2Port="5001";
@@ -234,9 +258,11 @@ export class ProjectComponent implements IProject {
 		aCapture.captureIC="MSISDN";
 		aCapture.captureICVal="+31332442312";
 		
-		aCapSet.capSetCaptures.push(aCapture);
+		aCapSet.addCapture(aCapture);
 		
-		this.projInfo.projCapSets.push(aCapSet);
+		this.projInfo.projCapSets.push(aCapSet);*/
+	
+		
 	}
 	public onRemoveSetClick(setN: number): void {
 		
@@ -251,24 +277,23 @@ export class ProjectComponent implements IProject {
 	public onAddMemberClick(): void {
 		
 		
-		var dialogRef = this.userSelectDialogue.open(SelectUserDialogue, 
+		var dialogRef = this.dialogue.open(SelectUserDialogue, 
 		{width:'400px',
 		height:'300px',
 		 data: {callback: this.onAddMemberCBack.bind(this)}
 		}
-		);
-		// this.userSelectDialogue.userSelectedCallback=this.onAddMemberCBack.bind(this);
+		);		
 		
-		// CMS debug		
-		var aMember = new ProjMember("Catalin");
-		aMember.surname="Spataru";
-		this.projInfo.addProjectMember(aMember);
 	}
 	public onSetOwnerClick(): void {
 		
-		// CMS debug 
-		this.projInfo.projOwner.name="Monsieur";
-		this.projInfo.projOwner.surname="Luffy";
+		var dialogRef = this.dialogue.open(SelectUserDialogue, 
+		{width:'400px',
+		height:'300px',
+		 data: {callback: this.onChangeOwnerCback.bind(this)}
+		}
+		);		
+		
 	}
 	
 	public onCaptureInfoClick(capN: number, setN:number): void {
@@ -279,6 +304,13 @@ export class ProjectComponent implements IProject {
 	}
 	
 	public onPlayAllClick(setN: number): void {
+		
+		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false}
+		}
+		);
 	}
 	
 	public onExpandCollapseSetClick(setN: number): void {

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+
+<body>
+
+	<main role="main">
+	<div class="card card-style">
+		<p class="center-block">{{this.getPageTitle()}}</p>
+		<br>
+		<br>
+		   <table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">
+							<input class="form-check-input" type="checkbox" value="" id="checkAll" checked>
+							&nbsp;
+							&nbsp;
+							Inject														
+						</th>
+						<th scope="col">DstIP</th>
+						<th scope="col">SrcX2Port</th>
+						<th scope="col">SrcX2T</th>
+						<th scope="col">SrcX3Port</th>
+						<th scope="col">SrcX3T</th>
+						<th scope="col">DstX2Port</th>
+						<th scope="col">DstX2T</th>
+						<th scope="col">DstX3Port</th>
+						<th scope="col">DstX3T</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let cap of this.getCaptures(); let idx=index">						
+							<td>{{idx+1}}</td>
+							<td>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="inject{{idx}}" checked>
+								</div>
+							</td>
+							<td>							
+								<mat-form-field [style.width.px]=110>
+								<mat-label>Client IP</mat-label>
+									<input matInput #clientIP{{idx}} value="{{this.getSettingsForCapture(idx).clentIP}}">
+								</mat-form-field>
+							</td>
+							<td>
+								{{cap.captureX2Port}}
+							</td>
+							<td>
+								{{cap.captureX2Transport}}
+							</td>
+							<td>
+								{{cap.captureX3Port}}
+							</td>
+							<td>
+								{{cap.captureX3Transport}}
+							</td>
+							<td>							
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X2 Port</mat-label>
+									<input matInput #clientIP{{idx}} value="{{this.getSettingsForCapture(idx).X2Port}}">
+								</mat-form-field>
+							</td>
+							<td>							
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X2 Transport</mat-label>
+									<input matInput #clientIP{{idx}} value="{{this.getSettingsForCapture(idx).X2Transport}}">
+								</mat-form-field>
+							</td>
+							<td>							
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X3 Port</mat-label>
+									<input matInput #clientIP{{idx}} value="{{this.getSettingsForCapture(idx).X3Port}}">
+								</mat-form-field>
+							</td>
+							<td>							
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X3 Transport</mat-label>
+									<input matInput #clientIP{{idx}} value="{{this.getSettingsForCapture(idx).X3Transport}}">
+								</mat-form-field>
+							</td>
+						
+					</tr>									
+				</tbody>
+		  </table>
+		   
+		<br>
+		<br>		
+		<button class="btn btn-primary" type="button" (click)="onToggleInjectionClick()">Toggle injection type</button>	
+		<br>
+		<button class="btn btn-primary" type="button" (click)="onSubmitClick('hahalera')">{{this.getSubmitTitle()}}</button>	
+	</div>
+	</main>
+
+</body>
+
+
+</html>
