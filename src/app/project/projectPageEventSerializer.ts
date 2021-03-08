@@ -91,9 +91,7 @@ export class ProjectPageEventSerializer {
 			capSet.capSetX2Protocol= capSetsArr[i]["capSetX2Protocol"];
 			capSet.capSetX3Protocol= capSetsArr[i]["capSetX3Protocol"];
 			capSet.capSetCaptures= capSetsArr[i]["capSetCaptures"];
-			capSet.capInjectionSett= capSetsArr[i]["capInjectionSett"];
-			console.log("capSet["+i+"] with "+capSet.capSetCaptures.length+" caps, fct " + capSet.getCapNumber()+" "
-			+JSON.stringify(capSet));
+			capSet.capInjectionSett= capSetsArr[i]["capInjectionSett"];			
 			proj.projCapSets.push(capSet);
 		}
 		// console.log("CapSettArr " + JSON.stringify(capSetsArr));

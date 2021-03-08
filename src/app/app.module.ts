@@ -9,6 +9,8 @@ import { SearchComponent } from './search/search.component';
 import { UploadComponent } from './upload/upload.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
+import { CaptureEditPage } from './captureedit/captureedit.component';
+import { FirstPage } from './firstpage/firstpage.component';
 import {SelectUserDialogue} from './dialogues/SelectUserDialogue.component';
 import {SelectCaptureDialogue} from './dialogues/SelectCaptureDialogue';
 import {InjectCapturesDialogue} from './dialogues/InjectCapturesDialogue';
@@ -34,7 +36,8 @@ import {MatInputModule} from '@angular/material/input';
 	InjectCapturesDialogue,
 	SingleInjectCaptureDialogue,
 	AddCapturesSetDialogue,
-
+	CaptureEditPage,
+	FirstPage
 	
   ],
   imports: [
