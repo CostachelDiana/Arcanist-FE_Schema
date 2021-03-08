@@ -22,10 +22,13 @@ npm install --save @angular/material @angular/cdk
 
 npm install --save jquery
 
-7. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and build the project 
+7. Install fontawesome
+npm install --save @fortawesome/fontawesome-free
+
+8. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and build the project 
 ng build 
 
-8. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
+9. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and run
 ng serve --open
 
 This will open a web page of the project.
