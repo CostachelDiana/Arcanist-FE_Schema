@@ -176,7 +176,7 @@
 						</li>
 					</ul>
 					<br>
-					<button class="btn btn-primary" type="button" > Add Capture Info </button>
+					<button class="btn btn-primary" type="button" (click)="onAddCaptureInfoClick()" > Add Capture Info </button>
 			</div>
 		</div>
 		<br>
@@ -194,9 +194,14 @@
 							 &nbsp;
 						</li>
 			</ul>
-			<button class="btn btn-primary" type="button" > Add Capture Tag </button>
+			<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
 		</div>
 			
+	</div>
+	<br>
+	<div>
+		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
+		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
 	</div>
 	<br>
 	<br>
@@ -221,4 +226,5 @@
 			</ul>
 		</div>		
 	</div>
+	
 </main>
