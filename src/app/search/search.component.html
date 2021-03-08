@@ -4,24 +4,109 @@
 	</div>    
 	<main role="main" *ngIf="this.isPageReady()">
     <p> Name: 
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
         <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
-    </mat-form-field>
-    </p>
-    <p> CD Protocol:
-    <mat-form-field appearance="fill">
-    <mat-label>CD Protocol</mat-label>
-      <select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
-        <option *ngFor="let p of this.searchOptions.cdProtocolOptions; let i = index" [value]="this.searchOptions.cdProtocolOptions[i].id">
-          {{this.searchOptions.cdProtocolOptions[i].displayName}}
-        </option>
-      </select>
-    </mat-form-field>    
     </p>
     <div>
-      <h1>Testing search user input:</h1>
+      <h2>Filters Section</h2>
+      <hr/>
+      <div>
+        <h3>Basic Details</h3>
+        <hr/>      
+        <table><tr>
+          <td><table>
+            <tr>
+              <td>CD Protocol:</td>
+              <td><select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.cdProtocolOptions; let i = index" [value]="this.searchOptions.cdProtocolOptions[i].id">
+                  {{this.searchOptions.cdProtocolOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>
+            <tr>
+              <td>CC Protocol:</td>
+              <td><select formControlName="ccProtocols" id="ccProtocols" (change)="this.onCcProtocolOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.ccProtocolOptions; let i = index" [value]="this.searchOptions.ccProtocolOptions[i].id">
+                  {{this.searchOptions.ccProtocolOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>
+            <tr>
+              <td>Technology:</td>
+              <td><select formControlName="technologies" id="technologies" (change)="this.onTechnologiesOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.technologyOptions; let i = index" [value]="this.searchOptions.technologyOptions[i].id">
+                  {{this.searchOptions.technologyOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>        
+          </table></td>
+          <td><table>
+            <tr>
+              <td>Duration (seconds):</td>
+              <td><input #boxDurationMin name="durationMin" type="number" value="{{this.searchParameters.durationMin}}" (blur)= "this.searchParameters.durationMin = boxDurationMin.value"/></td>
+              <td><input #boxDurationMax name="durationMax" type="number" value="{{this.searchParameters.durationMax}}" (blur)= "this.searchParameters.durationMax = boxDurationMax.value"/></td>
+            </tr>
+            <tr>
+              <td>Switch Time:</td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>              
+            </tr>
+            <tr>
+              <td>Last Update:</td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>              
+            </tr>
+          </table></td>
+          <td><table>
+            <tr>
+              <td>Status:</td>
+              <td colspan="2">
+                <select formControlName="status" id="status" (change)="this.onStatusOptionsChanged($event)">
+                  <option *ngFor="let p of this.searchOptions.statusOptions; let i = index" [value]="this.searchOptions.statusOptions[i].id">
+                    {{this.searchOptions.statusOptions[i].displayName}}
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>References:</td>
+              <td><input #boxReferencesMin name="referencesMin" type="number" value="{{this.searchParameters.referencesMin}}" (blur)= "this.searchParameters.referencesMin = boxReferencesMin.value"/></td>
+              <td><input #boxReferencesMax name="referencesMax" type="number" value="{{this.searchParameters.referencesMax}}" (blur)= "this.searchParameters.referencesMax = boxReferencesMax.value"/></td>
+            </tr>
+            <tr>
+              <td>Projects:</td>
+              <td><input #boxProjectsMin name="projectsMin" type="number" value="{{this.searchParameters.projectsMin}}" (blur)= "this.searchParameters.projectsMin = boxProjectsMin.value"/></td>
+              <td><input #boxProjectsMax name="projectsMax" type="number" value="{{this.searchParameters.projectsMax}}" (blur)= "this.searchParameters.projectsMax = boxProjectsMax.value"/></td>
+            </tr>                      
+          </table></td>
+
+        </tr></table>
+      </div>
+    </div>
+    <div>
+      <h2>Testing search user input:</h2>
       <p>Name: {{this.searchParameters.searchName}}</p>
       <p>CD Protocol Id: {{this.searchParameters.cdProtocolSelectedId}}</p>
+      <p>CC Protocol Id: {{this.searchParameters.ccProtocolSelectedId}}</p>
+      <p>Technology Id: {{this.searchParameters.technologySelectedId}}</p>
+      <p>Duration min: {{this.searchParameters.durationMin}} max: {{this.searchParameters.durationMax}} </p>
+      <p>References min: {{this.searchParameters.referencesMin}} max: {{this.searchParameters.referencesMax}} </p>
+      <p>Projects min: {{this.searchParameters.projectsMin}} max: {{this.searchParameters.projectsMax}} </p>
+      <p>Status Id: {{this.searchParameters.statusSelectedId}}</p>
     </div>
   </main>
