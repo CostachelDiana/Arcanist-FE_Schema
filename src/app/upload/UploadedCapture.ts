@@ -22,6 +22,9 @@ export class UploadedCaptureDetails {
     constructor() {}
 
     public getDetails() {
+
+        console.log("getDetails for UploadedCaptureDetails");
+
         this.name="ETSI 102 232 - 5 Simple Call - Leo";
         this.CD_Protocols = [];
         this.CD_Protocols.push(new Protocol("ETSI", "ETSI 102 232 - 5 v371"));

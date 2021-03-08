@@ -1,77 +1,112 @@
-<h1>Search page</h1>
+  <h1 class="text-center"> Search in Captures</h1>
+  <div class="card card-body" *ngIf="!this.isPageReady()">
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Search Options</button>
+	</div>    
+	<main role="main" *ngIf="this.isPageReady()">
+    <p> Name: 
+        <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
+    </p>
+    <div>
+      <h2>Filters Section</h2>
+      <hr/>
+      <div>
+        <h3>Basic Details</h3>
+        <hr/>      
+        <table><tr>
+          <td><table>
+            <tr>
+              <td>CD Protocol:</td>
+              <td><select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.cdProtocolOptions; let i = index" [value]="this.searchOptions.cdProtocolOptions[i].id">
+                  {{this.searchOptions.cdProtocolOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>
+            <tr>
+              <td>CC Protocol:</td>
+              <td><select formControlName="ccProtocols" id="ccProtocols" (change)="this.onCcProtocolOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.ccProtocolOptions; let i = index" [value]="this.searchOptions.ccProtocolOptions[i].id">
+                  {{this.searchOptions.ccProtocolOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>
+            <tr>
+              <td>Technology:</td>
+              <td><select formControlName="technologies" id="technologies" (change)="this.onTechnologiesOptionsChanged($event)">
+                <option *ngFor="let p of this.searchOptions.technologyOptions; let i = index" [value]="this.searchOptions.technologyOptions[i].id">
+                  {{this.searchOptions.technologyOptions[i].displayName}}
+                </option>
+              </select></td>
+            </tr>        
+          </table></td>
+          <td><table>
+            <tr>
+              <td>Duration (seconds):</td>
+              <td><input #boxDurationMin name="durationMin" type="number" value="{{this.searchParameters.durationMin}}" (blur)= "this.searchParameters.durationMin = boxDurationMin.value"/></td>
+              <td><input #boxDurationMax name="durationMax" type="number" value="{{this.searchParameters.durationMax}}" (blur)= "this.searchParameters.durationMax = boxDurationMax.value"/></td>
+            </tr>
+            <tr>
+              <td>Switch Time:</td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>              
+            </tr>
+            <tr>
+              <td>Last Update:</td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>
+              <td>
+                  <input matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </td>              
+            </tr>
+          </table></td>
+          <td><table>
+            <tr>
+              <td>Status:</td>
+              <td colspan="2">
+                <select formControlName="status" id="status" (change)="this.onStatusOptionsChanged($event)">
+                  <option *ngFor="let p of this.searchOptions.statusOptions; let i = index" [value]="this.searchOptions.statusOptions[i].id">
+                    {{this.searchOptions.statusOptions[i].displayName}}
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>References:</td>
+              <td><input #boxReferencesMin name="referencesMin" type="number" value="{{this.searchParameters.referencesMin}}" (blur)= "this.searchParameters.referencesMin = boxReferencesMin.value"/></td>
+              <td><input #boxReferencesMax name="referencesMax" type="number" value="{{this.searchParameters.referencesMax}}" (blur)= "this.searchParameters.referencesMax = boxReferencesMax.value"/></td>
+            </tr>
+            <tr>
+              <td>Projects:</td>
+              <td><input #boxProjectsMin name="projectsMin" type="number" value="{{this.searchParameters.projectsMin}}" (blur)= "this.searchParameters.projectsMin = boxProjectsMin.value"/></td>
+              <td><input #boxProjectsMax name="projectsMax" type="number" value="{{this.searchParameters.projectsMax}}" (blur)= "this.searchParameters.projectsMax = boxProjectsMax.value"/></td>
+            </tr>                      
+          </table></td>
 
-<style>
-    body {
-      font-family: Arial;
-    }
-    
-    * {
-      box-sizing: border-box;
-    }
-    
-    form.example input[type=text] {
-      padding: 10px;
-      font-size: 17px;
-      border: 1px solid grey;
-      float: left;
-      width: 80%;
-      background: #f1f1f1;
-    }
-    
-    form.example button {
-      float: left;
-      width: 20%;
-      padding: 10px;
-      background: #2196F3;
-      color: white;
-      font-size: 17px;
-      border: 1px solid grey;
-      border-left: none;
-      cursor: pointer;
-    }
-    
-    form.example button:hover {
-      background: #0b7dda;
-    }
-    
-    form.example::after {
-      content: "";
-      clear: both;
-      display: table;
-    }
-
-    .container {
-    height: 50px;
-    position: relative;
-  }
-
-  .vertical-center {
-  margin: 0;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
-
-<p>Browse a capture in Local PC</p>
-<form action="/action_page.php">
-  <input type="file" id="myFile" name="filename">
-  <input type="submit">Not working yet
-</form>
- 
-<div class="container">
-  <div class="vertical-center">
-    <button type="submit">Inject - not working yet</button>
-  </div>
-</div>
-
-<div class="container">
-  Helpfull links: <br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_autocomplete">autocomplete example w3schools</a><br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup_form">Popup login form</a><br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_icon_buttons">Icon Buttons</a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-</div>
-
+        </tr></table>
+      </div>
+    </div>
+    <div>
+      <h2>Testing search user input:</h2>
+      <p>Name: {{this.searchParameters.searchName}}</p>
+      <p>CD Protocol Id: {{this.searchParameters.cdProtocolSelectedId}}</p>
+      <p>CC Protocol Id: {{this.searchParameters.ccProtocolSelectedId}}</p>
+      <p>Technology Id: {{this.searchParameters.technologySelectedId}}</p>
+      <p>Duration min: {{this.searchParameters.durationMin}} max: {{this.searchParameters.durationMax}} </p>
+      <p>References min: {{this.searchParameters.referencesMin}} max: {{this.searchParameters.referencesMax}} </p>
+      <p>Projects min: {{this.searchParameters.projectsMin}} max: {{this.searchParameters.projectsMax}} </p>
+      <p>Status Id: {{this.searchParameters.statusSelectedId}}</p>
+    </div>
+  </main>
