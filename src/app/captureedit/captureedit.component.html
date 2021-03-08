@@ -1,29 +1,287 @@
-<style>
-    .container {
-      height: 110px;
-      position: relative;
-    }
-    
-    .vertical-center {
-      margin: 0;
-      position: relative;
-      top: 10%;
-      left: 50%;
-    }
-  
-    .right-side{
-      margin: 0;
-      position: absolute;
-      left: 90%;
-    }
-  
-    .center {
-    margin: 0;
-    position: relative;
-    left: 50%;
-  }
-  </style>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="content" role="main">
-	Hello Capture Edit page !
-</div>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<main role="main">
+	<div class="card card-body">
+		<h1 class="text-center"> Capture: CapNamePlaceholder</h1>	
+		<button class="btn btn-primary" type="button"> Inject Capture </button>
+		<button class="btn btn-primary" type="button"> Add to Favorites </button>
+	</div>
+	<br>
+	<br>
+	<div class="card card-body">
+		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Basic Info </h4>
+		
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		<table class="table">
+			<tr>
+				<td>
+					<div>
+					Capture Name
+					&nbsp;
+					&nbsp;
+					<mat-form-field>
+						<mat-label>Capture Name</mat-label>
+						<input matInput #capName>			
+					</mat-form-field>
+					</div>
+					<div>
+					CD Protocol
+					&nbsp;
+					&nbsp;
+					<mat-form-field appearance="fill">
+						<mat-label>X2 Protocol</mat-label>
+						  <select matNativeControl required>
+							<option value="1">Unknown</option>
+							<option value="2">ETSI 102 232 - 5 v331</option>
+							<option value="3">ETSI 33 108 v271</option>
+							<option value="4">Huawei DKBA 2011</option>
+						  </select>		
+					</mat-form-field>
+					</div>
+					
+					<div>
+					CC Protocol
+					&nbsp;
+					&nbsp;
+					<mat-form-field appearance="fill">
+						<mat-label>X3 Protocol</mat-label>
+						  <select matNativeControl required>
+							<option value="1">Unknown</option>
+							<option value="2">ULIC</option>
+							<option value="3">CALEA JSTD0004</option>
+							<option value="4">ULIC EPS</option>
+						  </select>
+					</mat-form-field>
+					</div>
+					
+					<div>
+					Technology
+					&nbsp;
+					&nbsp;
+					<mat-form-field appearance="fill">
+						<mat-label>Core Technology</mat-label>
+						  <select matNativeControl required>
+							<option value="1">Unknown</option>
+							<option value="2">VoLTE</option>
+							<option value="3">MPD</option>
+							<option value="4">CS</option>
+							<option value="4">MPD 5G</option>
+						  </select>
+					</mat-form-field>
+					</div>					
+				</td>
+					<h5 class="font-weight-bold"> General info </h5>
+					<div style="card card-type">
+						
+						<p>Capture size: 3232kbs </p>
+						<p>Capture length: 1:45 minutes</p>
+						<p>Uploaded by: anonymous at 01.02.2021</p>
+						<p>Verified by: Marius Aldea at 02.02.2021</p>
+						<p>Last Update by: Daniel Citooracu at 12.07.2021</p>
+						<p>Status: <span style="color: #00AA00;font-weight:bold"> Verfied </span></p>
+						<button class="btn btn-primary" type="button"> Validate capture</button>
+					</div>
+				<td>
+				</td>
+			</tr>			
+		</table>
+		<h5 class="font-weight-bold"> User Comments</h5>
+		<div class="card card-body">
+			<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value=" "></textarea>
+		</div>
+	</div>
+	
+	<div class="card card-body">
+		<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button"> Expand </button>  Advanced Info </h4>
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		
+		<div style="margin-left: 30px">
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button>  Stream Info</h4>
+			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+			<div style="card card-body">
+				<table class="table">
+				<tr>
+					<td>
+						CD Port
+						&nbsp;
+						<mat-form-field [style.width.px]=50>
+								<mat-label>X2 port</mat-label>
+								<input matInput #x2prt>			
+						</mat-form-field>
+						<br>
+						CD Transport
+						&nbsp;
+						<mat-form-field [style.width.px]=50>
+								<mat-label>X2 Transport</mat-label>
+								<input matInput #x2trans>			
+						</mat-form-field>
+						<br>				
+						CC Port
+						&nbsp;
+						<mat-form-field [style.width.px]=50>
+								<mat-label>X3 port</mat-label>
+								<input matInput #x3prt>
+						</mat-form-field>
+						<br>
+						CC Transport
+						&nbsp;
+						<mat-form-field [style.width.px]=50>
+								<mat-label>X3 Transport</mat-label>
+								<input matInput #x3trans>			
+						</mat-form-field>
+					<td>
+					<td>
+						<div class="card card-body">
+						<h5 class="font-weight-bold text-center">Detected Streams</h5>
+						<ul style="list-style:none">
+							<li>1. TCP@2001 ETSI 102 232-5 v331: 251 packets, 151 kb</li>
+							&nbsp;
+							<li>2. UDP@300 RTP: 14 packets, 31 kb</li>
+							&nbsp;
+							<li>3. TCP@6001 ULIC EPS: 1251 packets, 1041 kb</li>
+							&nbsp;
+							<li>4. TCP@8080 HTTP: 21 packets, 13 kb</li>
+						</ul>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</div>
+		</div>
+		<div style="margin-left: 30px">
+			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button"> Expand </button>  Capture Info</h4>
+			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+			<div style="card card-body">
+				
+					Target IC 
+					<mat-form-field appearance="fill" [style.width.px]=100>
+						<mat-label>IC Type</mat-label>
+						  <select matNativeControl required>
+							<option value="1">LIID</option>
+							<option value="2">MSISDN</option>
+							<option value="3">TelURI</option>
+							<option value="4">IMSI</option>
+							<option value="4">IMEI</option>
+						  </select>
+					</mat-form-field>
+					&nbsp;
+					&nbsp;
+					IC Value
+					<mat-form-field [style.width.px]=100>
+							<mat-label>ICValue</mat-label>
+							<input matInput #icvalue>			
+					</mat-form-field>
+					&nbsp;
+					&nbsp;
+					Switch time
+					<mat-form-field [style.width.px]=100>
+							<mat-label>Switch Time</mat-label>
+							<input matInput #swtime>			
+					</mat-form-field>
+					<ul style="list-style:none">
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							&nbsp;
+							 <span style="font-weight:bold;color: #0000BB">Event:</span> Bearer Activation
+							 &nbsp;
+							 &nbsp;
+						</li>
+						
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							&nbsp;
+							 <span style="font-weight:bold;color: #0000BB">Event:</span> Bearer Deactivation
+							 &nbsp;
+							 &nbsp;
+						</li>
+						
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 &nbsp;
+							 <span style="font-weight:bold;color: #0000BB">Codec:</span> EVS
+							 &nbsp;
+							 &nbsp;
+						</li>
+						
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 &nbsp;
+							 <span style="font-weight:bold;color: #0000BB">Codec:</span> AMR-WB
+							 &nbsp;
+							 &nbsp;
+						</li>
+						
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 &nbsp;
+							 <span style="font-weight:bold;color: #0000BB">Scenario:</span> Simple Call
+							 &nbsp;
+							 &nbsp;
+						</li>
+						
+					</ul>
+					<br>
+					<button class="btn btn-primary" type="button" > Add Capture Info </button>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div style="margin-left: 30px">
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Capture Tags</h4>
+			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+			<div style="card card-body">
+			</div>
+			<ul style="list-style:none">
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 Target To Target
+							 &nbsp;
+							 &nbsp;
+						</li>
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 Dynamic Codecs
+							 &nbsp;
+							 &nbsp;
+						</li>
+						<li style="display:inline">
+							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							 X3 DTMF
+							 &nbsp;
+							 &nbsp;
+						</li>
+			</ul>
+			<button class="btn btn-primary" type="button" > Add Capture Tag </button>
+		</div>
+			
+	</div>
+	<br>
+	<br>
+	<div class="card card-body">
+		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Projects (30)</h4>		
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		<div class="card-card-body" style="margin-left:50px">
+			<h4 class="font-weight-bold">Leo RX (3)</h4>
+			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+			<h5 class="font-weight-bold">Capture Sets</h5>
+			<ul style="list-style:none">
+				<li>
+					<h5> Whole Capture</h5>
+				</li>				
+				<li>
+					<h5> Simple Call Tests </h5>
+				</li>
+			</ul>
+		</div>
+	</div>
+</main>
+
+</html>
