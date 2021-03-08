@@ -20,6 +20,8 @@ npm install bootstrap
 ng add @angular/material
 npm install --save @angular/material @angular/cdk
 
+npm install --save jquery
+
 7. Go to your workspace folder (e.g. E:\Hack\Cognyte - Hack\Arcanist-FE_Schema) and build the project 
 ng build 
 

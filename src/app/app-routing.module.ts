@@ -12,6 +12,11 @@ import { FirstPage } from '../app/firstpage/firstpage.component';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: "/LoginPage",
+    pathMatch: 'full'
+  },
   {path:'HomePage', component: HomeComponent},
   {path:'LoginPage', component: LoginComponent},
   {path:'SearchPage', component: SearchComponent},
