@@ -3,16 +3,19 @@ import { NgModule } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 import {ProjPageCaptureInfo, InjectionSettings} from "../project/projectPageComponents"
+import {PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 
-export interface SingleInjectCaptureDialogue {
+export interface SingleInjectCaptureDialogueData {
 	callback: (setts:InjectionSettings, cap:ProjPageCaptureInfo,setIdx:number,capIdx:number) => void,
 	cap: ProjPageCaptureInfo,
 	set: InjectionSettings,
 	setIdx:number,
 	capN:number,
 	justSetting: boolean,
-	fromProjScreen:boolean	
+	fromProjScreen:boolean,
+	X2TransVals: PredefinedTypeStruct[],
+	X3TransVals: PredefinedTypeStruct[]
 }
 
 
@@ -29,11 +32,23 @@ export class SingleInjectCaptureDialogue {
 	
 	constructor (
 		private dialogRef: MatDialogRef<SingleInjectCaptureDialogue>,
-		@Inject(MAT_DIALOG_DATA) public data: SingleInjectCaptureDialogue
+		@Inject(MAT_DIALOG_DATA) public data: SingleInjectCaptureDialogueData
 		) { this.isSequential = true;}
-		
-		
-
+	
+	public getX2TransVals(): PredefinedTypeStruct[] {
+		if (this.data.X2TransVals == null) 
+			this.data.X2TransVals = [];
+			
+		return this.data.X2TransVals;
+	}
+	
+	public getX3TransVals(): PredefinedTypeStruct[] {
+		if (this.data.X3TransVals == null) 
+			this.data.X3TransVals = [];
+			
+		return this.data.X3TransVals;
+	}
+	
 	
 	public onSubmitClick(clientIP: string, x2prt:string, x2t:string, x3prt:string, x3t:string): void {
 		

@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-
 <main role="main" > 
  
 	<div class="card card-body">
 		<h1 class="text-center"> Capture: {{this.getPageInfo().capName}}</h1>	
-		<button class="btn btn-primary" type="button"> Inject Capture </button>
+		<button class="btn btn-primary" type="button" (click)="this.onInjectCaptureClick()"> Inject Capture </button>
 		<button class="btn btn-primary" type="button"> Add to Favorites </button>
 	</div>
 	<br>
@@ -159,11 +149,7 @@
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
 						  <select matNativeControl required>
-							<option value="1">LIID</option>
-							<option value="2">MSISDN</option>
-							<option value="3">TelURI</option>
-							<option value="4">IMSI</option>
-							<option value="4">IMEI</option>
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.ID}}">{{ic.name}}</option>							
 						  </select>
 					</mat-form-field>
 					&nbsp;
@@ -182,7 +168,7 @@
 					</mat-form-field>
 					<ul style="list-style:none">						
 						<li style="display:inline" *ngFor="let info of this.getPageInfo().getCaptureInfos(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureInfoClick(idx)"> X</button>
 							&nbsp;
 							 <span style="font-weight:bold;color: #0000BB">{{info.infoTypeName}}:</span> {{info.infoValName}}
 							 &nbsp;
@@ -202,7 +188,7 @@
 			</div>
 			<ul style="list-style:none">
 						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
 							 {{tg.tagName}}
 							 &nbsp;
 							 &nbsp;

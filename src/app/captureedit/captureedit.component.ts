@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
 import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct} from './CaptureStructures';
-import {ProjMember} from '../project/projectPageComponents'
+import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/projectPageComponents'
+import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 
 @Component({
   selector: 'app-project',
@@ -11,6 +12,7 @@ import {ProjMember} from '../project/projectPageComponents'
 })
 export class CaptureEditPage {
 
+	
 	pageInfo: FullCaptureInfo;
 
 	capICTypes: PredefinedTypeStruct[];
@@ -21,8 +23,12 @@ export class CaptureEditPage {
 	
 	capStreams: StreamInfo[];
 	
+	capTagList: PredefinedTypeStruct[];	
+	capInfoValsList: PredefinedTypeStruct[][];
+	capInfoTypesList: PredefinedTypeStruct[];
+	
 
-	constructor() { 
+	constructor(public dialogue: MatDialog) { 
 	
 		this.capStreams=[];
 		this.capICTypes=[];
@@ -30,6 +36,9 @@ export class CaptureEditPage {
 		this.capX2Protos=[];
 		this.capX3Protos=[];
 		this.capTransportTypes=[];
+		this.capTagList=[];
+		this.capInfoValsList=[];
+		this.capInfoTypesList=[];
 		this.testInit();
 	}
 	
@@ -56,6 +65,42 @@ export class CaptureEditPage {
 		return this.capTransportTypes;
 	}
 	
+	// button hooks
+	public onInjectCaptureClick():void {
+		
+		var capInfo = new ProjPageCaptureInfo("NoProj","noid");
+		capInfo.captureX2Port=this.pageInfo.capX2Port;
+		capInfo.captureX2Transport=this.pageInfo.capX2Trans;
+		capInfo.captureX3Port=this.pageInfo.capX3Port;
+		capInfo.captureX3Transport=this.pageInfo.capX3Trans;
+		capInfo.captureID = this.pageInfo.capID;
+		
+		var injSett = new InjectionSettings();
+		
+		
+		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
+		{width:'1100px',
+		height:'800px',
+		 data: {callback: null, cap: capInfo,set: injSett,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.capTransportTypes, X3TransVals: this.capTransportTypes}
+		}
+		);
+	}
+	public onAddToFavoritesClick(): void {
+		
+	}
+	public onValidateCaptureClick(): void {
+	}
+	public onAddCaptureInfoClick(): void {
+	}
+	public onAddCaptureTagClick(): void{
+	}
+	
+	public onRemoveCaptureInfoClick(index: number): void{
+		this.pageInfo.removeCaptureInfo(index);
+	}
+	public onRemoveCaptureTagClick(index: number):void {
+		this.pageInfo.removeCaptureTag(index);
+	}
 
 	testInit(): void {
 		
@@ -332,6 +377,203 @@ export class CaptureEditPage {
 		aPresetType.name="SMTP";
 		aPresetType.ID="ttsmtp";
 		this.capTransportTypes.push(aPresetType);
+		
+		// IC Types 
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="LIID";
+		aPresetType.ID="ictliid";
+		this.capICTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="MSISDN";
+		aPresetType.ID="ictmsisdn";
+		this.capICTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="IPv4";
+		aPresetType.ID="ictipv4";
+		this.capICTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="IMSI";
+		aPresetType.ID="ictimsi";
+		this.capICTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="IMEI";
+		aPresetType.ID="ictimei";
+		this.capICTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="PhoneNumber";
+		aPresetType.ID="ictphone";
+		this.capICTypes.push(aPresetType);
+		
+		// tag list 
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Target To Target";
+		aPresetType.ID="ctagttt";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Generated";
+		aPresetType.ID="ctgen";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="CD Bypass";
+		aPresetType.ID="ctcdbpass";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="TLS1.2";
+		aPresetType.ID="cttls12";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="multiprotocol";
+		aPresetType.ID="ctmltp";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="X3DTMF";
+		aPresetType.ID="ctx3dtmf";
+		this.capTagList.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Dynamic Codecs";
+		aPresetType.ID="ctx3dtmf";
+		this.capTagList.push(aPresetType);
+		
+		// capture Info List 
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Event";
+		aPresetType.ID="citev";
+		this.capInfoTypesList.push(aPresetType);
+		var aValArray: PredefinedTypeStruct[];
+		aValArray=[];
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Bearer Activation";
+		aPresetType.ID="cievba";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Bearer Deactivation";		
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Call Begin";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Location Update";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Supplementary services - conference";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="SMS";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		this.capInfoValsList.push(aValArray);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Codec";
+		aPresetType.ID="citev";
+		this.capInfoTypesList.push(aPresetType);
+		var aValArray: PredefinedTypeStruct[];
+		aValArray=[];
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="EVS";
+		aPresetType.ID="cievba";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="AMR";		
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="AMR-WB";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="G781";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="T38";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="GSM8";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		this.capInfoValsList.push(aValArray);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Scenario";
+		aPresetType.ID="citev";
+		this.capInfoTypesList.push(aPresetType);
+		var aValArray: PredefinedTypeStruct[];
+		aValArray=[];
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Simple Call - incoming";
+		aPresetType.ID="cievba";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Call Forward Initiating";		
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Call Forward Redirecting";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Simple Call - outgoing";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Long SMS";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Location Update";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		this.capInfoValsList.push(aValArray);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Language";
+		aPresetType.ID="citev";
+		this.capInfoTypesList.push(aPresetType);
+		var aValArray: PredefinedTypeStruct[];
+		aValArray=[];
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="English";
+		aPresetType.ID="cievba";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Hebrew";		
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Arabic";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Chinese";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Russian";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Romanian";
+		aPresetType.ID="cievbd";
+		aValArray.push(aPresetType);
+		this.capInfoValsList.push(aValArray);
 		
 	}
 
