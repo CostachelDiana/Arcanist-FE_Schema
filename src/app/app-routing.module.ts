@@ -17,8 +17,8 @@ const routes: Routes = [
   {path:'SearchPage', component: SearchComponent},
   {path:'UploadPage', component: UploadComponent}, //need to disable this
   {path:'ProjectPage', component: ProjectComponent},
-  {path:'FirstPage', component: CaptureEditPage},
-  {path:'CaptureEdit', component: FirstPage}
+  {path:'CaptureEdit', component: CaptureEditPage},
+  {path:'FirstPage', component: FirstPage}
 ];
 
 @NgModule({
