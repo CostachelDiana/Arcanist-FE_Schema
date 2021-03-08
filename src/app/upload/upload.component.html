@@ -46,28 +46,46 @@ Basic Info
             <tr>
                 <th>CD Protocol</th>
                 <td><div class="dropdown">
-                    <button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
+                  <mat-form-field appearance="fill">
+                    <mat-label>X2 Protocol</mat-label>
+                      <select matNativeControl required>
+                      <option *ngFor="let x2 of this.upCapDetails.CD_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
+                      </select>		
+                  </mat-form-field>
+                  <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
                     <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CD_Protocols">
                         <li>{{item.fullName}}</li>
-                    </ul></div>
+                    </ul>--></div>
                 </td>
             </tr>
             <tr>
                 <th>CC Protocol</th>
                 <td><div class="dropdown">
-                  <button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
+                  <mat-form-field appearance="fill">
+                    <mat-label>X3 Protocol</mat-label>
+                      <select matNativeControl required>
+                      <option *ngFor="let x2 of this.upCapDetails.CC_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
+                      </select>		
+                  </mat-form-field>
+                  <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
                   <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CC_Protocols">
                       <li>{{item.fullName}}</li>
-                  </ul></div>
+                  </ul>--></div>
                 </td>
             </tr>
             <tr>
                 <th>Technology</th>
                 <td><div class="dropdown">
-                  <button data-toggle="dropdown"><i>Choose main technology</i><span class="caret"></span></button>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Core Technology</mat-label>
+                      <select matNativeControl required>
+                      <option *ngFor="let x2 of this.upCapDetails.techology; let idx = index" value="{{x2.fullName}}">{{x2.fullName}}</option>
+                      </select>		
+                  </mat-form-field>
+                  <!--<button data-toggle="dropdown"><i>Technology</i><span class="caret"></span></button>
                   <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.techology">
                       <li>{{item.fullName}}</li>
-                  </ul></div>
+                  </ul>--></div>
                 </td>
             </tr>
         </table></td>
