@@ -1,77 +1,27 @@
-<h1>Search page</h1>
-
-<style>
-    body {
-      font-family: Arial;
-    }
-    
-    * {
-      box-sizing: border-box;
-    }
-    
-    form.example input[type=text] {
-      padding: 10px;
-      font-size: 17px;
-      border: 1px solid grey;
-      float: left;
-      width: 80%;
-      background: #f1f1f1;
-    }
-    
-    form.example button {
-      float: left;
-      width: 20%;
-      padding: 10px;
-      background: #2196F3;
-      color: white;
-      font-size: 17px;
-      border: 1px solid grey;
-      border-left: none;
-      cursor: pointer;
-    }
-    
-    form.example button:hover {
-      background: #0b7dda;
-    }
-    
-    form.example::after {
-      content: "";
-      clear: both;
-      display: table;
-    }
-
-    .container {
-    height: 50px;
-    position: relative;
-  }
-
-  .vertical-center {
-  margin: 0;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
-
-<p>Browse a capture in Local PC</p>
-<form action="/action_page.php">
-  <input type="file" id="myFile" name="filename">
-  <input type="submit">Not working yet
-</form>
- 
-<div class="container">
-  <div class="vertical-center">
-    <button type="submit">Inject - not working yet</button>
-  </div>
-</div>
-
-<div class="container">
-  Helpfull links: <br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_autocomplete">autocomplete example w3schools</a><br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup_form">Popup login form</a><br>
-  <a class="nav-item nav-link" routerLink="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_icon_buttons">Icon Buttons</a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-  <a class="nav-item nav-link" routerLink=""></a><br>
-</div>
-
+  <h1 class="text-center"> Search in Captures</h1>
+  <div class="card card-body" *ngIf="!this.isPageReady()">
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Search Options</button>
+	</div>    
+	<main role="main" *ngIf="this.isPageReady()">
+    <p> Name: 
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+        <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
+    </mat-form-field>
+    </p>
+    <p> CD Protocol:
+    <mat-form-field appearance="fill">
+    <mat-label>CD Protocol</mat-label>
+      <select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
+        <option *ngFor="let p of this.searchOptions.cdProtocolOptions; let i = index" [value]="this.searchOptions.cdProtocolOptions[i].id">
+          {{this.searchOptions.cdProtocolOptions[i].displayName}}
+        </option>
+      </select>
+    </mat-form-field>    
+    </p>
+    <div>
+      <h1>Testing search user input:</h1>
+      <p>Name: {{this.searchParameters.searchName}}</p>
+      <p>CD Protocol Id: {{this.searchParameters.cdProtocolSelectedId}}</p>
+    </div>
+  </main>
