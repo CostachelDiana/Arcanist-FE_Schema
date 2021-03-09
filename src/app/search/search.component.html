@@ -188,4 +188,52 @@
         </ul>
       </div>
     </div>
+    <div class="card card-body">
+      <h4 class="font-weight-bold" ><button class="btn btn-primary" type="button" (click)="this.onSearchClick()" > Search  </button> </h4>
+    </div>
+    <div *ngIf="this.searchFinished">
+      <h4 class="font-weight-bold">Results Section - Found {{this.searchResults.length}} results ...</h4>
+      <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+      <table style="margin-left: 30px;border: 2px solid;" *ngFor="let cap of this.searchResults; let idx = index">
+        <tr><td style="padding: 20px;">
+          <h4 class="font-weight-bold">{{this.searchResults[idx].capName}}</h4>
+          <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+          <div style="margin-left: 30px;">
+            <table cols="3" rows="4" style="margin-left: 30px;">
+              <tr>
+                <td style="padding: 10px;">CC: {{this.searchResults[idx].capX3Protocol}}</td>
+                <td style="padding: 10px;">CD: {{this.searchResults[idx].capX2Protocol}}</td>
+                <td style="padding: 10px;">Switch Time: {{this.searchResults[idx].capSwitchDate}}</td>
+                <td style="padding: 10px;">Status: {{this.searchResults[idx].capStatus.name}}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px;">Technology: {{this.searchResults[idx].capTechnology.name}}</td>
+                <td style="padding: 10px;">Length: {{this.searchResults[idx].capLength}}</td>
+                <td style="padding: 10px;">Last Updated: {{this.searchResults[idx].lastUpdateDate}}</td>
+                <td style="padding: 10px;">Used in: {{this.searchResults[idx].getCaptureProjsNumber()}} projects</td>
+              </tr>  
+              <tr>
+                <td style="padding: 10px;">&nbsp;</td>
+                <td style="padding: 10px;">&nbsp;</td>
+                <td style="padding: 10px;">&nbsp;</td>
+                <td style="padding: 10px;">Has: {{this.searchResults[idx].getCaptureRefNumber()}} references</td>
+              </tr>        
+            </table>
+            <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+            <ul style="list-style:none">
+              <li style="display:inline" *ngFor="let tg of this.searchResults[idx].capTags">
+                Tag: {{tg.tagName}}
+                &nbsp;
+                &nbsp;
+              </li>
+              <li style="display:inline" *ngFor="let info of this.searchResults[idx].capInfos">
+                {{info.infoTypeName}}: {{info.infoValName}}
+                &nbsp;
+                &nbsp;
+              </li>
+            </ul>
+          </div>
+        </td></tr>
+      </table>
+    </div>
   </main>

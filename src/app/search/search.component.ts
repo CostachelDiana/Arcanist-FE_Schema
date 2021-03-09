@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
-import {CaptureInfo, CaptureTag, PresetTypesInfo} from "../captureedit/CaptureStructures";
+import {CapProjLink, CaptureInfo, CaptureTag, FullCaptureInfo, PredefinedTypeStruct, PresetTypesInfo} from "../captureedit/CaptureStructures";
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
+import { ProjMember } from '../project/projectPageComponents';
 
 @Component({
   selector: 'app-search',
@@ -16,12 +17,16 @@ export class SearchComponent implements OnInit {
   private _pageInited: boolean;
   private _typesInfo: PresetTypesInfo;
   private _searchParameters: SearchParameters;
+  private _searchFinished: boolean;
+  private _searchResults: FullCaptureInfo[];
   
 
   constructor(public dialogue: MatDialog) { 
     this._pageInited = false;
+    this._searchFinished = false;
     this._typesInfo = new PresetTypesInfo();
     this._searchParameters = new SearchParameters();
+    this._searchResults = [];
   }
 
   ngOnInit(): void {
@@ -37,6 +42,14 @@ export class SearchComponent implements OnInit {
 
   get searchParameters() : SearchParameters{
     return this._searchParameters;
+  }
+
+  get searchResults(): FullCaptureInfo[]{
+    return this._searchResults;
+  }
+
+  get searchFinished() : boolean{
+    return this._searchFinished;
   }
 
   public onGeneratePageClick(): void {
@@ -130,6 +143,155 @@ export class SearchComponent implements OnInit {
 	public onRemoveCaptureTagClick(index: number):void {
 		this._searchParameters.removeCaptureTag(index);
 	}  
+
+  public onSearchClick():void {
+    this._searchFinished = false;
+    //TODO: serialize from _searchParameters & send REST request
+    this.testFillSearchResults();
+    this._searchFinished = true;
+	}  
+  
+  private testFillSearchResults() : void {
+    this.addTestCaptureResult();
+    this.addTestCaptureResult();
+    this.addTestCaptureResult();
+    this.addTestCaptureResult();
+  }
+
+  private addTestCaptureResult() : void{
+    var pgInfo = new FullCaptureInfo();
+		
+		pgInfo.capID = "d443KAv";
+		pgInfo.capName = "Leo RX VoLTE Simple Call 1" + Math.random();
+		pgInfo.capSize= "32531";
+		pgInfo.capLength = "312";
+		pgInfo.capUserNotes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+		
+		pgInfo.lastUpdateDate = "08.03.2021";		
+		var aMember = new ProjMember("Haldan");
+		aMember.name="Daniel";
+		aMember.surname="Ciotoracu";
+		aMember.email="daniel.ciotoracu@cognyte.com";
+		aMember.id="DS341sa";		
+		pgInfo.lastUpdater=aMember;
+		
+		pgInfo.uploadDate="02.03.2021";
+		aMember = new ProjMember("Cuatu");
+		aMember.name="Mihai";
+		aMember.surname="Cuatu";
+		aMember.email="mihai.cuatu@cognyte.com";
+		aMember.id="CMS69";		
+		pgInfo.uploader=aMember;
+		
+		aMember = new ProjMember("Arnaut");
+		aMember.name="Stefan";
+		aMember.surname="Arnaut";
+		aMember.email="stefan.arnaut@cognyte.com";
+		aMember.id="SDA332";
+		pgInfo.verifier = aMember;
+		pgInfo.verifyDate="02.05.2021";
+		
+		pgInfo.capX2Protocol="ETSI 102 232-5 v331";
+		pgInfo.capX2Trans="FTP";
+		pgInfo.capX2Port="22";
+		
+		pgInfo.capX3Protocol="ULIC EPS";
+		pgInfo.capX3Trans="TCP";
+		pgInfo.capX3Port="6001";
+		
+		var aStruct = new PredefinedTypeStruct();
+		aStruct.displayName="VoLTE";
+		aStruct.id="vlt13";		
+		pgInfo.capTechnology=aStruct;
+		
+		var aStruct = new PredefinedTypeStruct();
+		aStruct.displayName="Verified";
+		aStruct.id="vrf123";
+		pgInfo.capStatus = aStruct;
+			
+		var aCapInfo = new CaptureInfo();
+		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeName="LIID";
+		aCapInfo.infoValID="";
+		aCapInfo.infoValName="12334";
+		pgInfo.capIC=aCapInfo;		
+		
+		pgInfo.capSwitchDate="15.01.2020";
+		
+		// TAGS
+		var aCapTag=  new CaptureTag();
+		aCapTag.tagID="tgzuku";
+		aCapTag.tagName="Target to Target";
+		
+		pgInfo.addCaptureTag(aCapTag);
+		
+		aCapTag=  new CaptureTag();
+		aCapTag.tagID="tgzuku2";
+		aCapTag.tagName="X3 DTMF";
+		
+		pgInfo.addCaptureTag(aCapTag);
+		
+		aCapTag=  new CaptureTag();
+		aCapTag.tagID="tgzuku2";
+		aCapTag.tagName="Dynamic Codecs";
+		
+		pgInfo.addCaptureTag(aCapTag);
+		
+		// INFOS
+		var aCapInfo = new CaptureInfo();
+		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeName="Event";
+		aCapInfo.infoValID="evt3312";
+		aCapInfo.infoValName="Bearer Activation";
+		
+		pgInfo.addCaptureInfo(aCapInfo);
+		
+		var aCapInfo = new CaptureInfo();
+		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeName="Event";
+		aCapInfo.infoValID="evt3322";
+		aCapInfo.infoValName="Incoming call";		
+		pgInfo.addCaptureInfo(aCapInfo);
+		
+		var aCapInfo = new CaptureInfo();
+		aCapInfo.infoTypeID="gugu";
+		aCapInfo.infoTypeName="Codec";
+		aCapInfo.infoValID="cod12";
+		aCapInfo.infoValName="EVS";
+		
+		pgInfo.addCaptureInfo(aCapInfo);
+		
+		var aCapInfo = new CaptureInfo();
+		aCapInfo.infoTypeID="gugu";
+		aCapInfo.infoTypeName="Codec";
+		aCapInfo.infoValID="cod13";
+		aCapInfo.infoValName="AMR-WB";		
+		pgInfo.addCaptureInfo(aCapInfo);
+		
+		var aCapProjLink = new CapProjLink();
+		aCapProjLink.projName="Leo RX";
+		aCapProjLink.projID="da3FVAd";
+		aCapProjLink.capSetNames.push("VoLTE simple call Tests");
+		aCapProjLink.capSetNames.push("VoLTE Full test");
+		aCapProjLink.capSetIDs.push("adarv");
+		aCapProjLink.capSetIDs.push("aggav");
+		
+		pgInfo.addCapProjLink(aCapProjLink);
+		
+		var aCapProjLink = new CapProjLink();
+		aCapProjLink.projName="Zeus RX";
+		aCapProjLink.projID="da3FVAd";
+		aCapProjLink.capSetNames.push("VoLTE simple call");
+		aCapProjLink.capSetNames.push("VoLTE Regression");
+		aCapProjLink.capSetNames.push("VoLTE Operator Orange");
+		aCapProjLink.capSetIDs.push("adarv");
+		aCapProjLink.capSetIDs.push("aggav");
+		aCapProjLink.capSetIDs.push("aggavzor");
+		
+		pgInfo.addCapProjLink(aCapProjLink);
+	
+		this._searchResults.push(pgInfo);
+  }
 }
 
 export class MinMaxNumberOption {
