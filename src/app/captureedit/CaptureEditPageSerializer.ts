@@ -61,7 +61,36 @@ export class CaptureEditPageSerializer {
 	
 	public deserializePageInfo(jObj : Object): FullCaptureInfo {
 		
-		var rez= jObj["capture-page-info"];
+		var rez= new FullCaptureInfo();
+		
+		var js = jObj["capture-page-info"];
+		
+		
+		rez.capTags = js["capTags"];
+		rez.capInfos = js["capInfos"];
+		rez.capProjects = js["capProjects"];
+		rez.capID = js["capID"];
+		rez.capName= js["capName"];
+		rez.capSize= js["capSize"];
+		rez.capLength= js["capLength"];
+		rez.capUserNotes=js["capUserNotes"];
+		rez.lastUpdateDate=js["lastUpdateDate"];		
+		rez.lastUpdater=js["lastUpdater"];
+		rez.uploadDate=js["uploadDate"];
+		rez.uploader=js["uploader"];
+		rez.verifier=js["verifier"];
+		rez.verifyDate=js["verifyDate"];
+		rez.capX2Protocol=js["capX2Protocol"];
+		rez.capX2Trans=js["capX2Trans"];
+		rez.capX2Port=js["capX2Port"];
+		rez.capX3Port=js["capX3Port"];
+		rez.capX3Trans=js["capX3Trans"];
+		rez.capX3Protocol=js["capX3Protocol"];
+		rez.capTechnology=js["capTechnology"];
+		rez.capStatus=js["capStatus"];
+		rez.capIC=js["capIC"];
+		rez.capSwitchDate=js["capSwitchDate"];
+		
 		
 		console.log("rez is "+JSON.stringify(rez));
 		return rez;
