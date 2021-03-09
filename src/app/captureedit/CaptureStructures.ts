@@ -78,6 +78,13 @@ export class FullCaptureInfo {
 		this.capTags=[];
 		this.capInfos=[];
 		this.capProjects=[];
+		
+		this.capStatus = new PredefinedTypeStruct();
+		this.capStatus.id = -1;
+		this.capStatus.displayName="Uninited";
+		this.capTechnology = new PredefinedTypeStruct();
+		this.capTechnology.id = -1;
+		this.capTechnology.displayName="Uninited";
 	}
 	public getCaptureProjsNumber(): number {
 		return this.capProjects.length;
