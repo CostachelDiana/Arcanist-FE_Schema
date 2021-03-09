@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
+import { HttpClient } from '@angular/common/http';
 import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
 import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/projectPageComponents'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
@@ -8,6 +9,10 @@ import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 import {CaptureEditPageSerializer} from '../captureedit/CaptureEditPageSerializer'
 import {IPage, IBEAbstractionGeneric} from '../project/IProject'
+
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-project',
@@ -27,7 +32,7 @@ export class CaptureEditPage implements IPage{
 	streamsReady: boolean;
 	
 
-	constructor(public dialogue: MatDialog) { 
+	constructor(public dialogue: MatDialog, private http: HttpClient) { 
 	
 		this.pageReady= false;
 		this.streamsReady=false;
@@ -36,11 +41,23 @@ export class CaptureEditPage implements IPage{
 		
 		this.serializer = new CaptureEditPageSerializer();
 		
+		this.requestPage();
+		
 	}
 	
-	public initPage(pgJson: string): void
+	public requestPage()
+	{
+		var urlParams = new URLSearchParams(window.location.search);
+		var capID=urlParams.get('capid');
+		console.log("requesting page for id "+ capID);
+		
+	}
+	
+	public initPage(json: string)
 	{
 	}
+	
+	
 	public onBEEventReceived(evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
@@ -136,17 +153,17 @@ export class CaptureEditPage implements IPage{
 		var aInfo = new CaptureInfo();
 		for (var i=0;i<this.presetInfo.capInfoTypesList.length;i++)
 		{
-			if (this.presetInfo.capInfoTypesList[i].ID == typeID)
+			if (this.presetInfo.capInfoTypesList[i].id == typeID)
 			{
 				aInfo.infoTypeID=typeID;
-				aInfo.infoTypeName=this.presetInfo.capInfoTypesList[i].name;
+				aInfo.infoTypeName=this.presetInfo.capInfoTypesList[i].displayName;
 				
 				for (var j=0;j<this.presetInfo.capInfoValsList[i].length;j++)
 				{
-					if (this.presetInfo.capInfoValsList[i][j].ID == valueID)
+					if (this.presetInfo.capInfoValsList[i][j].id == valueID)
 					{
 						aInfo.infoValID=valueID;
-						aInfo.infoValName=this.presetInfo.capInfoValsList[i][j].name;
+						aInfo.infoValName=this.presetInfo.capInfoValsList[i][j].displayName;
 					}
 				}
 			}
@@ -165,11 +182,11 @@ export class CaptureEditPage implements IPage{
 		
 		for (var i=0;i<this.presetInfo.capTagList.length;i++)
 		{
-			if (this.presetInfo.capTagList[i].ID == tagID)
+			if (this.presetInfo.capTagList[i].id == tagID)
 			{
 				var capTag = new CaptureTag();
-				capTag.tagID = this.presetInfo.capTagList[i].ID;
-				capTag.tagName = this.presetInfo.capTagList[i].name;
+				capTag.tagID = this.presetInfo.capTagList[i].id;
+				capTag.tagName = this.presetInfo.capTagList[i].displayName;
 				this.pageInfo.addCaptureTag(capTag);
 			}
 		}
@@ -196,11 +213,27 @@ export class CaptureEditPage implements IPage{
 		this.testInit();
 	}
 	
+	
+	
 	public onRequestBEUpdateClick() {
 		this.requestBackendData("hahahlera");
 	}
 	public onGetStreamsClick() {
 		this.streamsReady=true;
+	}
+	
+	public onQuerryBackendClick() {
+		
+		console.log("Backend querried");
+		 this.http.post<any>('https://jsonplaceholder.typicode.com/posts', { title: 'Angular POST Request Example' }).subscribe(data => {
+            (<HTMLInputElement> document.querySelector(".usrNotes")).value="BE Response received "+ data.id;
+        })
+	}
+	
+	
+	public onBEResponseReceived(){
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value="BE Response received";
 	}
 	
 	
@@ -284,13 +317,13 @@ export class CaptureEditPage implements IPage{
 		pgInfo.capX3Port="6001";
 		
 		var aStruct = new PredefinedTypeStruct();
-		aStruct.name="VoLTE";
-		aStruct.ID="vlt13";		
+		aStruct.displayName="VoLTE";
+		aStruct.id="vlt13";		
 		pgInfo.capTechnology=aStruct;
 		
 		var aStruct = new PredefinedTypeStruct();
-		aStruct.name="Verified";
-		aStruct.ID="vrf123";
+		aStruct.displayName="Verified";
+		aStruct.id="vrf123";
 		pgInfo.capStatus = aStruct;
 			
 		var aCapInfo = new CaptureInfo();
