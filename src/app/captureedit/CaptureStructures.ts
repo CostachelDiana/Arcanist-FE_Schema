@@ -57,10 +57,12 @@ export class FullCaptureInfo {
 	capX2Protocol: string;
 	capX2Trans: string;
 	capX2Port: string;
+  	capX2IP: string;
 	
 	capX3Protocol: string;
 	capX3Trans: string;
 	capX3Port: string;
+	capX3IP: string;
 	
 	capTechnology: PredefinedTypeStruct;
 	capStatus: PredefinedTypeStruct;

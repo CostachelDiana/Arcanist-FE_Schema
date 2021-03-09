@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 
 import { Component, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
-import {ProjPageCaptureInfo, InjectionSettings} from "../project/projectPageComponents"
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CaptureInjectionSettings, CaptureInjectInfo } from "../utils/captureInfoComponents"
 import {PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 
 export interface InjectCapturesDialogueData {
-	callback: (setts:InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean, setIdx:number) => void,
-	cap: ProjPageCaptureInfo[],
-	set: InjectionSettings[],
+  callback: (setts: CaptureInjectionSettings[], cap: CaptureInjectInfo[], isSeq: boolean, setIdx: number) => void,
+  cap: CaptureInjectInfo[],
+  set: CaptureInjectionSettings[],
 	setIdx:number,
 	justSetting: boolean,
 	X2TransVals: PredefinedTypeStruct[],
@@ -58,8 +58,8 @@ export class InjectCapturesDialogue {
 		var x2trans=document.querySelectorAll(".x2trans");
 		var x3prts=document.querySelectorAll(".x3prt");
 		var x3trans=document.querySelectorAll(".x3trans");
-		
-		var tmpInj : InjectionSettings[];
+
+    		var tmpInj: CaptureInjectionSettings[];
 		
 		if (this.isSettingsMode())
 		{
@@ -99,11 +99,12 @@ export class InjectCapturesDialogue {
 	public onToggleInjectionClick(): void {
 		this.isSequential = !this.isSequential;
 	}
-	
-	public getCaptures():ProjPageCaptureInfo[] {		
+
+ 	public getCaptures(): CaptureInjectInfo[] {		
 		return this.data.cap;
 	}
-	public getSettingsForCapture(idx: number): InjectionSettings {
+
+	public getSettingsForCapture(idx: number): CaptureInjectionSettings {
 		return this.data.set[idx];
 	}
 	

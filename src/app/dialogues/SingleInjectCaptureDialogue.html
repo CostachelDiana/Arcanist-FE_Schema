@@ -22,27 +22,27 @@
 						<tr>							
 							
 							<td>
-								{{this.getCapture().captureX2Port}}
+								{{this.getCapture()[0].captureX2Port}}
 							</td>
 							<td>
-								{{this.getCapture().captureX2Transport}}
+								{{this.getCapture()[0].captureX2Transport}}
 							</td>
 							<td>
-								{{this.getCapture().captureX3Port}}
+								{{this.getCapture()[0].captureX3Port}}
 							</td>
 							<td>
-								{{this.getCapture().captureX3Transport}}
+								{{this.getCapture()[0].captureX3Transport}}
 							</td>
 							<td>							
 								<mat-form-field [style.width.px]=110>
 								<mat-label>Client IP</mat-label>
-									<input matInput #clientIP value="{{this.getSettingsForCapture().clientIP}}">
+									<input matInput #clientIP value="{{this.getSettingsForCapture()[0].clientIP}}">
 								</mat-form-field>
 							</td>
 							<td>							
 								<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X2 Port</mat-label>
-									<input matInput #clientX2P value="{{this.getSettingsForCapture().X2Port}}">
+									<input matInput #clientX2P value="{{this.getSettingsForCapture()[0].X2Port}}">
 								</mat-form-field>
 							</td>
 							<td>							
@@ -56,7 +56,7 @@
 							<td>							
 								<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X3 Port</mat-label>
-									<input matInput #clientX3P value="{{this.getSettingsForCapture().X3Port}}">
+									<input matInput #clientX3P value="{{this.getSettingsForCapture()[0].X3Port}}">
 								</mat-form-field>
 							</td>
 							<td>							

@@ -5,7 +5,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 // import { CaptureDetails, CaptureSets } from './ICapture';
 // import { Member, ProjectDetails, Protocol } from './IProject';
 
-import {InjectionSettings, ProjPageCaptureInfo, CaptureSet,ProjMember,ProjPageInfo} from './projectPageComponents'
+import { CaptureSet, ProjMember, ProjPageInfo } from './projectPageComponents'
+import { CaptureInjectionSettings, CaptureInjectInfo } from '../utils/captureInfoComponents'
+import { CaptureInjectSerializer } from '../utils/captureInjectSerializer'
 import {IProject, IBEAbstraction} from './IProject'
 import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
 import {SelectCaptureDialogue} from '../dialogues/SelectCaptureDialogue'
@@ -34,6 +36,7 @@ export class ProjectComponent implements IProject {
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
+	captureInjectSerializer: CaptureInjectSerializer;
 	
 	capTransportTypes: PredefinedTypeStruct[];
 	
@@ -73,6 +76,7 @@ export class ProjectComponent implements IProject {
 
 		this.capTransportTypes=[];
 		this.initBEData();
+    		this.captureInjectSerializer = new CaptureInjectSerializer();
 	}
 	
 	initBEData(): void {
@@ -142,7 +146,7 @@ export class ProjectComponent implements IProject {
 		aCapSet.capSetX3Protocol="ULIC RTP";
 		
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE simple call","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
 		aCapture.captureX2Port="5001";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -157,7 +161,7 @@ export class ProjectComponent implements IProject {
 		
 		aCapSet.addCapture(aCapture);
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
 		aCapture.captureX2Port="5005";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -171,7 +175,7 @@ export class ProjectComponent implements IProject {
 		
 		aCapSet.addCapture(aCapture);
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
 		aCapture.captureX2Port="5001";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -191,7 +195,7 @@ export class ProjectComponent implements IProject {
 		aCapSet.capSetX2Protocol="ETSI 33 108 v271";
 		aCapSet.capSetX3Protocol="ULIC EPS";
 		
-		var aCapture = new ProjPageCaptureInfo("Leo MPD Browsing","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo MPD Browsing","ADGr123");
 		aCapture.captureX2Port="22";
 		aCapture.captureX2Transport="FTP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -205,7 +209,7 @@ export class ProjectComponent implements IProject {
 		
 		aCapSet.addCapture(aCapture);
 		
-		var aCapture = new ProjPageCaptureInfo("Leo MPD on/off","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo MPD on/off","ADGr123");
 		aCapture.captureX2Port="22";
 		aCapture.captureX2Transport="FTP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -252,7 +256,7 @@ export class ProjectComponent implements IProject {
 		// this.projNotes.value="sadassd";
 	}
 	
-	public onAddCaptureCallback(aCap: ProjPageCaptureInfo, setN: number)
+	public onAddCaptureCallback(aCap: CaptureInjectInfo, setN: number)
 	{
 		if (setN > -1 && setN < this.projInfo.projCapSets.length)
 		 this.projInfo.projCapSets[setN].addCapture(aCap);
@@ -263,20 +267,17 @@ export class ProjectComponent implements IProject {
 		this.projInfo.addCaptureSet(aSet);
 	}
 	
-	public onInjectCapturesSetCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean,setIdx:number)
+	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
 		// CMS to do send to backend 
 		// this.projInfo.projName = "Injecting captures" + setts.length;
 		
-		var jSon = this.serializer.serializeCaptureInject(this.projInfo,setts,cap,isSeq,
-		this.projInfo.projCapSets[setIdx].capSetName,
-		this.projInfo.projCapSets[setIdx].capSetID);
-		
+    		var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap);
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
 	// similar but with different functionality
-	public onSetDefaultCaptureSettingsCallback(setts: InjectionSettings[], cap:ProjPageCaptureInfo[], isSeq: boolean,setIdx:number)
+	public onSetDefaultCaptureSettingsCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
 		// CMS to do send to backend
 		
@@ -290,33 +291,24 @@ export class ProjectComponent implements IProject {
 	}
 	
 	// single capture callbacks
-	public onSingleInjectCapCb(sett: InjectionSettings, cap:ProjPageCaptureInfo,setIdx:number, capIdx:number)
+	public onSingleInjectCapCb(sett: CaptureInjectionSettings[], cap:CaptureInjectInfo[],setIdx:number, capIdx:number)
 	{
 		
-		var setArr: InjectionSettings[];
-		setArr = [];
-		setArr.push(sett);
-		
-		var capArr: ProjPageCaptureInfo[];
-		capArr=[];
-		capArr.push(cap);
-		
-		console.log("serializing");
-		var jSon = this.serializer.serializeCaptureInject(this.projInfo,setArr,capArr,true,"","");
+    		var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap);
 		
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
-	public onSingleInjectSettingCb(sett: InjectionSettings, cap:ProjPageCaptureInfo, setIdx:number, capIdx:number)
+	public onSingleInjectSettingCb(sett: CaptureInjectionSettings, cap:CaptureInjectInfo, setIdx:number, capIdx:number)
 	{
 		// CMS since everything here is pointer, no need to update anything
 		// this.projInfo.projCapSets[setIdx].updateInjectionSettings(sett,capIdx);
 		// CMS send to backend 
 		
-		var setArr: InjectionSettings[];
+		var setArr: CaptureInjectionSettings[];
 		setArr = [];
 		setArr.push(sett);
 		
-		var capArr: ProjPageCaptureInfo[];
+		var capArr: CaptureInjectInfo[];
 		capArr=[];
 		capArr.push(cap);
 		
@@ -364,7 +356,7 @@ export class ProjectComponent implements IProject {
 		aCapSet.capSetX3Protocol="ULIC RTP";
 		
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE simple call","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
 		aCapture.captureX2Port="5001";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -378,7 +370,7 @@ export class ProjectComponent implements IProject {
 		
 		aCapSet.addCapture(aCapture);
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE location change","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
 		aCapture.captureX2Port="5005";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -392,7 +384,7 @@ export class ProjectComponent implements IProject {
 		
 		aCapSet.addCapture(aCapture);
 		
-		var aCapture = new ProjPageCaptureInfo("Leo CS VoLTE conference","ADGr123");
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
 		aCapture.captureX2Port="5001";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
@@ -491,11 +483,16 @@ export class ProjectComponent implements IProject {
 	}
 	
 	public onSinglePlayClick(setN: number, capN:number): void {
-		
+
+		var cis = [];
+		cis.push(this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN]);
+
+		var cii = [];
+		cii.push(this.projInfo.projCapSets[setN].getCaptures()[capN]);
 		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
 		{width:'1000px',
 		height:'800px',
-		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:false, setIdx:setN, capN: capN,
+		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:cii,set:cis,justSetting:false, setIdx:setN, capN: capN,
 		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
 		}
 		);

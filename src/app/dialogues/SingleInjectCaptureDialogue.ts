@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 
 import { Component, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
-import {ProjPageCaptureInfo, InjectionSettings} from "../project/projectPageComponents"
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CaptureInjectInfo, CaptureInjectionSettings } from "../utils/captureInfoComponents"
 import {PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 
 export interface SingleInjectCaptureDialogueData {
-	callback: (setts:InjectionSettings, cap:ProjPageCaptureInfo,setIdx:number,capIdx:number) => void,
-	cap: ProjPageCaptureInfo,
-	set: InjectionSettings,
-	setIdx:number,
-	capN:number,
+  	callback: (setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[]) => void,
+	cap: CaptureInjectInfo[],
+	set: CaptureInjectionSettings[],
 	justSetting: boolean,
 	fromProjScreen:boolean,
 	X2TransVals: PredefinedTypeStruct[],
@@ -52,22 +50,20 @@ export class SingleInjectCaptureDialogue {
 	
 	public onSubmitClick(clientIP: string, x2prt:string, x2t:string, x3prt:string, x3t:string): void {
 		
-		var injSet: InjectionSettings;
+		var injSet: CaptureInjectionSettings;
 		
-		if (this.isSettingsMode()) {
-			injSet = this.data.set;
-		} else {
-			injSet = new InjectionSettings();
-		}
+		injSet = new CaptureInjectionSettings();
 		
 		injSet.clientIP = clientIP;
 		injSet.X2Transport = x2t;
 		injSet.X2Port=x2prt;
 		injSet.X3Transport = x3t;
 		injSet.X3Port=x3prt;		
-		// Resolve 			
+		// Resolve
+		var arr = [];
+		arr.push(injSet)
 		if (this.data.callback != null)
-			this.data.callback(injSet, this.data.cap,this.data.setIdx,this.data.capN);
+			this.data.callback(arr, this.data.cap);
 		
 		this.dialogRef.close();
 	}
@@ -83,10 +79,10 @@ export class SingleInjectCaptureDialogue {
 		this.isSequential = !this.isSequential;
 	}
 	
-	public getCapture():ProjPageCaptureInfo {		
+	public getCapture():CaptureInjectInfo[] {		
 		return this.data.cap;
 	}
-	public getSettingsForCapture(): InjectionSettings {
+	public getSettingsForCapture(): CaptureInjectionSettings[] {
 		return this.data.set;
 	}
 	

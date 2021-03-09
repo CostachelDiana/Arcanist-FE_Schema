@@ -1,27 +1,11 @@
 
-import {InjectionSettings, ProjPageCaptureInfo, CaptureSet,ProjMember,ProjPageInfo} from './projectPageComponents'
+import { CaptureSet, ProjMember, ProjPageInfo } from './projectPageComponents'
+import { CaptureInjectInfo, CaptureInjectionSettings } from '../utils/captureInfoComponents'
 
 
 export class ProjectPageEventSerializer {
 	
-	public serializeCaptureInject(proj:ProjPageInfo, sett:InjectionSettings[], cap:ProjPageCaptureInfo[], sequential: boolean, setName: string, capSetID:string ): string {
-		
-		var jsObj={"projName" : proj.projName, 
-			"event-type": "inject-capture", 
-			"projID" : proj.projID,
-			"capture-number": sett.length, 
-			"sequential": ""+sequential,
-			"capture-set": setName,
-			"capture-set-id": capSetID
-			};
-		
-		jsObj["injection-settings-arr"] = sett;
-		jsObj["capture-info-arr"] = cap;
-		
-		return JSON.stringify(jsObj);
-	}
-	
-	public serializeCaptureSettingsChange(proj: ProjPageInfo, sett:InjectionSettings[], cap:ProjPageCaptureInfo[],setName: string, capSetID:string): string {
+   public serializeCaptureSettingsChange(proj: ProjPageInfo, sett: CaptureInjectionSettings[], cap: CaptureInjectInfo[],setName: string, capSetID:string): string {
 		
 		var jsObj={"projName" : proj.projName, 
 			"projID" : proj.projID,

@@ -1,92 +1,27 @@
-export class InjectionSettings {
-	X2Port: string;
-	X2Transport: string;
-	X3Port: string;
-	X3Transport: string;
-	clientIP: string;
-	
-	constructor () {
-		this.X2Port="0000";
-		this.X2Transport="TCP";
-		this.X3Port="1111";
-		this.X3Transport="TCP";
-		this.clientIP="127.0.0.1";
-	}
-}
+import { CaptureInjectionSettings } from '../utils/captureInfoComponents'
+import { CaptureInjectInfo } from '../utils/captureInfoComponents'
 
-// keeps info relevant to the capture
-export class ProjPageCaptureInfo {
-	captureName: string;
-	captureID: string;
-	captureType: string;
-	captureIC: string;
-	captureICVal: string;
-	switchDate: string;
-	
-	captureX2Port: string;
-	captureX2Transport: string;
-	captureX3Port: string;
-	captureX3Transport: string;
-	captureX2Protocol: string;
-	captureX3Protocol:string;
-	captureLength: string;
-
-	
-	constructor (capName:string, id:string)
-	{
-		this.captureName=capName;
-		this.captureID = id;		
-	}
-	
-	public setCaptureParameters(
-		capType: string,
-		capIC: string,
-		capICVal: string,
-		switchDate: string,
-		capX2Port: string,
-		capX2Trans:string,
-		capX3Port:string,
-		capX3Trans:string,
-		capX2Prot:string,
-		capX3Prot:string,
-		capLen:string
-		
-	):void {
-		this.captureType = capType;
-		this.captureIC = capIC;
-		this.captureICVal = capICVal;
-		this.switchDate = switchDate;
-		this.captureX2Port = capX2Port;
-		this.captureX2Transport = capX2Trans;
-		this.captureX2Protocol = capX2Port;
-		this.captureX3Port= capX3Port;
-		this.captureX3Transport = capX3Trans;
-		this.captureX3Protocol = capX3Prot;		
-		this.captureLength = capLen;
-	}
-	
-}
-
-// grouping of captures according to protocol 
+// grouping of captures according to protocol
 export class CaptureSet {
 	capSetName: string;
 	capSetID:string;
 	capSetX2Protocol: string;
 	capSetX3Protocol: string;
-	capSetCaptures: ProjPageCaptureInfo[];
-	capInjectionSett: InjectionSettings[];
+	capSetCaptures: CaptureInjectInfo[];
+	capInjectionSett: CaptureInjectionSettings[];
 	
 	constructor (name:string) {
 		this.capSetName=name;
 		this.capSetCaptures=[];
 		this.capInjectionSett=[];
 		this.capSetX2Protocol="unknown";
-		this.capSetX3Protocol="unknown";
+    		this.capSetX3Protocol = "unknown";
+		this.capSetID = "FillMe";
 		
 	}
-	public addCapture(cap: ProjPageCaptureInfo):void {
+	public addCapture(cap: CaptureInjectInfo):void {
 		this.capSetCaptures.push(cap);
-		var aSet = new InjectionSettings();
+		var aSet = new CaptureInjectionSettings();
 		this.capInjectionSett.push(aSet);
 	}
 	public removeCapture(idx: number): void	{
@@ -99,18 +34,18 @@ export class CaptureSet {
 	public getCapNumber(): number {
 		return this.capSetCaptures.length;
 	}
-	public getCaptures(): ProjPageCaptureInfo[] {
+	public getCaptures(): CaptureInjectInfo[] {
 		return this.capSetCaptures;
 	}
-	public getCaptureInjectionSettings(): InjectionSettings[] {
+	public getCaptureInjectionSettings(): CaptureInjectionSettings[] {
 		return this.capInjectionSett;
 	}
-	public setNewDefaultSettings(setts: InjectionSettings[]): void {
+	public setNewDefaultSettings(setts: CaptureInjectionSettings[]): void {
 		if (setts.length == this.capSetCaptures.length)
 			this.capInjectionSett = setts;
 		// CMS debug mismatch here
 	}
-	public updateInjectionSettings(setts: InjectionSettings, idx:number): void {
+	public updateCaptureInjectionSettings(setts: CaptureInjectionSettings, idx:number): void {
 		if (idx >-1 && idx < this.capSetCaptures.length)
 		{
 			this.capInjectionSett[idx] = setts;
