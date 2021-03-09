@@ -44,7 +44,7 @@ export class AddCaptureInfoDialogue {
 		
 		for (var i=0;i<this.data.eventTypes.length;i++)
 		{
-			if (this.data.eventTypes[i].ID == typeID)
+			if (this.data.eventTypes[i].id == typeID)
 			{
 				this.curValues = this.data.eventValues[i];
 			}

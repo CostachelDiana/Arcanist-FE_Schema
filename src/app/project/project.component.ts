@@ -82,28 +82,28 @@ export class ProjectComponent implements IProject {
 	initBEData(): void {
 		
 		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="TCP";
-		aPresetType.ID="tttcp";
+		aPresetType.displayName="TCP";
+		aPresetType.id="tttcp";
 		this.capTransportTypes.push(aPresetType);
 		
 		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="UDP";
-		aPresetType.ID="ttudp";
+		aPresetType.displayName="UDP";
+		aPresetType.id="ttudp";
 		this.capTransportTypes.push(aPresetType);
 		
 		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="FTP";
-		aPresetType.ID="ttftp";
+		aPresetType.displayName="FTP";
+		aPresetType.id="ttftp";
 		this.capTransportTypes.push(aPresetType);
 		
 		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MSMQ";
-		aPresetType.ID="ttmsmq";
+		aPresetType.displayName="MSMQ";
+		aPresetType.id="ttmsmq";
 		this.capTransportTypes.push(aPresetType);
 		
 		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="SMTP";
-		aPresetType.ID="ttsmtp";
+		aPresetType.displayName="SMTP";
+		aPresetType.id="ttsmtp";
 		this.capTransportTypes.push(aPresetType);
 	}
 	

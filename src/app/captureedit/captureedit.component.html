@@ -43,7 +43,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X2 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.ID}}">{{x2.name}}</option>
+							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
 						  </select>		
 					</mat-form-field>
 					</div>
@@ -55,7 +55,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X3 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.ID}}">{{x3.name}}</option>							
+							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>							
 						  </select>
 					</mat-form-field>
 					</div>
@@ -67,7 +67,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>Core Technology</mat-label>
 						  <select matNativeControl required>
-								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.ID}}">{{tech.name}}</option>					
+								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.id}}">{{tech.displayName}}</option>					
 						  </select>
 					</mat-form-field>
 					</div>					
@@ -116,7 +116,7 @@
 						<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>X2 Transport</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.ID}}">{{trans.name}}</option>							
+							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
 						  </select>
 						</mat-form-field>
 						<br>				
@@ -132,7 +132,7 @@
 						<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>X3 Transport</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.ID}}">{{trans.name}}</option>							
+							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
 						  </select>
 						</mat-form-field>
 					<td>
@@ -170,7 +170,7 @@
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let ic of this.getICTypes()" value="{{ic.ID}}">{{ic.name}}</option>							
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.id}}">{{ic.displayName}}</option>							
 						  </select>
 					</mat-form-field>
 					&nbsp;

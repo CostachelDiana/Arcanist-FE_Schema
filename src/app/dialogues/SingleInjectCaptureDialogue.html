@@ -49,7 +49,7 @@
 								<mat-form-field appearance="fill" [style.width.px]=100>
 									<mat-label>X2 Transport</mat-label>
 									  <select matNativeControl #clientX2T required>
-										<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.ID}}">{{x2.name}}</option>
+										<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
 									  </select>
 								</mat-form-field>
 							</td>
@@ -63,7 +63,7 @@
 								<mat-form-field appearance="fill" [style.width.px]=100>
 									<mat-label>X3 Transport</mat-label>
 									  <select matNativeControl #clientX3T required>
-										<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.ID}}">{{x3.name}}</option>
+										<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>
 									  </select>
 								</mat-form-field>
 							</td>						

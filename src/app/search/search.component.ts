@@ -72,17 +72,17 @@ export class SearchComponent implements OnInit {
 		var aInfo = new CaptureInfo();
 		for (var i=0;i<this._typesInfo.capInfoTypesList.length;i++)
 		{
-			if (this._typesInfo.capInfoTypesList[i].ID == typeID)
+			if (this._typesInfo.capInfoTypesList[i].id == typeID)
 			{
 				aInfo.infoTypeID=typeID;
-				aInfo.infoTypeName=this._typesInfo.capInfoTypesList[i].name;
+				aInfo.infoTypeName=this._typesInfo.capInfoTypesList[i].displayName;
 				
 				for (var j=0;j<this._typesInfo.capInfoValsList[i].length;j++)
 				{
-					if (this._typesInfo.capInfoValsList[i][j].ID == valueID)
+					if (this._typesInfo.capInfoValsList[i][j].id == valueID)
 					{
 						aInfo.infoValID=valueID;
-						aInfo.infoValName=this._typesInfo.capInfoValsList[i][j].name;
+						aInfo.infoValName=this._typesInfo.capInfoValsList[i][j].displayName;
 					}
 				}
 			}
@@ -107,11 +107,11 @@ export class SearchComponent implements OnInit {
 		
 		for (var i=0;i<this._typesInfo.capTagList.length;i++)
 		{
-			if (this._typesInfo.capTagList[i].ID == tagID)
+			if (this._typesInfo.capTagList[i].id == tagID)
 			{
 				var capTag = new CaptureTag();
-				capTag.tagID = this._typesInfo.capTagList[i].ID;
-				capTag.tagName = this._typesInfo.capTagList[i].name;
+				capTag.tagID = this._typesInfo.capTagList[i].id;
+				capTag.tagName = this._typesInfo.capTagList[i].displayName;
 				this._searchParameters.addCaptureTag(capTag);
 			}
 		}

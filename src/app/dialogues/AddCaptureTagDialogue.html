@@ -6,7 +6,7 @@
 	<mat-form-field appearance="fill">
 	<mat-label>Capture Tag</mat-label>
 	  <select matNativeControl #tagID required>
-			<option *ngFor="let tag of this.getTagList(); let idx = index" value="{{tag.ID}}">{{tag.name}}</option>
+			<option *ngFor="let tag of this.getTagList(); let idx = index" value="{{tag.id}}">{{tag.displayName}}</option>
 	  </select>
 	</mat-form-field>
 	<br>

@@ -24,8 +24,8 @@
                 <mat-form-field appearance="fill"><mat-label>X2 Protocol</mat-label>
                   <select matNativeControl (change)="this.onCdProtocolOptionsChanged($event)">
                     <option style="display:none"></option>
-                    <option *ngFor="let p of this.typesInfo.capX2Protos; let i = index" [value]="this.typesInfo.capX2Protos[i].ID">
-                      {{this.typesInfo.capX2Protos[i].name}}
+                    <option *ngFor="let p of this.typesInfo.capX2Protos; let i = index" [value]="this.typesInfo.capX2Protos[i].id">
+                      {{this.typesInfo.capX2Protos[i].displayName}}
                     </option>
                   </select>
                 </mat-form-field>
@@ -37,8 +37,8 @@
                 <mat-form-field appearance="fill"><mat-label>X3 Protocol</mat-label>
                   <select matNativeControl (change)="this.onCcProtocolOptionsChanged($event)">
                     <option style="display:none"></option>
-                    <option *ngFor="let p of this.typesInfo.capX3Protos; let i = index" [value]="this.typesInfo.capX3Protos[i].ID">
-                      {{this.typesInfo.capX3Protos[i].name}}
+                    <option *ngFor="let p of this.typesInfo.capX3Protos; let i = index" [value]="this.typesInfo.capX3Protos[i].id">
+                      {{this.typesInfo.capX3Protos[i].displayName}}
                     </option>
                   </select>
                 </mat-form-field>
@@ -50,8 +50,8 @@
                 <mat-form-field appearance="fill"><mat-label>Technology</mat-label>
                   <select matNativeControl (change)="this.onTechnologiesOptionsChanged($event)">
                     <option style="display:none"></option>
-                    <option *ngFor="let p of this.typesInfo.capTechnologyTypes; let i = index" [value]="this.typesInfo.capTechnologyTypes[i].ID">
-                      {{this.typesInfo.capTechnologyTypes[i].name}}
+                    <option *ngFor="let p of this.typesInfo.capTechnologyTypes; let i = index" [value]="this.typesInfo.capTechnologyTypes[i].id">
+                      {{this.typesInfo.capTechnologyTypes[i].displayName}}
                     </option>
                   </select>
                 </mat-form-field>
@@ -116,8 +116,8 @@
                 <mat-form-field appearance="fill"><mat-label>Status</mat-label>
                   <select matNativeControl (change)="this.onStatusOptionsChanged($event)">
                     <option style="display:none"></option>
-                    <option *ngFor="let p of this.typesInfo.capStatusTypes; let i = index" [value]="this.typesInfo.capStatusTypes[i].ID">
-                      {{this.typesInfo.capStatusTypes[i].name}}
+                    <option *ngFor="let p of this.typesInfo.capStatusTypes; let i = index" [value]="this.typesInfo.capStatusTypes[i].id">
+                      {{this.typesInfo.capStatusTypes[i].displayName}}
                     </option>
                   </select>
                 </mat-form-field>
@@ -159,8 +159,8 @@
           <mat-form-field appearance="fill"><mat-label>IC Type</mat-label>
             <select matNativeControl (change)="this.onTargetICOptionsChanged($event)">
               <option style="display:none"></option>
-              <option *ngFor="let p of this.typesInfo.capICTypes; let i = index" [value]="this.typesInfo.capICTypes[i].ID">
-                {{this.typesInfo.capICTypes[i].name}}
+              <option *ngFor="let p of this.typesInfo.capICTypes; let i = index" [value]="this.typesInfo.capICTypes[i].id">
+                {{this.typesInfo.capICTypes[i].displayName}}
               </option>
             </select>
           </mat-form-field>
