@@ -8,7 +8,7 @@ export class BackendAPIHandler {
 	
 	API_PATH = 'http://10.164.69.90:8080/api';
 	
-	PRESET_VALUES_URL = this.API_PATH+ '/lables';
+	PRESET_VALUES_URL = this.API_PATH+ '/labels';
 	
 	constructor(private http: HttpClient) {
 	}
