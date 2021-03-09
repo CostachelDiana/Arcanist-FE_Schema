@@ -130,6 +130,7 @@ export class PresetTypesInfo {
 	capX2Protos: PredefinedTypeStruct[];
 	capX3Protos: PredefinedTypeStruct[];
 	capTransportTypes: PredefinedTypeStruct[];
+	capStatusTypes: PredefinedTypeStruct[]; 
 	
 	capTagList: PredefinedTypeStruct[];	
 	capInfoValsList: PredefinedTypeStruct[][];
@@ -142,6 +143,7 @@ export class PresetTypesInfo {
 		this.capX2Protos=[];
 		this.capX3Protos=[];
 		this.capTransportTypes=[];
+		this.capStatusTypes=[];
 		this.capTagList=[];
 		this.capInfoValsList=[];
 		this.capInfoTypesList=[];
@@ -253,6 +255,27 @@ export class PresetTypesInfo {
 		aPresetType.ID="ttsmtp";
 		this.capTransportTypes.push(aPresetType);
 		
+		//Status Types
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Draft";
+		aPresetType.ID="stDraft";
+		this.capStatusTypes.push(aPresetType);
+
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Unverified";
+		aPresetType.ID="stUnverified";
+		this.capStatusTypes.push(aPresetType);		
+
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Verified";
+		aPresetType.ID="stVerified";
+		this.capStatusTypes.push(aPresetType);		
+
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="Open For Changes";
+		aPresetType.ID="stOpenForChanges";
+		this.capStatusTypes.push(aPresetType);		
+
 		// IC Types 
 		var aPresetType = new PredefinedTypeStruct();
 		aPresetType.name="LIID";
