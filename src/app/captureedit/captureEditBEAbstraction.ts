@@ -59,7 +59,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	}
 	
 	debugSendRequestStreamInfo() {
-		var theJson='';
+		var theJson='{"event-type":"streams-received","streams-info":[{"port":"22","trans":"FTP","packets":"3322","size":"44551","protocol":"ETSI 102 232-5 v331"},{"port":"6001","trans":"TCP","packets":"6322","size":"556312","protocol":"ULIC RTP"},{"port":"8080","trans":"TCP","packets":"322","size":"5312","protocol":"HTTP"},{"port":"8080","trans":"TCP","packets":"322","size":"5312","protocol":"unknown"}]}';
 		this.onBEResponseReceived("streams-received",theJson);
 	}
 

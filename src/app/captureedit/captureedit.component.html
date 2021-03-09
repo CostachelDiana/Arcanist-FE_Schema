@@ -138,9 +138,9 @@
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
 						<div *ngIf="!this.isStreamReady()">
-							<button class="btn btn-primary" type="button" (click)="this.onGetStreamsClick()"> GetStreams </button>
+							<!-- <button class="btn btn-primary" type="button" (click)="this.onGetStreamsClick()"> GetStreams </button>-->
 							<div class="text-center">
-								<img width="300px" class="text-center" src="assets/loading.gif" />							  
+								<img width="300px" class="text-center" src="assets/loading.gif" />					  
 							</div>
 						</div>
 						<div *ngIf="this.isStreamReady()">
@@ -208,7 +208,7 @@
 			<ul style="list-style:none">
 						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
 							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
-							 {{tg.tagName}}
+							 {{tg.displayName}}
 							 &nbsp;
 							 &nbsp;
 						</li>
