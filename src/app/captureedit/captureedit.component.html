@@ -1,8 +1,21 @@
-<main role="main">
+<div class ="card card-body" *ngIf="!this.isPageReady()">
+	<button class="btn btn-primary" type="button" (click)="this.onGeneratePageClick()"> Generate Page</button>
+	<button class="btn btn-primary" type="button" (click)="this.onRequestBEUpdateClick()"> Request Page from BE</button>
+</div>
+
+<main role="main" *ngIf="this.isPageReady()"> 
+ 
 	<div class="card card-body">
-		<h1 class="text-center"> Capture: CapNamePlaceholder</h1>	
-		<button class="btn btn-primary" type="button"> Inject Capture </button>
+		<h1 class="text-center"> Capture: {{this.getPageInfo().capName}}</h1>	
+		<button class="btn btn-primary" type="button" (click)="this.onInjectCaptureClick()"> Inject Capture </button>
 		<button class="btn btn-primary" type="button"> Add to Favorites </button>
+		<button class="btn btn-primary" type="button" (click)="onGeneratePresetsJsonClick()"> generate Preset Types Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectPresetsJsonClick()"> inject Preset Types Json</button>
+		<button class="btn btn-primary" type="button" (click)="onGenerateStreamJsonClick()"> generate Streams Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectStreamsJsonClick()"> inject Streams Json</button>
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageJsonClick()"> generate Page Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectPageJsonClick"> inject Page Json</button>
+		
 	</div>
 	<br>
 	<br>
@@ -19,7 +32,7 @@
 					&nbsp;
 					<mat-form-field>
 						<mat-label>Capture Name</mat-label>
-						<input matInput #capName>			
+						<input matInput #capName value="{{this.getPageInfo().capName}}">			
 					</mat-form-field>
 					</div>
 					<div>
@@ -29,10 +42,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X2 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option value="1">Unknown</option>
-							<option value="2">ETSI 102 232 - 5 v331</option>
-							<option value="3">ETSI 33 108 v271</option>
-							<option value="4">Huawei DKBA 2011</option>
+							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.ID}}">{{x2.name}}</option>
 						  </select>		
 					</mat-form-field>
 					</div>
@@ -44,10 +54,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X3 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option value="1">Unknown</option>
-							<option value="2">ULIC</option>
-							<option value="3">CALEA JSTD0004</option>
-							<option value="4">ULIC EPS</option>
+							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.ID}}">{{x3.name}}</option>							
 						  </select>
 					</mat-form-field>
 					</div>
@@ -59,11 +66,7 @@
 					<mat-form-field appearance="fill">
 						<mat-label>Core Technology</mat-label>
 						  <select matNativeControl required>
-							<option value="1">Unknown</option>
-							<option value="2">VoLTE</option>
-							<option value="3">MPD</option>
-							<option value="4">CS</option>
-							<option value="4">MPD 5G</option>
+								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.ID}}">{{tech.name}}</option>					
 						  </select>
 					</mat-form-field>
 					</div>					
@@ -71,12 +74,12 @@
 					<h5 class="font-weight-bold"> General info </h5>
 					<div style="card card-type">
 						
-						<p>Capture size: 3232kbs </p>
-						<p>Capture length: 1:45 minutes</p>
-						<p>Uploaded by: anonymous at 01.02.2021</p>
-						<p>Verified by: Marius Aldea at 02.02.2021</p>
-						<p>Last Update by: Daniel Citooracu at 12.07.2021</p>
-						<p>Status: <span style="color: #00AA00;font-weight:bold"> Verfied </span></p>
+						<p>Capture size: {{this.getPageInfo().capSize}}</p>
+						<p>Capture length: {{this.getPageInfo().capLength}}</p>
+						<p>Uploaded by: {{this.getPageInfo().uploader.surname}}, {{this.getPageInfo().uploader.name}} at {{this.getPageInfo().uploadDate}}</p>
+						<p>Verified by: {{this.getPageInfo().verifier.surname}}, {{this.getPageInfo().verifier.name}} at {{this.getPageInfo().verifyDate}}</p>
+						<p>Last Update by: {{this.getPageInfo().lastUpdater.surname}}, {{this.getPageInfo().lastUpdater.name}} at {{this.getPageInfo().lastUpdateDate}}</p>
+						<p>Status: <span style="color: #00AA00;font-weight:bold">  {{this.getPageInfo().capStatus.name}} </span></p>
 						<button class="btn btn-primary" type="button"> Validate capture</button>
 					</div>
 				<td>
@@ -85,7 +88,7 @@
 		</table>
 		<h5 class="font-weight-bold"> User Comments</h5>
 		<div class="card card-body">
-			<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value=" "></textarea>
+			<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value=" {{this.getPageInfo().capUserNotes}}"></textarea>
 		</div>
 	</div>
 	
@@ -102,44 +105,56 @@
 					<td>
 						CD Port
 						&nbsp;
-						<mat-form-field [style.width.px]=50>
+						<mat-form-field [style.width.px]=100>
 								<mat-label>X2 port</mat-label>
-								<input matInput #x2prt>			
+								<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">			
 						</mat-form-field>
 						<br>
 						CD Transport
 						&nbsp;
-						<mat-form-field [style.width.px]=50>
-								<mat-label>X2 Transport</mat-label>
-								<input matInput #x2trans>			
+						<mat-form-field appearance="fill" [style.width.px]=100>
+						<mat-label>X2 Transport</mat-label>
+						  <select matNativeControl required>
+							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.ID}}">{{trans.name}}</option>							
+						  </select>
 						</mat-form-field>
 						<br>				
 						CC Port
 						&nbsp;
-						<mat-form-field [style.width.px]=50>
+						<mat-form-field [style.width.px]=100>
 								<mat-label>X3 port</mat-label>
-								<input matInput #x3prt>
+								<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
 						</mat-form-field>
 						<br>
 						CC Transport
 						&nbsp;
-						<mat-form-field [style.width.px]=50>
-								<mat-label>X3 Transport</mat-label>
-								<input matInput #x3trans>			
+						<mat-form-field appearance="fill" [style.width.px]=100>
+						<mat-label>X3 Transport</mat-label>
+						  <select matNativeControl required>
+							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.ID}}">{{trans.name}}</option>							
+						  </select>
 						</mat-form-field>
 					<td>
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
-						<ul style="list-style:none">
-							<li>1. TCP@2001 ETSI 102 232-5 v331: 251 packets, 151 kb</li>
-							&nbsp;
-							<li>2. UDP@300 RTP: 14 packets, 31 kb</li>
-							&nbsp;
-							<li>3. TCP@6001 ULIC EPS: 1251 packets, 1041 kb</li>
-							&nbsp;
-							<li>4. TCP@8080 HTTP: 21 packets, 13 kb</li>
-						</ul>
+						<div *ngIf="!this.isStreamReady()">
+							<button class="btn btn-primary" type="button" (click)="this.onGetStreamsClick()"> GetStreams </button>
+							<div class="text-center">
+								<img width="300px" class="text-center" src="assets/loading.gif" />							  
+							</div>
+						</div>
+						<div *ngIf="this.isStreamReady()">
+							<ul style="list-style:none" >
+								<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
+									<div>
+										{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
+										<br>
+										<br>
+									</div>
+								</li>
+							</ul>
+						</div>
 						</div>
 					</td>
 				</tr>
@@ -149,17 +164,12 @@
 		<div style="margin-left: 30px">
 			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button"> Expand </button>  Capture Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<div style="card card-body">
-				
+			<div style="card card-body">				
 					Target IC 
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
 						  <select matNativeControl required>
-							<option value="1">LIID</option>
-							<option value="2">MSISDN</option>
-							<option value="3">TelURI</option>
-							<option value="4">IMSI</option>
-							<option value="4">IMEI</option>
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.ID}}">{{ic.name}}</option>							
 						  </select>
 					</mat-form-field>
 					&nbsp;
@@ -167,59 +177,26 @@
 					IC Value
 					<mat-form-field [style.width.px]=100>
 							<mat-label>ICValue</mat-label>
-							<input matInput #icvalue>			
+							<input matInput #icvalue value="{{this.getPageInfo().capIC.infoValName}}">
 					</mat-form-field>
 					&nbsp;
 					&nbsp;
 					Switch time
 					<mat-form-field [style.width.px]=100>
 							<mat-label>Switch Time</mat-label>
-							<input matInput #swtime>			
+							<input matInput #swtime value="{{this.getPageInfo().capSwitchDate}}">			
 					</mat-form-field>
-					<ul style="list-style:none">
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+					<ul style="list-style:none">						
+						<li style="display:inline" *ngFor="let info of this.getPageInfo().getCaptureInfos(); let idx = index">
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureInfoClick(idx)"> X</button>
 							&nbsp;
-							 <span style="font-weight:bold;color: #0000BB">Event:</span> Bearer Activation
+							 <span style="font-weight:bold;color: #0000BB">{{info.infoTypeName}}:</span> {{info.infoValName}}
 							 &nbsp;
 							 &nbsp;
 						</li>
-						
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							&nbsp;
-							 <span style="font-weight:bold;color: #0000BB">Event:</span> Bearer Deactivation
-							 &nbsp;
-							 &nbsp;
-						</li>
-						
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 &nbsp;
-							 <span style="font-weight:bold;color: #0000BB">Codec:</span> EVS
-							 &nbsp;
-							 &nbsp;
-						</li>
-						
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 &nbsp;
-							 <span style="font-weight:bold;color: #0000BB">Codec:</span> AMR-WB
-							 &nbsp;
-							 &nbsp;
-						</li>
-						
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 &nbsp;
-							 <span style="font-weight:bold;color: #0000BB">Scenario:</span> Simple Call
-							 &nbsp;
-							 &nbsp;
-						</li>
-						
 					</ul>
 					<br>
-					<button class="btn btn-primary" type="button" > Add Capture Info </button>
+					<button class="btn btn-primary" type="button" (click)="onAddCaptureInfoClick()" > Add Capture Info </button>
 			</div>
 		</div>
 		<br>
@@ -230,46 +207,48 @@
 			<div style="card card-body">
 			</div>
 			<ul style="list-style:none">
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 Target To Target
-							 &nbsp;
-							 &nbsp;
-						</li>
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 Dynamic Codecs
-							 &nbsp;
-							 &nbsp;
-						</li>
-						<li style="display:inline">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
-							 X3 DTMF
+						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
+							 {{tg.tagName}}
 							 &nbsp;
 							 &nbsp;
 						</li>
 			</ul>
-			<button class="btn btn-primary" type="button" > Add Capture Tag </button>
+			<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
 		</div>
 			
 	</div>
 	<br>
+	<div>
+		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
+		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 	<br>
 	<div class="card card-body">
-		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Projects (30)</h4>		
+		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 		<div class="card-card-body" style="margin-left:50px">
-			<h4 class="font-weight-bold">Leo RX (3)</h4>
-			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<h5 class="font-weight-bold">Capture Sets</h5>
 			<ul style="list-style:none">
-				<li>
-					<h5> Whole Capture</h5>
-				</li>				
-				<li>
-					<h5> Simple Call Tests </h5>
+				<li *ngFor="let prj of this.getPageInfo().getCaptureProjectLinks(); let idx = index">
+					<h4 class="font-weight-bold">{{prj.projName}} - {{prj.capSetNames.length}} references</h4>
+					<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+					<h5 class="font-weight-bold">Capture Sets</h5>
+					<ul style="list-style:none">
+						<li *ngFor="let capSetName of prj.capSetNames; let ii = index">
+							<h5> {{capSetName}}</h5>
+						</li>						
+					</ul>
+					<hr style="height:0.5px;border:none;color:#00;background-color:#333;" />
+					<br>
+					<br>
 				</li>
 			</ul>
-		</div>
+		</div>		
 	</div>
+	
 </main>

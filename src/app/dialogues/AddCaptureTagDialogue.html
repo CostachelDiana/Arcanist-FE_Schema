@@ -1,0 +1,18 @@
+<main role="main">
+<div class="card card-style">
+	<p class="center-block">Select Tag</p>
+	<br>
+	<br>
+	<mat-form-field appearance="fill">
+	<mat-label>Capture Tag</mat-label>
+	  <select matNativeControl #tagID required>
+			<option *ngFor="let tag of this.getTagList(); let idx = index" value="{{tag.ID}}">{{tag.name}}</option>
+	  </select>
+	</mat-form-field>
+	<br>
+	<br>
+	&nbsp;
+	&nbsp;
+	<button class="btn btn-primary" type="button" (click)="onSubmitClick(tagID.value)">Submit</button>	
+</div>
+</main>

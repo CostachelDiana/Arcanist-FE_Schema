@@ -18,6 +18,8 @@ import {SelectCaptureDialogue} from './dialogues/SelectCaptureDialogue';
 import {InjectCapturesDialogue} from './dialogues/InjectCapturesDialogue';
 import {SingleInjectCaptureDialogue} from './dialogues/SingleInjectCaptureDialogue';
 import {AddCapturesSetDialogue} from './dialogues/AddCapturesSetDialogue';
+import {AddCaptureTagDialogue} from './dialogues/AddCaptureTagDialogue';
+import {AddCaptureInfoDialogue} from './dialogues/AddCaptureInfoDialogue';
 
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -38,6 +40,8 @@ import {MatInputModule} from '@angular/material/input';
 	InjectCapturesDialogue,
 	SingleInjectCaptureDialogue,
 	AddCapturesSetDialogue,
+	AddCaptureTagDialogue,
+	AddCaptureInfoDialogue,
 	CaptureEditPage,
 	FirstPage
 	

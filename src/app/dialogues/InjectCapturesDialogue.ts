@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Component, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 import {ProjPageCaptureInfo, InjectionSettings} from "../project/projectPageComponents"
+import {PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 
 export interface InjectCapturesDialogueData {
@@ -10,7 +11,9 @@ export interface InjectCapturesDialogueData {
 	cap: ProjPageCaptureInfo[],
 	set: InjectionSettings[],
 	setIdx:number,
-	justSetting: boolean
+	justSetting: boolean,
+	X2TransVals: PredefinedTypeStruct[],
+	X3TransVals: PredefinedTypeStruct[]
 	
 }
 
@@ -32,6 +35,20 @@ export class InjectCapturesDialogue {
 		) { this.isSequential = true;}
 		
 		
+	
+	public getX2TransVals(): PredefinedTypeStruct[] {
+		if (this.data.X2TransVals == null) 
+			this.data.X2TransVals = [];
+			
+		return this.data.X2TransVals;
+	}
+	
+	public getX3TransVals(): PredefinedTypeStruct[] {
+		if (this.data.X3TransVals == null) 
+			this.data.X3TransVals = [];
+			
+		return this.data.X3TransVals;
+	}
 
 	
 	public onSubmitClick(email: string): void {
