@@ -3,8 +3,10 @@
 	</div>    
 	<main role="main" *ngIf="this.isPageReady()">
     <div class="card card-body">
-      <p> Name: 
-          <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
+      <p>Name: 
+        <mat-form-field appearance="fill"><mat-label>Capture name</mat-label>
+          <input matNativeControl #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
+        </mat-form-field>
       </p>
     </div>
     <div>
@@ -151,7 +153,7 @@
         </tr></table>
       </div>
       <div class="card card-body">
-        <h4 class="font-weight-bold">Capture Info <button class="btn btn-primary" type="button"> Add </button> </h4>
+        <h4 class="font-weight-bold">Capture Info <button class="btn btn-primary" type="button" (click)="this.onAddCaptureInfoClick()" > Add </button> </h4>
         <hr style="height:2px;border:none;color:#55;background-color:#333;" />
         <p> Target IC: 
           <mat-form-field appearance="fill"><mat-label>IC Type</mat-label>
@@ -163,10 +165,27 @@
             </select>
           </mat-form-field>
         </p>
+        <ul style="list-style:none">						
+          <li style="display:inline" *ngFor="let info of this.searchParameters.capInfos; let idx = index">
+            <button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureInfoClick(idx)"> X</button>
+            &nbsp;
+              <span style="font-weight:bold;color: #0000BB">{{info.infoTypeName}}:</span> {{info.infoValName}}
+              &nbsp;
+              &nbsp;
+          </li>
+        </ul>
       </div>
       <div class="card card-body">
-        <h4 class="font-weight-bold">Capture Tags <button class="btn btn-primary" type="button"> Add </button> </h4>
+        <h4 class="font-weight-bold">Capture Tags <button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add  </button> </h4>
         <hr style="height:2px;border:none;color:#55;background-color:#333;" />
-      </div>      
+        <ul style="list-style:none">
+          <li style="display:inline" *ngFor="let tg of this.searchParameters.capTags; let idx = index">
+            <button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
+            {{tg.tagName}}
+            &nbsp;
+            &nbsp;
+          </li>
+        </ul>
+      </div>
     </div>
   </main>

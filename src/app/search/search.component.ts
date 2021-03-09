@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDatepickerModule} from '@angular/material/datepicker'
-import {PresetTypesInfo} from "../captureedit/CaptureStructures"
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
+import {CaptureInfo, CaptureTag, PresetTypesInfo} from "../captureedit/CaptureStructures";
+import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
+import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 
 @Component({
   selector: 'app-search',
@@ -15,7 +18,7 @@ export class SearchComponent implements OnInit {
   private _searchParameters: SearchParameters;
   
 
-  constructor() { 
+  constructor(public dialogue: MatDialog) { 
     this._pageInited = false;
     this._typesInfo = new PresetTypesInfo();
     this._searchParameters = new SearchParameters();
@@ -64,7 +67,69 @@ export class SearchComponent implements OnInit {
   public onTargetICOptionsChanged(event: any){
     this._searchParameters.targetICSelectedId = event.target.value;
   }
+
+  public onAddCaptureInfoCallback(typeID: string, valueID: string ): void {
+		var aInfo = new CaptureInfo();
+		for (var i=0;i<this._typesInfo.capInfoTypesList.length;i++)
+		{
+			if (this._typesInfo.capInfoTypesList[i].ID == typeID)
+			{
+				aInfo.infoTypeID=typeID;
+				aInfo.infoTypeName=this._typesInfo.capInfoTypesList[i].name;
+				
+				for (var j=0;j<this._typesInfo.capInfoValsList[i].length;j++)
+				{
+					if (this._typesInfo.capInfoValsList[i][j].ID == valueID)
+					{
+						aInfo.infoValID=valueID;
+						aInfo.infoValName=this._typesInfo.capInfoValsList[i][j].name;
+					}
+				}
+			}
+		}
+		this._searchParameters.addCaptureInfo(aInfo);
+	}
+
+	public onAddCaptureInfoClick(): void {
+		var dialogRef = this.dialogue.open(AddCaptureInfoDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureInfoCallback.bind(this),eventTypes: this._typesInfo.capInfoTypesList, eventValues:this._typesInfo.capInfoValsList}
+		}
+		);
+	}
   
+	public onRemoveCaptureInfoClick(index: number): void{
+		this._searchParameters.removeCaptureInfo(index);
+	}
+
+  public onAddCaptureTagCallback(tagID: string): void {
+		
+		for (var i=0;i<this._typesInfo.capTagList.length;i++)
+		{
+			if (this._typesInfo.capTagList[i].ID == tagID)
+			{
+				var capTag = new CaptureTag();
+				capTag.tagID = this._typesInfo.capTagList[i].ID;
+				capTag.tagName = this._typesInfo.capTagList[i].name;
+				this._searchParameters.addCaptureTag(capTag);
+			}
+		}
+	}
+
+	public onAddCaptureTagClick(): void{
+		
+		var dialogRef = this.dialogue.open(AddCaptureTagDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureTagCallback.bind(this),tagList: this._typesInfo.capTagList}
+		}
+		);
+	} 
+
+	public onRemoveCaptureTagClick(index: number):void {
+		this._searchParameters.removeCaptureTag(index);
+	}  
 }
 
 export class MinMaxNumberOption {
@@ -160,10 +225,40 @@ export class SearchParameters {
   } 
 
   private _targetICSelectedId : string;
+  get targetICSelectedId() : string{
+    return this._targetICSelectedId;
+  }
   set targetICSelectedId (selectedId : string){
     this._targetICSelectedId = selectedId;
   } 
-  
+
+  private _capTags: CaptureTag[];
+  get capTags(): CaptureTag[] {
+		return this._capTags;
+	}
+	public removeCaptureTag(idx: number): void {
+		 if (idx > -1 && idx < this._capTags.length)
+		 {
+			  this._capTags.splice(idx,1);
+		 }
+	}
+	public addCaptureTag(aTag: CaptureTag): void {
+		this._capTags.push(aTag);
+	}
+
+	private _capInfos: CaptureInfo[];
+	get capInfos(): CaptureInfo[] {
+		return this._capInfos;
+	}
+	public removeCaptureInfo(idx: number): void {
+		if (idx > -1 && idx < this._capInfos.length)
+		{
+			this._capInfos.splice(idx,1);
+		}
+	}
+	public addCaptureInfo(aInfo: CaptureInfo): void {
+		this._capInfos.push(aInfo);
+	}
 
   constructor(){
     this._searchName = "";
@@ -177,5 +272,8 @@ export class SearchParameters {
     this._projectsMinMax = new MinMaxNumberOption();
 
     this._statusSelectedId = "";  
+
+    this._capTags = [];
+    this._capInfos = [];
   } 
 }
