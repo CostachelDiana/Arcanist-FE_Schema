@@ -121,6 +121,8 @@ export class CaptureEditPageSerializer {
 		info.capTransportTypes=jObj["transport"];
 		info.capTagList=jObj["tag"];
 		info.capStatusTypes=jObj["status"];
+		info.capX3Protos=jObj["X3Protocols"];
+		info.capX2Protos=jObj["X2Protocols"];
 	}
 	public deserializeStreamInfo(jObj: Object): StreamInfo[] {
 		var rez: StreamInfo[];

@@ -26,4 +26,5 @@ export interface IPage {
 export interface IBEAbstractionGeneric {
 	sendBEUpdate(beJson: string): void;
 	setPage(page: IPage): void;
+	onBEDataReceived(data: string): void;
 }
