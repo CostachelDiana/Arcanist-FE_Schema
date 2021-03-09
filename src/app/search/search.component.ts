@@ -12,7 +12,6 @@ export class SearchComponent implements OnInit {
 
   private _pageInited: boolean;
   private _typesInfo: PresetTypesInfo;
-  //private _searchOptions: SearchOptions;
   private _searchParameters: SearchParameters;
   
 
@@ -61,6 +60,11 @@ export class SearchComponent implements OnInit {
   public onStatusOptionsChanged(event: any){
     this._searchParameters.statusSelectedId = event.target.value;
   }
+
+  public onTargetICOptionsChanged(event: any){
+    this._searchParameters.targetICSelectedId = event.target.value;
+  }
+  
 }
 
 export class MinMaxNumberOption {
@@ -154,6 +158,12 @@ export class SearchParameters {
   set statusSelectedId (selectedId : string){
     this._statusSelectedId = selectedId;
   } 
+
+  private _targetICSelectedId : string;
+  set targetICSelectedId (selectedId : string){
+    this._targetICSelectedId = selectedId;
+  } 
+  
 
   constructor(){
     this._searchName = "";

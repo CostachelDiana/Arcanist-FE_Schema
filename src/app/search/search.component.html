@@ -1,118 +1,172 @@
-  <h1 class="text-center"> Search in Captures</h1>
   <div class="card card-body" *ngIf="!this.isPageReady()">
 		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Search Options</button>
 	</div>    
 	<main role="main" *ngIf="this.isPageReady()">
-    <p> Name: 
-        <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
-    </p>
+    <div class="card card-body">
+      <p> Name: 
+          <input #box name="searchName" value="{{this.searchParameters.searchName}}" (blur)= "this.searchParameters.searchName = box.value"/>
+      </p>
+    </div>
     <div>
-      <h2>Filters Section</h2>
-      <hr/>
-      <div>
-        <h3>Basic Details</h3>
+      <h4 class="font-weight-bold">Filters Section</h4>
+      <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+      <div class="card card-body">
+        <h4 class="font-weight-bold">Basic Details</h4>
+        <hr style="height:2px;border:none;color:#55;background-color:#333;" />
         <hr/>      
         <table><tr>
           <td><table>
             <tr>
               <td>CD Protocol:</td>
-              <td><select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
-                <option *ngFor="let p of this.typesInfo.capX2Protos; let i = index" [value]="this.typesInfo.capX2Protos[i].ID">
-                  {{this.typesInfo.capX2Protos[i].name}}
-                </option>
-              </select></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>X2 Protocol</mat-label>
+                  <select matNativeControl (change)="this.onCdProtocolOptionsChanged($event)">
+                    <option style="display:none"></option>
+                    <option *ngFor="let p of this.typesInfo.capX2Protos; let i = index" [value]="this.typesInfo.capX2Protos[i].ID">
+                      {{this.typesInfo.capX2Protos[i].name}}
+                    </option>
+                  </select>
+                </mat-form-field>
+              </td>
             </tr>
             <tr>
               <td>CC Protocol:</td>
-              <td><select formControlName="ccProtocols" id="ccProtocols" (change)="this.onCcProtocolOptionsChanged($event)">
-                <option *ngFor="let p of this.typesInfo.capX3Protos; let i = index" [value]="this.typesInfo.capX3Protos[i].id">
-                  {{this.typesInfo.capX3Protos[i].name}}
-                </option>
-              </select></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>X3 Protocol</mat-label>
+                  <select matNativeControl (change)="this.onCcProtocolOptionsChanged($event)">
+                    <option style="display:none"></option>
+                    <option *ngFor="let p of this.typesInfo.capX3Protos; let i = index" [value]="this.typesInfo.capX3Protos[i].ID">
+                      {{this.typesInfo.capX3Protos[i].name}}
+                    </option>
+                  </select>
+                </mat-form-field>
+              </td>
             </tr>
             <tr>
               <td>Technology:</td>
-              <td><select formControlName="technologies" id="technologies" (change)="this.onTechnologiesOptionsChanged($event)">
-                <option *ngFor="let p of this.typesInfo.capTechnologyTypes; let i = index" [value]="this.typesInfo.capTechnologyTypes[i].id">
-                  {{this.typesInfo.capTechnologyTypes[i].name}}
-                </option>
-              </select></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Technology</mat-label>
+                  <select matNativeControl (change)="this.onTechnologiesOptionsChanged($event)">
+                    <option style="display:none"></option>
+                    <option *ngFor="let p of this.typesInfo.capTechnologyTypes; let i = index" [value]="this.typesInfo.capTechnologyTypes[i].ID">
+                      {{this.typesInfo.capTechnologyTypes[i].name}}
+                    </option>
+                  </select>
+                </mat-form-field>
+              </td>
             </tr>        
           </table></td>
           <td><table>
             <tr>
-              <td>Duration (seconds):</td>
-              <td><input #boxDurationMin name="durationMin" type="number" value="{{this.searchParameters.durationMin}}" (blur)= "this.searchParameters.durationMin = boxDurationMin.value"/></td>
-              <td><input #boxDurationMax name="durationMax" type="number" value="{{this.searchParameters.durationMax}}" (blur)= "this.searchParameters.durationMax = boxDurationMax.value"/></td>
-            </tr>
-            <tr>
-              <td>Switch Time:</td>
+              <td><mat-label>Duration (seconds):</mat-label></td>
               <td>
-                  <input matInput [matDatepicker]="picker">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
+                <mat-form-field appearance="fill"><mat-label>Min</mat-label>
+                  <input matNativeControl #boxDurationMin name="durationMin" type="number" value="{{this.searchParameters.durationMin}}" 
+                    (blur)= "this.searchParameters.durationMin = boxDurationMin.value"/>
+                </mat-form-field>
               </td>
               <td>
-                  <input matInput [matDatepicker]="picker">
+                <mat-form-field appearance="fill"><mat-label>Max</mat-label>
+                  <input matNativeControl #boxDurationMax name="durationMax" type="number" value="{{this.searchParameters.durationMax}}" 
+                    (blur)= "this.searchParameters.durationMax = boxDurationMax.value"/>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td><mat-label>Switch Time:</mat-label></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Min</mat-label>
+                  <input matNativeControl matInput [matDatepicker]="picker">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Max</mat-label>
+                  <input matNativeControl matInput [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
               </td>              
             </tr>
             <tr>
-              <td>Last Update:</td>
+              <td><mat-label>Last Update:</mat-label></td>
               <td>
-                  <input matInput [matDatepicker]="picker">
+                <mat-form-field appearance="fill"><mat-label>Min</mat-label>
+                  <input matNativeControl matInput [matDatepicker]="picker">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
               </td>
               <td>
-                  <input matInput [matDatepicker]="picker">
+                <mat-form-field appearance="fill"><mat-label>Max</mat-label>
+                  <input matNativeControl matInput [matDatepicker]="picker">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
               </td>              
             </tr>
           </table></td>
           <td><table>
             <tr>
               <td>Status:</td>
-              <td colspan="2">
-                <select formControlName="status" id="status" (change)="this.onStatusOptionsChanged($event)">
-                  <option *ngFor="let p of this.typesInfo.capStatusTypes; let i = index" [value]="this.typesInfo.capStatusTypes[i].ID">
-                    {{this.typesInfo.capStatusTypes[i].name}}
-                  </option>
-                </select>
+              <td colspan="2" class="text-left">
+                <mat-form-field appearance="fill"><mat-label>Status</mat-label>
+                  <select matNativeControl (change)="this.onStatusOptionsChanged($event)">
+                    <option style="display:none"></option>
+                    <option *ngFor="let p of this.typesInfo.capStatusTypes; let i = index" [value]="this.typesInfo.capStatusTypes[i].ID">
+                      {{this.typesInfo.capStatusTypes[i].name}}
+                    </option>
+                  </select>
+                </mat-form-field>
               </td>
             </tr>
             <tr>
               <td>References:</td>
-              <td><input #boxReferencesMin name="referencesMin" type="number" value="{{this.searchParameters.referencesMin}}" (blur)= "this.searchParameters.referencesMin = boxReferencesMin.value"/></td>
-              <td><input #boxReferencesMax name="referencesMax" type="number" value="{{this.searchParameters.referencesMax}}" (blur)= "this.searchParameters.referencesMax = boxReferencesMax.value"/></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Min</mat-label>
+                  <input matNativeControl #boxReferencesMin name="referencesMin" type="number" value="{{this.searchParameters.referencesMin}}" (blur)= "this.searchParameters.referencesMin = boxReferencesMin.value"/>
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Max</mat-label>
+                  <input matNativeControl #boxReferencesMax name="referencesMax" type="number" value="{{this.searchParameters.referencesMax}}" (blur)= "this.searchParameters.referencesMax = boxReferencesMax.value"/>
+                </mat-form-field>
+              </td>
             </tr>
             <tr>
               <td>Projects:</td>
-              <td><input #boxProjectsMin name="projectsMin" type="number" value="{{this.searchParameters.projectsMin}}" (blur)= "this.searchParameters.projectsMin = boxProjectsMin.value"/></td>
-              <td><input #boxProjectsMax name="projectsMax" type="number" value="{{this.searchParameters.projectsMax}}" (blur)= "this.searchParameters.projectsMax = boxProjectsMax.value"/></td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Min</mat-label>
+                  <input matNativeControl #boxProjectsMin name="projectsMin" type="number" value="{{this.searchParameters.projectsMin}}" (blur)= "this.searchParameters.projectsMin = boxProjectsMin.value"/>
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field appearance="fill"><mat-label>Max</mat-label>
+                  <input matNativeControl #boxProjectsMax name="projectsMax" type="number" value="{{this.searchParameters.projectsMax}}" (blur)= "this.searchParameters.projectsMax = boxProjectsMax.value"/>
+                </mat-form-field>
+              </td>
             </tr>                      
           </table></td>
         </tr></table>
       </div>
-      <div>
-        <h3>Filter Info</h3>
-        <hr/>
-        <div name="filterInfoTable">
-          
-        </div>
+      <div class="card card-body">
+        <h4 class="font-weight-bold">Capture Info <button class="btn btn-primary" type="button"> Add </button> </h4>
+        <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+        <p> Target IC: 
+          <mat-form-field appearance="fill"><mat-label>IC Type</mat-label>
+            <select matNativeControl (change)="this.onTargetICOptionsChanged($event)">
+              <option style="display:none"></option>
+              <option *ngFor="let p of this.typesInfo.capICTypes; let i = index" [value]="this.typesInfo.capICTypes[i].ID">
+                {{this.typesInfo.capICTypes[i].name}}
+              </option>
+            </select>
+          </mat-form-field>
+        </p>
       </div>
-    </div>
-    <div>
-      <h2>Testing search user input:</h2>
-      <p>Name: {{this.searchParameters.searchName}}</p>
-      <p>CD Protocol Id: {{this.searchParameters.cdProtocolSelectedId}}</p>
-      <p>CC Protocol Id: {{this.searchParameters.ccProtocolSelectedId}}</p>
-      <p>Technology Id: {{this.searchParameters.technologySelectedId}}</p>
-      <p>Duration min: {{this.searchParameters.durationMin}} max: {{this.searchParameters.durationMax}} </p>
-      <p>References min: {{this.searchParameters.referencesMin}} max: {{this.searchParameters.referencesMax}} </p>
-      <p>Projects min: {{this.searchParameters.projectsMin}} max: {{this.searchParameters.projectsMax}} </p>
-      <p>Status Id: {{this.searchParameters.statusSelectedId}}</p>
+      <div class="card card-body">
+        <h4 class="font-weight-bold">Capture Tags <button class="btn btn-primary" type="button"> Add </button> </h4>
+        <hr style="height:2px;border:none;color:#55;background-color:#333;" />
+      </div>      
     </div>
   </main>
