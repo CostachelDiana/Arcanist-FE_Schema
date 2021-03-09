@@ -6,7 +6,8 @@ export class CaptureEditPageSerializer {
 	public serializeValidateCapture(info: FullCaptureInfo):string {
 		
 		var jObj={
-			"event-type": "validate-capture"
+			"event-type": "validate-capture",
+			"captureID": info.capID
 		}
 		
 		return JSON.stringify(jObj);
