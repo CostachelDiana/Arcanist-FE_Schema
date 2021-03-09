@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
 import { HttpClient } from '@angular/common/http';
-import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
+import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
 import {ProjMember} from '../project/projectPageComponents'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
@@ -219,9 +219,9 @@ export class CaptureEditPage implements IPage{
 		{
 			if (this.presetInfo.capTagList[i].id == tagID)
 			{
-				var capTag = new CaptureTag();
-				capTag.tagID = this.presetInfo.capTagList[i].id;
-				capTag.tagName = this.presetInfo.capTagList[i].displayName;
+				var capTag = new PredefinedTypeStruct();
+				capTag =this.presetInfo.capTagList[i];
+				
 				this.pageInfo.addCaptureTag(capTag);
 			}
 		}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
-import {CapProjLink, CaptureInfo, CaptureTag, FullCaptureInfo, PredefinedTypeStruct, PresetTypesInfo} from "../captureedit/CaptureStructures";
+import {CapProjLink, CaptureInfo, FullCaptureInfo, PredefinedTypeStruct, PresetTypesInfo} from "../captureedit/CaptureStructures";
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 import { ProjMember } from '../project/projectPageComponents';
@@ -122,9 +122,9 @@ export class SearchComponent implements OnInit {
 		{
 			if (this._typesInfo.capTagList[i].id == tagID)
 			{
-				var capTag = new CaptureTag();
-				capTag.tagID = this._typesInfo.capTagList[i].id;
-				capTag.tagName = this._typesInfo.capTagList[i].displayName;
+				var capTag = new PredefinedTypeStruct();
+				capTag.id = this._typesInfo.capTagList[i].id;
+				capTag.displayName = this._typesInfo.capTagList[i].displayName;
 				this._searchParameters.addCaptureTag(capTag);
 			}
 		}
@@ -219,21 +219,21 @@ export class SearchComponent implements OnInit {
 		pgInfo.capSwitchDate="15.01.2020";
 		
 		// TAGS
-		var aCapTag=  new CaptureTag();
-		aCapTag.tagID=1;
-		aCapTag.tagName="Target to Target";
+		var aCapTag=  new PredefinedTypeStruct();
+		aCapTag.id=1;
+		aCapTag.displayName="Target to Target";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
-		aCapTag=  new CaptureTag();
-		aCapTag.tagID=2;
-		aCapTag.tagName="X3 DTMF";
+		aCapTag=  new PredefinedTypeStruct();
+		aCapTag.id=2;
+		aCapTag.displayName="X3 DTMF";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
-		aCapTag=  new CaptureTag();
-		aCapTag.tagID=3
-		aCapTag.tagName="Dynamic Codecs";
+		aCapTag=  new PredefinedTypeStruct();
+		aCapTag.id=3
+		aCapTag.displayName="Dynamic Codecs";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
@@ -394,8 +394,8 @@ export class SearchParameters {
     this._targetICSelectedId = selectedId;
   } 
 
-  private _capTags: CaptureTag[];
-  get capTags(): CaptureTag[] {
+  private _capTags: PredefinedTypeStruct[];
+  get capTags(): PredefinedTypeStruct[] {
 		return this._capTags;
 	}
 	public removeCaptureTag(idx: number): void {
@@ -404,7 +404,7 @@ export class SearchParameters {
 			  this._capTags.splice(idx,1);
 		 }
 	}
-	public addCaptureTag(aTag: CaptureTag): void {
+	public addCaptureTag(aTag: PredefinedTypeStruct): void {
 		this._capTags.push(aTag);
 	}
 

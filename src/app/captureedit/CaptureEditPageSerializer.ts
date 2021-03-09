@@ -101,20 +101,26 @@ export class CaptureEditPageSerializer {
 		
 	}
 	public deserializeInfoPresetValues(jObj: Object, info: PresetTypesInfo) {
-		// CMS to do
 		
-		/*
-		for (var k in jObj; var i=0;i++)
+		var i=0;
+		for (var k in jObj)
 		{
 			var strct = new PredefinedTypeStruct();
 			strct.id=i;
-			info.capInfoTypesList.push(k);
+			strct.displayName=k;
+			info.capInfoTypesList.push(strct);
 			var arr = jObj[k];
 			info.capInfoValsList.push(arr);
-		}*/
+			i++;
+		}
 	}
 	public deserializePresetValues(jObj: Object, info: PresetTypesInfo) {
-		// CMS todo 
+		
+		info.capICTypes=jObj["interceptionCriteria"];
+		info.capTechnologyTypes=jObj["technology"];
+		info.capTransportTypes=jObj["transport"];
+		info.capTagList=jObj["tag"];
+		info.capStatusTypes=jObj["status"];
 	}
 	public deserializeStreamInfo(jObj: Object): StreamInfo[] {
 		var rez: StreamInfo[];

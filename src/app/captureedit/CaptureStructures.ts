@@ -14,10 +14,6 @@ export class CaptureInfo {
 	infoValName: string;
 }
 
-export class CaptureTag {
-	tagID : number;
-	tagName : string;
-}
 
 export class StreamInfo {
 	port: string;
@@ -70,7 +66,7 @@ export class FullCaptureInfo {
 	capIC: CaptureInfo;	
 	capSwitchDate: string;
 	
-	capTags: CaptureTag[];
+	capTags: PredefinedTypeStruct[];
 	capInfos: CaptureInfo[];
 	capProjects: CapProjLink[];
 	
@@ -97,7 +93,7 @@ export class FullCaptureInfo {
 		}
 		return rez;
 	}
-	public getCaptureTags(): CaptureTag[] {
+	public getCaptureTags(): PredefinedTypeStruct[] {
 		return this.capTags;
 	}
 	public removeCaptureTag(idx: number): void
@@ -107,7 +103,7 @@ export class FullCaptureInfo {
 			  this.capTags.splice(idx,1);
 		 }
 	}
-	public addCaptureTag(aTag: CaptureTag): void {
+	public addCaptureTag(aTag: PredefinedTypeStruct): void {
 		this.capTags.push(aTag);
 	}
 	public getCaptureInfos(): CaptureInfo[] {
