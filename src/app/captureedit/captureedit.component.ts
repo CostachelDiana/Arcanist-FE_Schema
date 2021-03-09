@@ -6,13 +6,15 @@ import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/proj
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
+import {CaptureEditPageSerializer} from '../captureedit/CaptureEditPageSerializer'
+import {IPage, IBEAbstractionGeneric} from '../project/IProject'
 
 @Component({
   selector: 'app-project',
   templateUrl: './captureedit.component.html',
   styleUrls: ['./captureedit.component.css']
 })
-export class CaptureEditPage {
+export class CaptureEditPage implements IPage{
 
 	
 	pageInfo: FullCaptureInfo;
@@ -20,7 +22,7 @@ export class CaptureEditPage {
 	presetInfo: PresetTypesInfo;
 	capStreams: StreamInfo[];
 	
-	
+	serializer: CaptureEditPageSerializer;
 	pageReady: boolean;
 	streamsReady: boolean;
 	
@@ -32,7 +34,28 @@ export class CaptureEditPage {
 		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
 		
-			
+		this.serializer = new CaptureEditPageSerializer();
+		
+	}
+	
+	public initPage(pgJson: string): void
+	{
+	}
+	public onBEEventReceived(evtJson: string): void {
+		
+		var jObj = JSON.parse(evtJson);
+		var evt = jObj["event-type"];
+		
+		if (evt=="presets-received")
+		{
+			this.presetInfo = this.serializer.deserializePresetValues(jObj);
+		} else if (evt=="streams-received")
+		{
+			this.capStreams = this.serializer.deserializeStreamInfo(jObj);
+		}
+		
+	}
+	public setBEAbstraction(be: IBEAbstractionGeneric ): void {
 		
 	}
 	
@@ -66,17 +89,7 @@ export class CaptureEditPage {
 		return this.pageReady;
 	}
 	
-	// debug button hooks
-	public onGeneratePageClick() {
-		this.testInit();
-	}
 	
-	public onRequestBEUpdateClick() {
-		this.requestBackendData("hahahlera");
-	}
-	public onGetStreamsClick() {
-		this.streamsReady=true;
-	}
 	
 	
 	// to be called from html 
@@ -171,20 +184,46 @@ export class CaptureEditPage {
 	}
 	// CMS debug methods 
 	
+	public onGeneratePageClick() {
+		this.testInit();
+	}
+	
+	public onRequestBEUpdateClick() {
+		this.requestBackendData("hahahlera");
+	}
+	public onGetStreamsClick() {
+		this.streamsReady=true;
+	}
+	
+	
 	public onGeneratePresetsJsonClick(): void {
-		// fetch user notes
 		
+		var jSon = this.serializer.serializePresetInfo(this.presetInfo);
+		// update
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 		// 
 	}
 	public onInjectPresetsJsonClick(): void {
+		
+		var jStr = this.serializer.getHardcodedPresetJson();		
+		this.onBEEventReceived(jStr);
 	}
 	public onGenerateStreamJsonClick(): void {
+		
+		var jSon = this.serializer.serializeStreams(this.capStreams);
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+		
 	}
 	public onInjectStreamsJsonClick(): void {
+		var jStr = this.serializer.getHardcodedStreamJson();
+		
+		this.onBEEventReceived(jStr);
 	}
 	public onGeneratePageJsonClick(): void {
 	}
 	public onInjectPageJsonClick(): void {
+		
 	}
 	
 	
@@ -330,6 +369,8 @@ export class CaptureEditPage {
 	testInitBEValues(): void {
 		
 		// stream info 
+		
+		/*
 		var aStreamInfo = new StreamInfo();
 		aStreamInfo.port= "22";
 		aStreamInfo.trans= "FTP";
@@ -360,9 +401,9 @@ export class CaptureEditPage {
 		aStreamInfo.packets= "322";
 		aStreamInfo.size="5312";
 		aStreamInfo.protocol="unknown";
-		this.capStreams.push(aStreamInfo);
+		this.capStreams.push(aStreamInfo);*/
 		
-		this.presetInfo.testInit();
+		// this.presetInfo.testInit();
 		
 	}
 
