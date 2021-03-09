@@ -17,24 +17,24 @@
             <tr>
               <td>CD Protocol:</td>
               <td><select formControlName="cdProtocols" id="cdProtocols" (change)="this.onCdProtocolOptionsChanged($event)">
-                <option *ngFor="let p of this.searchOptions.cdProtocolOptions; let i = index" [value]="this.searchOptions.cdProtocolOptions[i].id">
-                  {{this.searchOptions.cdProtocolOptions[i].displayName}}
+                <option *ngFor="let p of this.typesInfo.capX2Protos; let i = index" [value]="this.typesInfo.capX2Protos[i].ID">
+                  {{this.typesInfo.capX2Protos[i].name}}
                 </option>
               </select></td>
             </tr>
             <tr>
               <td>CC Protocol:</td>
               <td><select formControlName="ccProtocols" id="ccProtocols" (change)="this.onCcProtocolOptionsChanged($event)">
-                <option *ngFor="let p of this.searchOptions.ccProtocolOptions; let i = index" [value]="this.searchOptions.ccProtocolOptions[i].id">
-                  {{this.searchOptions.ccProtocolOptions[i].displayName}}
+                <option *ngFor="let p of this.typesInfo.capX3Protos; let i = index" [value]="this.typesInfo.capX3Protos[i].id">
+                  {{this.typesInfo.capX3Protos[i].name}}
                 </option>
               </select></td>
             </tr>
             <tr>
               <td>Technology:</td>
               <td><select formControlName="technologies" id="technologies" (change)="this.onTechnologiesOptionsChanged($event)">
-                <option *ngFor="let p of this.searchOptions.technologyOptions; let i = index" [value]="this.searchOptions.technologyOptions[i].id">
-                  {{this.searchOptions.technologyOptions[i].displayName}}
+                <option *ngFor="let p of this.typesInfo.capTechnologyTypes; let i = index" [value]="this.typesInfo.capTechnologyTypes[i].id">
+                  {{this.typesInfo.capTechnologyTypes[i].name}}
                 </option>
               </select></td>
             </tr>        
@@ -77,8 +77,8 @@
               <td>Status:</td>
               <td colspan="2">
                 <select formControlName="status" id="status" (change)="this.onStatusOptionsChanged($event)">
-                  <option *ngFor="let p of this.searchOptions.statusOptions; let i = index" [value]="this.searchOptions.statusOptions[i].id">
-                    {{this.searchOptions.statusOptions[i].displayName}}
+                  <option *ngFor="let p of this.typesInfo.capStatusTypes; let i = index" [value]="this.typesInfo.capStatusTypes[i].ID">
+                    {{this.typesInfo.capStatusTypes[i].name}}
                   </option>
                 </select>
               </td>
@@ -94,8 +94,14 @@
               <td><input #boxProjectsMax name="projectsMax" type="number" value="{{this.searchParameters.projectsMax}}" (blur)= "this.searchParameters.projectsMax = boxProjectsMax.value"/></td>
             </tr>                      
           </table></td>
-
         </tr></table>
+      </div>
+      <div>
+        <h3>Filter Info</h3>
+        <hr/>
+        <div name="filterInfoTable">
+          
+        </div>
       </div>
     </div>
     <div>
