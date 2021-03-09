@@ -14,6 +14,7 @@ import {AddCapturesSetDialogue} from '../dialogues/AddCapturesSetDialogue'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {ProjectPageEventSerializer} from './projectPageEventSerializer'
 import {ProjectBEAbstraction} from './projectBEAbstraction'
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 
 
@@ -26,6 +27,9 @@ import {ProjectBEAbstraction} from './projectBEAbstraction'
 export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
+	public projNamesList: string[];
+	public filename: string;
+	public strProjDetails: string;
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
@@ -36,7 +40,21 @@ export class ProjectComponent implements IProject {
 	pageInited: boolean;
 	
 	// initing methods
-	constructor(public dialogue: MatDialog) {
+	constructor(public dialogue: MatDialog,
+		 private router:Router, private activatedRoute:ActivatedRoute) {
+		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
+			console.log("url is: "+window.location.href);
+			console.log("activatedRoute is: "+this.activatedRoute.toString());
+
+		rez: this.activatedRoute.queryParams.subscribe(params => {
+			this.filename = params['projName'] || "";
+			this.strProjDetails = params['projDetails'] || "";
+		  });
+
+		  console.log("Route str: "+ this.activatedRoute.toString());
+		  console.log("filename is: "+this.filename);
+		  console.log("projDetails is: "+this.strProjDetails);
+		
 		this.projInfo=null;
 		
 		this.pageInited=false;
@@ -45,7 +63,10 @@ export class ProjectComponent implements IProject {
 		this.BEAbs.setProject(this);
 		this.BEAbs.connect("121.69.69.666","4040");
 		
-				 
+		//get from BE the list of existing proj
+		this.projNamesList = [];
+		this.projNamesList.push("ProjName1_predef");
+		this.projNamesList.push("ProjName2_predef");
 	}
 	
 	public onFetchProjectClick(): void {

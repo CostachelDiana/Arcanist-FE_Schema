@@ -1,19 +1,24 @@
 
-	<div class="card card-body" *ngIf="!this.isPageReady()">
-		<button class="btn btn-primary" type="button" (click)="onFetchProjectClick()"> Fetch Project Page From Backend</button>
-		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Project Page</button>
+	<div class="card card-body" *ngIf="!this.isPageReady()"> 
+		<!-- <button class="btn btn-primary" type="button" (click)="onFetchProjectClick()"> Fetch Project Page From Backend</button> 
+		<button class="btn btn-primary" type="button"> Generate Project Page</button> -->
+		<label>Choose project: </label>
+		<!-- <input type="text" id="projName" name="projName" value="dropdownlist" > -->
+		<select id="projName" name="projName">
+			<option value="empty"></option>
+			<option *ngFor="let item of this.projNamesList">{{item}}</option>
+		</select>
 	</div>
 	<main role="main" *ngIf="this.isPageReady()">
 	<h1 class="text-center"> Project: {{this.getProjectName()}}</h1>
 	<!--  href="#ProjDetails" -->
-		<p class="font-weight-bold">		
-
-			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#projDetailsSection" aria-expanded="true" aria-controls="projDetailsSection"> Expand </button>
+		<p class="font-weight-bold">	
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#projDetailsSection" aria-expanded="true" aria-controls="projDetailsSection"> Expand </button>			
 			Project Details			
 		</p>
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 		
-		<div class="card card-body">
+		<div class="content card card-body">
 		
 		<!-- <div class="collapse" id="projDetailsSection"> -->
 			<div class="card card-body" >
@@ -86,7 +91,7 @@
 						
 						</table>
 					</div>
-					<div class="card card-body" iid="capSet{{idx}}">
+					<div class="card card-body" id="capSet{{idx}}">
 						<table class="table">
 								<thead>
 									<tr>
@@ -133,3 +138,6 @@
 			<button class="btn btn-primary align-center" type="button" (click)="onSubmitChangesClick()"> Apply changes </button>
 		</div>
 	</main>
+
+	
+		
