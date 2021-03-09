@@ -22,7 +22,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import  {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatInputModule} from '@angular/material/input';
-import { NgxPopper } from 'angular-popper';
+// import { NgxPopper } from '@angular-popper';
 
 @NgModule({
   declarations: [
@@ -48,8 +48,8 @@ import { NgxPopper } from 'angular-popper';
     NgbModule,
 	MatDialogModule,
 	MatFormFieldModule,
-    MatInputModule,
-    NgxPopper
+    MatInputModule
+//    NgxPopper
   ],
 
   providers: [],
