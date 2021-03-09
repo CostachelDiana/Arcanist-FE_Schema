@@ -1,13 +1,17 @@
 
 	<div class="card card-body" *ngIf="!this.isPageReady()"> 
-		<!-- <button class="btn btn-primary" type="button" (click)="onFetchProjectClick()"> Fetch Project Page From Backend</button> 
-		<button class="btn btn-primary" type="button"> Generate Project Page</button> -->
-		<label>Choose project: </label>
-		<!-- <input type="text" id="projName" name="projName" value="dropdownlist" > -->
-		<select id="projName" name="projName">
-			<option value="empty"></option>
-			<option *ngFor="let item of this.projNamesList">{{item}}</option>
-		</select>
+		<button class="btn btn-primary" type="button" (click)="onFetchProjectClick()"> Fetch Project Page From Backend</button> 
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageClick()"> Generate Project Page</button>
+		
+		<!-- <form> retrive data from BE
+			<label>Choose project: </label>
+			<input type="text" id="projName" name="projName" value="dropdownlist" > 
+			<select id="projName" name="projName">
+				<option value="empty"></option>
+				<option *ngFor="let item of this.projNamesList">{{item}}</option>
+			</select>
+			<button></button>
+		</form> -->
 	</div>
 	<main role="main" *ngIf="this.isPageReady()">
 	<h1 class="text-center"> Project: {{this.getProjectName()}}</h1>
