@@ -52,6 +52,14 @@ export class CaptureEditPage implements IPage{
 		} else if (evt=="streams-received")
 		{
 			this.capStreams = this.serializer.deserializeStreamInfo(jObj);
+		} else if (evt=="capture-page-received")
+		{
+			console.log("Capture page received");
+			var elRezo = this.serializer.deserializePageInfo(jObj);
+			console.log("elRezo info is "+JSON.stringify(elRezo));
+			this.pageInfo = elRezo;
+			
+			console.log("new page info is "+JSON.stringify(this.pageInfo));
 		}
 		
 	}
@@ -221,9 +229,15 @@ export class CaptureEditPage implements IPage{
 		this.onBEEventReceived(jStr);
 	}
 	public onGeneratePageJsonClick(): void {
+		
+		var jStr = this.serializer.serializeFullPageInfo(this.pageInfo);
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jStr;
 	}
 	public onInjectPageJsonClick(): void {
-		
+		var jStr = this.serializer.getHardcodedPageJson();
+		console.log("inejcting page json");
+		this.onBEEventReceived(jStr);
 	}
 	
 	

@@ -15,8 +15,20 @@ export class CaptureEditPageSerializer {
 	
 	public serializeSubmitPage(info: FullCaptureInfo):string {
 		var jObj={
-			"event-type" : "submit-capture-update"
+			"event-type" : "submit-capture-update",
+			"captureID" : info.capID
 		}
+		jObj["capture-tags"] = info.capTags;
+		jObj["capture-infos"] = info.capInfos;
+		jObj["capture-IC"] = info.capIC;
+		jObj["capture-sw-date"] = info.capSwitchDate;
+		jObj["capture-x2-trans"] = info.capX2Trans;
+		jObj["capture-x2-protocol"] = info.capX2Protocol;
+		jObj["capture-x2-port"] = info.capX2Port;
+		jObj["caputre-x3-trans"] = info.capX3Trans;
+		jObj["capture-x3-protocol"] = info.capX3Protocol;
+		jObj["capture-x3-port"] = info.capX3Port;
+		jObj["capture-technology"] = info.capTechnology;
 		
 		return JSON.stringify(jObj);
 	}
@@ -49,7 +61,9 @@ export class CaptureEditPageSerializer {
 	
 	public deserializePageInfo(jObj : Object): FullCaptureInfo {
 		
-		var rez = new FullCaptureInfo();
+		var rez= jObj["capture-page-info"];
+		
+		console.log("rez is "+JSON.stringify(rez));
 		return rez;
 		
 	}
@@ -89,6 +103,15 @@ export class CaptureEditPageSerializer {
 		return JSON.stringify(jObj);
 	}
 	
+	public serializeFullPageInfo(info: FullCaptureInfo): string {
+		var jObj = {
+			"event-type" : "capture-page-received"
+		}
+		jObj["capture-page-info"] = info;
+		
+		return JSON.stringify(jObj);
+	}
+	
 	public serializeStreams(streams: StreamInfo[]):string {
 		var jObj = {
 			"event-type" : "streams-received"
@@ -104,7 +127,7 @@ export class CaptureEditPageSerializer {
 		return aJsonStr;
 	}
 	public getHardcodedPageJson(): string {
-		var aJsonStr="";
+		var aJsonStr="{\"event-type\":\"capture-page-received\",\"capture-page-info\":{\"capTags\":[{\"tagID\":\"tgzuku\",\"tagName\":\"Target to Target\"},{\"tagID\":\"tgzuku2\",\"tagName\":\"X3 DTMF\"},{\"tagID\":\"tgzuku2\",\"tagName\":\"Dynamic Codecs\"}],\"capInfos\":[{\"infoTypeID\":\"gaga\",\"infoTypeName\":\"Event\",\"infoValID\":\"evt3312\",\"infoValName\":\"Bearer Activation\"},{\"infoTypeID\":\"gaga\",\"infoTypeName\":\"Event\",\"infoValID\":\"evt3322\",\"infoValName\":\"Incoming call\"},{\"infoTypeID\":\"gugu\",\"infoTypeName\":\"Codec\",\"infoValID\":\"cod12\",\"infoValName\":\"EVS\"},{\"infoTypeID\":\"gugu\",\"infoTypeName\":\"Codec\",\"infoValID\":\"cod13\",\"infoValName\":\"AMR-WB\"}],\"capProjects\":[{\"capSetNames\":[\"VoLTE simple call Tests\",\"VoLTE Full test\"],\"capSetIDs\":[\"adarv\",\"aggav\"],\"projName\":\"Leo RX\",\"projID\":\"da3FVAd\"},{\"capSetNames\":[\"VoLTE simple call\",\"VoLTE Regression\",\"VoLTE Operator Orange\"],\"capSetIDs\":[\"adarv\",\"aggav\",\"aggavzor\"],\"projName\":\"Zeus RX\",\"projID\":\"da3FVAd\"}],\"capID\":\"d443KAv\",\"capName\":\"Leo RX VoLTE Simple Call 1\",\"capSize\":\"32531\",\"capLength\":\"312\",\"capUserNotes\":\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\"lastUpdateDate\":\"08.03.2021\",\"lastUpdater\":{\"name\":\"Daniel\",\"role\":\"Contributor\",\"surname\":\"Ciotoracu\",\"email\":\"daniel.ciotoracu@cognyte.com\",\"id\":\"DS341sa\"},\"uploadDate\":\"02.03.2021\",\"uploader\":{\"name\":\"Mihai\",\"role\":\"Contributor\",\"surname\":\"Cuatu\",\"email\":\"mihai.cuatu@cognyte.com\",\"id\":\"CMS69\"},\"verifier\":{\"name\":\"Stefan\",\"role\":\"Contributor\",\"surname\":\"Arnaut\",\"email\":\"stefan.arnaut@cognyte.com\",\"id\":\"SDA332\"},\"verifyDate\":\"02.05.2021\",\"capX2Protocol\":\"ETSI 102 232-5 v331\",\"capX2Trans\":\"FTP\",\"capX2Port\":\"22\",\"capX3Protocol\":\"ULIC EPS\",\"capX3Trans\":\"TCP\",\"capX3Port\":\"6001\",\"capTechnology\":{\"name\":\"VoLTE\",\"ID\":\"vlt13\"},\"capStatus\":{\"name\":\"Verified\",\"ID\":\"vrf123\"},\"capIC\":{\"infoTypeID\":\"gaga\",\"infoTypeName\":\"LIID\",\"infoValID\":\"\",\"infoValName\":\"12334\"},\"capSwitchDate\":\"15.01.2020\"}}";
 		return aJsonStr;
 	}
 	public getHardcodedStreamJson(): string {
