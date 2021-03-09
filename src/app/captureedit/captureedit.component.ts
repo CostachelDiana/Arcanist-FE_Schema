@@ -3,12 +3,15 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 
 import { HttpClient } from '@angular/common/http';
 import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
-import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/projectPageComponents'
+import {ProjMember} from '../project/projectPageComponents'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
-import {CaptureEditPageSerializer} from '../captureedit/CaptureEditPageSerializer'
+import { CaptureInjectSerializer } from '../utils/captureInjectSerializer';
+import { CaptureInjectionSettings } from '../utils/captureInfoComponents';
+import { CaptureInjectInfo } from '../utils/captureInfoComponents';
 import {IPage, IBEAbstractionGeneric} from '../project/IProject'
+import {CaptureEditPageSerializer} from './CaptureEditPageSerializer'
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -23,6 +26,7 @@ export class CaptureEditPage implements IPage{
 
 	
 	pageInfo: FullCaptureInfo;
+        captureInjectSerializer: CaptureInjectSerializer;
 
 	presetInfo: PresetTypesInfo;
 	capStreams: StreamInfo[];
@@ -40,6 +44,7 @@ export class CaptureEditPage implements IPage{
 		this.capStreams=[];
 		
 		this.serializer = new CaptureEditPageSerializer();
+		this.captureInjectSerializer = new CaptureInjectSerializer();
 		
 		this.requestPage();
 		
@@ -120,27 +125,43 @@ export class CaptureEditPage implements IPage{
 	// to be called from html 
 	public requestBackendData(capID: string) {
 	}
-	
-	// button hooks
-	public onInjectCaptureClick():void {
+
+  // button hooks
+	public onInjectCaptureClick(): void
+	{
+	    var injInfoArr = [];
+
+	    var captureInjectionInfo = new CaptureInjectInfo(this.pageInfo.capName, this.pageInfo.capID);
+	    captureInjectionInfo.captureLength = this.pageInfo.capLength;
+	    captureInjectionInfo.captureX2IP = this.pageInfo.capX2IP;
+	    captureInjectionInfo.captureX2Port = this.pageInfo.capX2Port;
+	    captureInjectionInfo.captureX2Protocol = this.pageInfo.capX2Protocol;
+
+	    captureInjectionInfo.captureX3IP = this.pageInfo.capX3IP;
+	    captureInjectionInfo.captureX3Port = this.pageInfo.capX3Port;
+	    captureInjectionInfo.captureX3Protocol = this.pageInfo.capX3Protocol;
+
+	    injInfoArr.push(captureInjectionInfo);
+
+	    var injSett = new CaptureInjectionSettings();
+	    var cisArr = [];
+	    cisArr.push(injSett);
 		
-		var capInfo = new ProjPageCaptureInfo("NoProj","noid");
-		capInfo.captureX2Port=this.pageInfo.capX2Port;
-		capInfo.captureX2Transport=this.pageInfo.capX2Trans;
-		capInfo.captureX3Port=this.pageInfo.capX3Port;
-		capInfo.captureX3Transport=this.pageInfo.capX3Trans;
-		capInfo.captureID = this.pageInfo.capID;
-		
-		var injSett = new InjectionSettings();
-		
-		
-		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
-		{width:'1100px',
-		height:'800px',
-		 data: {callback: null, cap: capInfo,set: injSett,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.presetInfo.capTransportTypes, X3TransVals: this.presetInfo.capTransportTypes}
-		}
-		);
-	}
+			var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
+			{width:'1100px',
+			height:'800px',
+	      data: { callback: this.onInjectCapturesSetCallback.bind(this), cap: injInfoArr, set: cisArr,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.presetInfo.capTransportTypes, X3TransVals: this.presetInfo.capTransportTypes}
+			}
+			);
+	  }
+
+	  public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap: CaptureInjectInfo[]) {
+		// CMS to do send to backend
+		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap);
+
+		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
+	  }
+
 	public onAddToFavoritesClick(): void {
 		
 	}

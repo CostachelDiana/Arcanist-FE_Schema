@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 
 import { Component, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
-import {ProjPageCaptureInfo} from '../project/projectPageComponents'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CaptureInjectInfo } from '../utils/captureInfoComponents'
 
 
 export interface SelectCaptureDialogueData {
-	callback: (capInfo: ProjPageCaptureInfo, capSet: number) => void,
+ 	callback: (capInfo: CaptureInjectInfo, capSet: number) => void,
 	capSet: number;
 }
 
@@ -32,7 +32,7 @@ export class SelectCaptureDialogue {
 		// Resolve 
 		
 		// CMS debug
-		var aCapture = new ProjPageCaptureInfo(captureID,"ADGr123");
+    		var aCapture = new CaptureInjectInfo(captureID,"ADGr123");
 		aCapture.captureX2Port="5001";
 		aCapture.captureX2Transport="TCP";
 		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
