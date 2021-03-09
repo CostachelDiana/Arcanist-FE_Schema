@@ -29,9 +29,15 @@ export class CaptureEditPage {
 	capInfoValsList: PredefinedTypeStruct[][];
 	capInfoTypesList: PredefinedTypeStruct[];
 	
+	
+	pageReady: boolean;
+	streamsReady: boolean;
+	
 
 	constructor(public dialogue: MatDialog) { 
 	
+		this. pageReady= false;
+		this.streamsReady=false;
 		this.capStreams=[];
 		this.capICTypes=[];
 		this.capTechnologyTypes=[];
@@ -41,7 +47,9 @@ export class CaptureEditPage {
 		this.capTagList=[];
 		this.capInfoValsList=[];
 		this.capInfoTypesList=[];
-		this.testInit();
+		
+			
+		
 	}
 	
 	public getPageInfo(): FullCaptureInfo {
@@ -65,6 +73,30 @@ export class CaptureEditPage {
 	}
 	public getCapTransportTypes(): PredefinedTypeStruct[] {
 		return this.capTransportTypes;
+	}
+	
+	public isStreamReady(): boolean {
+		return this.streamsReady;
+	}
+	public isPageReady(): boolean {
+		return this.pageReady;
+	}
+	
+	// debug button hooks
+	public onGeneratePageClick() {
+		this.testInit();
+	}
+	
+	public onRequestBEUpdateClick() {
+		this.requestBackendData("hahahlera");
+	}
+	public onGetStreamsClick() {
+		this.streamsReady=true;
+	}
+	
+	
+	// to be called from html 
+	public requestBackendData(capID: string) {
 	}
 	
 	// button hooks
@@ -290,6 +322,8 @@ export class CaptureEditPage {
 		this.pageInfo = pgInfo;
 		
 		this.testInitBEValues();
+		
+		this.pageReady=true;
 	}
 	testInitBEValues(): void {
 		

@@ -1,4 +1,9 @@
-<main role="main" > 
+<div class ="card card-body" *ngIf="!this.isPageReady()">
+	<button class="btn btn-primary" type="button" (click)="this.onGeneratePageClick()"> Generate Page</button>
+	<button class="btn btn-primary" type="button" (click)="this.onRequestBEUpdateClick()"> Request Page from BE</button>
+</div>
+
+<main role="main" *ngIf="this.isPageReady()"> 
  
 	<div class="card card-body">
 		<h1 class="text-center"> Capture: {{this.getPageInfo().capName}}</h1>	
@@ -126,15 +131,23 @@
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
-						<ul style="list-style:none">
-							<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
-								<div>
-									{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
-									<br>
-									<br>
-								</div>
-							</li>
-						</ul>
+						<div *ngIf="!this.isStreamReady()">
+							<button class="btn btn-primary" type="button" (click)="this.onGetStreamsClick()"> GetStreams </button>
+							<div class="text-center">
+								<img width="300px" class="text-center" src="assets/loading.gif" />							  
+							</div>
+						</div>
+						<div *ngIf="this.isStreamReady()">
+							<ul style="list-style:none" >
+								<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
+									<div>
+										{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
+										<br>
+										<br>
+									</div>
+								</li>
+							</ul>
+						</div>
 						</div>
 					</td>
 				</tr>
@@ -203,6 +216,10 @@
 		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
 		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
 	<br>
 	<br>
 	<div class="card card-body">
