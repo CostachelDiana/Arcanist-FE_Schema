@@ -1,5 +1,5 @@
 import {ProjMember} from '../project/projectPageComponents'
-import {FullCaptureInfo,CapProjLink,StreamInfo,PresetTypesInfo} from "../captureedit/CaptureStructures"
+import {FullCaptureInfo,CapProjLink,StreamInfo,PresetTypesInfo, PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 export class CaptureEditPageSerializer {
 	
@@ -48,6 +48,12 @@ export class CaptureEditPageSerializer {
 		
 		return JSON.stringify(jObj);
 	}
+	public serializeRequestInfoPresets(): string {
+		var jObj={
+			"event-type" : "request-info-presets"
+		}
+		return JSON.stringify(jObj);
+	}
 	public serializeRequestCapturePage(capID: string): string {
 		var jObj={
 			"event-type" : "request-capturePage",
@@ -56,8 +62,6 @@ export class CaptureEditPageSerializer {
 		
 		return JSON.stringify(jObj);
 	}
-	
-	
 	
 	public deserializePageInfo(jObj : Object): FullCaptureInfo {
 		
@@ -96,18 +100,21 @@ export class CaptureEditPageSerializer {
 		return rez;
 		
 	}
-	public deserializePresetValues(jObj: Object): PresetTypesInfo {
-		var rez= new PresetTypesInfo();
+	public deserializeInfoPresetValues(jObj: Object, info: PresetTypesInfo) {
+		// CMS to do
 		
-		rez.capTagList = jObj["tags-presets-array"];
-		rez.capTechnologyTypes = jObj["technology-presets-array"];
-		rez.capX2Protos = jObj["x2prots-presets-array"];
-		rez.capX3Protos = jObj["x3prots-presets-array"];
-		rez.capTransportTypes = jObj["trans-presets-array"];
-		rez.capICTypes = jObj["ictypes-presets-array"];
-		rez.capInfoTypesList = jObj["infotypes-preset-array"];
-		rez.capInfoValsList = jObj["infovalsmatrix-preset-array"];
-		return rez;
+		/*
+		for (var k in jObj; var i=0;i++)
+		{
+			var strct = new PredefinedTypeStruct();
+			strct.id=i;
+			info.capInfoTypesList.push(k);
+			var arr = jObj[k];
+			info.capInfoValsList.push(arr);
+		}*/
+	}
+	public deserializePresetValues(jObj: Object, info: PresetTypesInfo) {
+		// CMS todo 
 	}
 	public deserializeStreamInfo(jObj: Object): StreamInfo[] {
 		var rez: StreamInfo[];

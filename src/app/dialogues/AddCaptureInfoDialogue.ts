@@ -6,7 +6,7 @@ import {PredefinedTypeStruct} from "../captureedit/CaptureStructures"
 
 
 export interface AddCaptureInfoDialogueData {
-	callback: (typeID: string, valID:string) => void,
+	callback: (typeID: number, valID:number) => void,
 	eventTypes: PredefinedTypeStruct[],
 	eventValues: PredefinedTypeStruct[][]
 }
@@ -40,7 +40,7 @@ export class AddCaptureInfoDialogue {
 		return this.curValues;
 	}
 		
-	public onEventTypeChange(typeID: string) {
+	public onEventTypeChange(typeID: number) {
 		
 		for (var i=0;i<this.data.eventTypes.length;i++)
 		{
@@ -51,7 +51,7 @@ export class AddCaptureInfoDialogue {
 		}
 	}
 	
-	public onSubmitClick(typeID: string, valID: string): void {
+	public onSubmitClick(typeID: number, valID: number): void {
 				
 		if (this.data.callback != null)
 			this.data.callback(typeID, valID);

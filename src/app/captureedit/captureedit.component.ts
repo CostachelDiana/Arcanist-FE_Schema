@@ -12,9 +12,12 @@ import { CaptureInjectionSettings } from '../utils/captureInfoComponents';
 import { CaptureInjectInfo } from '../utils/captureInfoComponents';
 import {IPage, IBEAbstractionGeneric} from '../project/IProject'
 import {CaptureEditPageSerializer} from './CaptureEditPageSerializer'
+import {CaptureEditBEAbstraction} from './captureEditBEAbstraction'
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+
+
 
 
 @Component({
@@ -26,12 +29,13 @@ export class CaptureEditPage implements IPage{
 
 	
 	pageInfo: FullCaptureInfo;
-        captureInjectSerializer: CaptureInjectSerializer;
+	captureInjectSerializer: CaptureInjectSerializer;
 
 	presetInfo: PresetTypesInfo;
 	capStreams: StreamInfo[];
 	
 	serializer: CaptureEditPageSerializer;
+	backend: CaptureEditBEAbstraction;
 	pageReady: boolean;
 	streamsReady: boolean;
 	
@@ -45,6 +49,9 @@ export class CaptureEditPage implements IPage{
 		
 		this.serializer = new CaptureEditPageSerializer();
 		this.captureInjectSerializer = new CaptureInjectSerializer();
+		
+		this.backend = new CaptureEditBEAbstraction();
+		this.backend.setPage(this);
 		
 		this.requestPage();
 		
@@ -63,24 +70,31 @@ export class CaptureEditPage implements IPage{
 	}
 	
 	
-	public onBEEventReceived(evtJson: string): void {
+	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-		var evt = jObj["event-type"];
+		var evt = evtType;
 		
-		if (evt=="presets-received")
+		console.log(" received be event" + evt+ " str is " +evtJson);
+		if (evt=="info-presets-received")
 		{
-			this.presetInfo = this.serializer.deserializePresetValues(jObj);
-		} else if (evt=="streams-received")
+			console.log(" info presets for jObj "+ jObj);
+			this.serializer.deserializeInfoPresetValues(jObj, this.presetInfo);
+		} else if (evt=="presets-received")
+		{
+			this.serializer.deserializePresetValues(jObj, this.presetInfo);
+		}
+		else if (evt=="streams-received")
 		{
 			this.capStreams = this.serializer.deserializeStreamInfo(jObj);
+			this.streamsReady=true;
 		} else if (evt=="capture-page-received")
 		{
-			console.log("Capture page received");
-			var elRezo = this.serializer.deserializePageInfo(jObj);
-			console.log("elRezo info is "+JSON.stringify(elRezo));
+			
+			var elRezo = this.serializer.deserializePageInfo(jObj);			
 			this.pageInfo = elRezo;
 			
+			this.pageReady=true;			
 			console.log("new page info is "+JSON.stringify(this.pageInfo));
 		}
 		
@@ -167,7 +181,7 @@ export class CaptureEditPage implements IPage{
 	}
 	public onValidateCaptureClick(): void {
 	}
-	public onAddCaptureInfoCallback(typeID: string, valueID: string ): void {
+	public onAddCaptureInfoCallback(typeID: number, valueID: number ): void {
 		//	capInfoValsList: PredefinedTypeStruct[][];
 		// 		capInfoTypesList: PredefinedTypeStruct[];
 		//
@@ -199,7 +213,7 @@ export class CaptureEditPage implements IPage{
 		}
 		);
 	}
-	public onAddCaptureTagCallback(tagID: string): void {
+	public onAddCaptureTagCallback(tagID: number): void {
 		
 		for (var i=0;i<this.presetInfo.capTagList.length;i++)
 		{
@@ -234,64 +248,40 @@ export class CaptureEditPage implements IPage{
 		this.testInit();
 	}
 	
-	
-	
-	public onRequestBEUpdateClick() {
-		this.requestBackendData("hahahlera");
-	}
 	public onGetStreamsClick() {
 		this.streamsReady=true;
 	}
 	
-	public onQuerryBackendClick() {
+	public onQuerryBEClick() {
 		
 		console.log("Backend querried");
 		 this.http.post<any>('https://jsonplaceholder.typicode.com/posts', { title: 'Angular POST Request Example' }).subscribe(data => {
             (<HTMLInputElement> document.querySelector(".usrNotes")).value="BE Response received "+ data.id;
         })
-	}
-	
+	}	
 	
 	public onBEResponseReceived(){
 		
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value="BE Response received";
-	}
+	}	
 	
 	
-	public onGeneratePresetsJsonClick(): void {
-		
-		var jSon = this.serializer.serializePresetInfo(this.presetInfo);
-		// update
-		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
-		// 
+	public onRequestBEPresetsClick() {		
+		var beStr = this.serializer.serializeRequestPresets();
+		this.backend.sendBEUpdate(beStr);		
 	}
-	public onInjectPresetsJsonClick(): void {
-		
-		var jStr = this.serializer.getHardcodedPresetJson();		
-		this.onBEEventReceived(jStr);
+	public onRequestBEInfoPresetsClick(){
+		var beStr = this.serializer.serializeRequestInfoPresets();
+		this.backend.sendBEUpdate(beStr);
 	}
-	public onGenerateStreamJsonClick(): void {
-		
-		var jSon = this.serializer.serializeStreams(this.capStreams);
-		
-		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
-		
+	public onRequestBEStreamsClick() {
+		var urlParams = new URLSearchParams(window.location.search);
+		var capID=urlParams.get('capid');
+		var beStr = this.serializer.serializeStreamRequest(capID);
+		this.backend.sendBEUpdate(beStr);
 	}
-	public onInjectStreamsJsonClick(): void {
-		var jStr = this.serializer.getHardcodedStreamJson();
+	public onRequestBEPageClick() {
 		
-		this.onBEEventReceived(jStr);
-	}
-	public onGeneratePageJsonClick(): void {
-		
-		var jStr = this.serializer.serializeFullPageInfo(this.pageInfo);
-		
-		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jStr;
-	}
-	public onInjectPageJsonClick(): void {
-		var jStr = this.serializer.getHardcodedPageJson();
-		console.log("inejcting page json");
-		this.onBEEventReceived(jStr);
 	}
 	
 	
@@ -337,7 +327,7 @@ export class CaptureEditPage implements IPage{
 		pgInfo.capX3Trans="TCP";
 		pgInfo.capX3Port="6001";
 		
-		var aStruct = new PredefinedTypeStruct();
+	/*	var aStruct = new PredefinedTypeStruct();
 		aStruct.displayName="VoLTE";
 		aStruct.id="vlt13";		
 		pgInfo.capTechnology=aStruct;
@@ -345,19 +335,19 @@ export class CaptureEditPage implements IPage{
 		var aStruct = new PredefinedTypeStruct();
 		aStruct.displayName="Verified";
 		aStruct.id="vrf123";
-		pgInfo.capStatus = aStruct;
+		pgInfo.capStatus = aStruct;*/
 			
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeID=1;
 		aCapInfo.infoTypeName="LIID";
-		aCapInfo.infoValID="";
+		aCapInfo.infoValID=0;
 		aCapInfo.infoValName="12334";
 		pgInfo.capIC=aCapInfo;		
 		
 		pgInfo.capSwitchDate="15.01.2020";
 		
 		// TAGS
-		var aCapTag=  new CaptureTag();
+		/*var aCapTag=  new CaptureTag();
 		aCapTag.tagID="tgzuku";
 		aCapTag.tagName="Target to Target";
 		
@@ -373,10 +363,10 @@ export class CaptureEditPage implements IPage{
 		aCapTag.tagID="tgzuku2";
 		aCapTag.tagName="Dynamic Codecs";
 		
-		pgInfo.addCaptureTag(aCapTag);
+		pgInfo.addCaptureTag(aCapTag);*/
 		
 		// INFOS
-		var aCapInfo = new CaptureInfo();
+		/* var aCapInfo = new CaptureInfo();
 		aCapInfo.infoTypeID="gaga";
 		aCapInfo.infoTypeName="Event";
 		aCapInfo.infoValID="evt3312";
@@ -404,7 +394,7 @@ export class CaptureEditPage implements IPage{
 		aCapInfo.infoTypeName="Codec";
 		aCapInfo.infoValID="cod13";
 		aCapInfo.infoValName="AMR-WB";		
-		pgInfo.addCaptureInfo(aCapInfo);
+		pgInfo.addCaptureInfo(aCapInfo);*/
 		
 		var aCapProjLink = new CapProjLink();
 		aCapProjLink.projName="Leo RX";

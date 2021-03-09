@@ -19,7 +19,7 @@ export interface IBEAbstraction {
 // to be swtiched to these new interfaces
 export interface IPage {
 	initPage(pgJson: string): void;
-	onBEEventReceived(evtJson: string): void;
+	onBEEventReceived(evtType:string, evtJson: string): void;
 	setBEAbstraction(be: IBEAbstractionGeneric ): void;
 }
 

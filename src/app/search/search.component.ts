@@ -68,7 +68,7 @@ export class SearchComponent implements OnInit {
     this._searchParameters.targetICSelectedId = event.target.value;
   }
 
-  public onAddCaptureInfoCallback(typeID: string, valueID: string ): void {
+  public onAddCaptureInfoCallback(typeID: number, valueID: number ): void {
 		var aInfo = new CaptureInfo();
 		for (var i=0;i<this._typesInfo.capInfoTypesList.length;i++)
 		{
@@ -103,7 +103,7 @@ export class SearchComponent implements OnInit {
 		this._searchParameters.removeCaptureInfo(index);
 	}
 
-  public onAddCaptureTagCallback(tagID: string): void {
+  public onAddCaptureTagCallback(tagID: number): void {
 		
 		for (var i=0;i<this._typesInfo.capTagList.length;i++)
 		{
