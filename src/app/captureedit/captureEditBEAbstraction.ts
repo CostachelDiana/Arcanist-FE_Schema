@@ -35,6 +35,8 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	}
 	
 	public onBEDataReceived(data: string): void {
+		
+		console.log("received data " + data);
 	}
 	
 	public onBEResponseReceived(evtType:string, beResponse: string): void {
