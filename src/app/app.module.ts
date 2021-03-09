@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,14 +16,13 @@ import {SelectCaptureDialogue} from './dialogues/SelectCaptureDialogue';
 import {InjectCapturesDialogue} from './dialogues/InjectCapturesDialogue';
 import {SingleInjectCaptureDialogue} from './dialogues/SingleInjectCaptureDialogue';
 import {AddCapturesSetDialogue} from './dialogues/AddCapturesSetDialogue';
-import {AddCaptureTagDialogue} from './dialogues/AddCaptureTagDialogue';
-import {AddCaptureInfoDialogue} from './dialogues/AddCaptureInfoDialogue';
 
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import  {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatInputModule} from '@angular/material/input';
+import { NgxPopper } from 'angular-popper';
 
 @NgModule({
   declarations: [
@@ -40,8 +37,6 @@ import {MatInputModule} from '@angular/material/input';
 	InjectCapturesDialogue,
 	SingleInjectCaptureDialogue,
 	AddCapturesSetDialogue,
-	AddCaptureTagDialogue,
-	AddCaptureInfoDialogue,
 	CaptureEditPage,
 	FirstPage
 	
@@ -54,8 +49,7 @@ import {MatInputModule} from '@angular/material/input';
 	MatDialogModule,
 	MatFormFieldModule,
     MatInputModule,
-    FormsModule,
-    HttpClientModule
+    NgxPopper
   ],
 
   providers: [],

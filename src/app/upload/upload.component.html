@@ -34,93 +34,194 @@
 <label><b>Name of capture</b></label>
 <button>Inject Capture</button>
 <br>
-Basic Info
-<hr class="solid">
-<table width="100%">
-    <tr>
-        <td><table width="100%">
-            <tr>
-                <th>Capture Name</th>
-                <td><label>{{this.upCapDetails.name}}</label></td>
-            </tr>
-            <tr>
-                <th>CD Protocol</th>
-                <td><div class="dropdown">
-                  <mat-form-field appearance="fill">
-                    <mat-label>X2 Protocol</mat-label>
-                      <select matNativeControl required>
-                      <option *ngFor="let x2 of this.upCapDetails.CD_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
-                      </select>		
-                  </mat-form-field>
-                  <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
-                    <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CD_Protocols">
+
+<div><h3>Basic Info</h3><hr class="solid">
+  <table width="100%">
+      <tr>
+          <td><table width="100%">
+              <tr>
+                  <th>Capture Name</th>
+                  <td><label>{{this.upCapDetails.name}}</label></td>
+              </tr>
+              <tr>
+                  <th>CD Protocol</th>
+                  <td><div class="dropdown">
+                    <mat-form-field appearance="fill">
+                      <mat-label>X2 Protocol</mat-label>
+                        <select matNativeControl required>
+                        <option *ngFor="let x2 of this.upCapDetails.CD_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
+                        </select>		
+                    </mat-form-field>
+                    <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
+                      <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CD_Protocols">
+                          <li>{{item.fullName}}</li>
+                      </ul>--></div>
+                  </td>
+              </tr>
+              <tr>
+                  <th>CC Protocol</th>
+                  <td><div class="dropdown">
+                    <mat-form-field appearance="fill">
+                      <mat-label>X3 Protocol</mat-label>
+                        <select matNativeControl required>
+                        <option *ngFor="let x2 of this.upCapDetails.CC_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
+                        </select>		
+                    </mat-form-field>
+                    <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
+                    <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CC_Protocols">
                         <li>{{item.fullName}}</li>
                     </ul>--></div>
-                </td>
-            </tr>
-            <tr>
-                <th>CC Protocol</th>
-                <td><div class="dropdown">
-                  <mat-form-field appearance="fill">
-                    <mat-label>X3 Protocol</mat-label>
-                      <select matNativeControl required>
-                      <option *ngFor="let x2 of this.upCapDetails.CC_Protocols; let idx = index" value="{{x2.type}}">{{x2.fullName}}</option>
-                      </select>		
-                  </mat-form-field>
-                  <!--<button data-toggle="dropdown"><i>Choose main protocol</i><span class="caret"></span></button>
-                  <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.CC_Protocols">
-                      <li>{{item.fullName}}</li>
-                  </ul>--></div>
-                </td>
-            </tr>
-            <tr>
-                <th>Technology</th>
-                <td><div class="dropdown">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Core Technology</mat-label>
-                      <select matNativeControl required>
-                      <option *ngFor="let x2 of this.upCapDetails.techology; let idx = index" value="{{x2.fullName}}">{{x2.fullName}}</option>
-                      </select>		
-                  </mat-form-field>
-                  <!--<button data-toggle="dropdown"><i>Technology</i><span class="caret"></span></button>
-                  <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.techology">
-                      <li>{{item.fullName}}</li>
-                  </ul>--></div>
-                </td>
-            </tr>
+                  </td>
+              </tr>
+              <tr>
+                  <th>Technology</th>
+                  <td><div class="dropdown">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Core Technology</mat-label>
+                        <select matNativeControl required>
+                        <option *ngFor="let x2 of this.upCapDetails.techology; let idx = index" value="{{x2.fullName}}">{{x2.fullName}}</option>
+                        </select>		
+                    </mat-form-field>
+                    <!--<button data-toggle="dropdown"><i>Technology</i><span class="caret"></span></button>
+                    <ul class="dropdown-menu" *ngFor="let item of this.upCapDetails.techology">
+                        <li>{{item.fullName}}</li>
+                    </ul>--></div>
+                  </td>
+              </tr>
+          </table></td>
+
+          <td><table width="100%">
+              <tr>
+                  <th>Capture Szie</th>
+                  <td>{{this.upCapDetails.size}}</td>
+              </tr>
+              <tr>
+                  <th>Captre Length</th>
+                  <td>{{this.upCapDetails.length.getMinutes()}}:
+                    {{this.upCapDetails.length.getSeconds()}}</td>
+              </tr>
+              <tr>
+                  <th>Uploaded by</th>
+                  <td>user/Anonymus</td>
+                  <td>at date</td>
+              </tr>
+              <tr>
+                  <th>Verified by</th>
+                  <td>user</td>
+              </tr>
+              <tr>
+                  <th>Last update by</th>
+                  <td>user</td>
+                  <td>at date</td>
+              </tr>
+              <tr>
+                  <th>Status</th>
+                  <td>{{this.upCapDetails.status}}</td>
+              </tr>
+          </table></td>
+      </tr>
+  </table>
+
+  <p>Transfered filename is: [{{this.getFileName()}}]</p>
+</div>
+
+<div><h3>Advanced Info</h3><hr class="solid">
+  
+  <div><hr class="solid" width="90%" align="center">
+    <table width="100%"><tr>
+        <td><table>
+          <tr><td>CD Port: </td></tr>
+          <tr><td>CD Transport: </td></tr>
+          <tr><td>CC Port: </td></tr>
+          <tr><td>CC Transport: </td></tr>
         </table></td>
 
-        <td><table width="100%">
-            <tr>
-                <th>Capture Szie</th>
-                <td>{{this.upCapDetails.size}}</td>
-            </tr>
-            <tr>
-                <th>Captre Length</th>
-                <td>{{this.upCapDetails.length.getMinutes()}}:
-                  {{this.upCapDetails.length.getSeconds()}}</td>
-            </tr>
-            <tr>
-                <th>Uploaded by</th>
-                <td>user/Anonymus</td>
-                <td>at date</td>
-            </tr>
-            <tr>
-                <th>Verified by</th>
-                <td>user</td>
-            </tr>
-            <tr>
-                <th>Last update by</th>
-                <td>user</td>
-                <td>at date</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{this.upCapDetails.status}}</td>
-            </tr>
+        <td><table>
+          <tr><td>port + protocol + color</td></tr>
         </table></td>
-    </tr>
-</table>
+
+        <td><table>
+          <tr><td>graphic</td></tr>
+        </table></td>
+
+    </tr></table>
+  </div>
+  
+  <div><h4>Capture Info</h4><hr class="solid" width="90%" align="center">
+    <table width="90%" align="center"><tr>
+      <td><table>auto create table based on list of info</table></td>
+
+      <button class="btn btn-outline-dark" data-toggle="modal" data-target="#AddCapInfoModal">Add Capture Info</button>
+      <div class="modal fade" id="AddCapInfoModal" role="dialog" aria-labelledby="AddCapInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="AddCapInfoModalLabel">New message</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              smth to add as (key, value)
+            </div>
+
+            <form action="./UploadPage"><div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button class="btn btn-primary" type="submit">Add Info</button>
+            </div></form>
+          </div>
+        </div>
+      </div>
+
+    </tr></table>
+  </div>
+
+  <div><h4>Caputre Tags</h4><hr class="solid" width="90%" align="center">
+    <table width="90%"><tr>
+      <td><table>auto create table based on list of tags</table></td>
+      plus: some details about capture?
+      
+      <button class="btn btn-outline-dark" data-toggle="modal" data-target="#AddCapInfoModal">Add Capture Flag</button>
+      <div class="modal fade" id="AddCapInfoModal" role="dialog" aria-labelledby="AddCapInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="AddCapInfoModalLabel">New message</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              smth to add as (key, value)
+            </div>
+
+            <form action="./UploadPage"><div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button class="btn btn-primary" type="submit">Add Info</button>
+            </div></form>
+          </div>
+        </div>
+      </div>
+
+    </tr></table>
+  </div>
+</div>
+
+<div><h3>Projects</h3><hr class="solid">
+  auto-create ... based on no. of proj list in which the cap is used (e.g. next)
+  Maybe use a scroll list
+  <div><h4>Name of proj1</h4><hr class="solid" width="90%" align="center">
+    some details
+  </div>
+
+  <div><h4>Name of proj2</h4><hr class="solid" width="90%" align="center">
+    some details
+  </div>
+</div>
 
 <!--
 <br><br><br><br><br>

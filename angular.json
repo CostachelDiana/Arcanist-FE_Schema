@@ -66,8 +66,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Arcanist-PROJ:build",
-			"host":"0.0.0.0"
+            "browserTarget": "Arcanist-PROJ:build"
           },
           "configurations": {
             "production": {

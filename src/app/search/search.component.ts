@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDatepickerModule} from '@angular/material/datepicker'
-import {PresetTypesInfo} from "../captureedit/CaptureStructures"
+import { textSpanIntersectsWithPosition } from 'typescript';
 
 @Component({
   selector: 'app-search',
@@ -11,13 +10,13 @@ import {PresetTypesInfo} from "../captureedit/CaptureStructures"
 export class SearchComponent implements OnInit {
 
   private _pageInited: boolean;
-  private _typesInfo: PresetTypesInfo;
+  private _searchOptions: SearchOptions;
   private _searchParameters: SearchParameters;
   
 
   constructor() { 
     this._pageInited = false;
-    this._typesInfo = new PresetTypesInfo();
+    this._searchOptions = null;
     this._searchParameters = new SearchParameters();
   }
 
@@ -25,11 +24,15 @@ export class SearchComponent implements OnInit {
   }
 
   private testInit(): void {
-    this._typesInfo.testInit();
+    this._searchOptions = new SearchOptions();
+    
+    var jsonTest = "{\"codec\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"AMRA\"}],\"product\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"Voice\"},{\"id\":3,\"displayName\":\"Voip\"}],\"scenario\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"IncomingCall\"},{\"id\":3,\"displayName\":\"OutgoingCall\"}],\"transport\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"TCP\"},{\"id\":3,\"displayName\":\"UDP\"}],\"technology\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"CS\"},{\"id\":3,\"displayName\":\"MPD\"},{\"id\":4,\"displayName\":\"VoIP\"},{\"id\":5,\"displayName\":\"VoLTE\"}],\"tag\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"Target to Target\"},{\"id\":3,\"displayName\":\"5G Location\"}],\"family\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"ETSI\"},{\"id\":3,\"displayName\":\"CALEA\"},{\"id\":4,\"displayName\":\"HUAWEI\"},{\"id\":5,\"displayName\":\"NOKIA\"},{\"id\":6,\"displayName\":\"ALCATEL LUCENT\"}],\"event\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"StartCell\"},{\"id\":3,\"displayName\":\"EndCell\"},{\"id\":4,\"displayName\":\"GPRSAttach\"}]}";
+
+    this._searchOptions.populateFromJson(jsonTest);
   }
 
-  get typesInfo() : PresetTypesInfo{
-    return this._typesInfo;
+  get searchOptions() : SearchOptions{
+    return this._searchOptions;
   }
 
   get searchParameters() : SearchParameters{
@@ -48,32 +51,6 @@ export class SearchComponent implements OnInit {
   public onCdProtocolOptionsChanged(event: any){
     this._searchParameters.cdProtocolSelectedId = event.target.value;
   }
-
-  public onCcProtocolOptionsChanged(event: any){
-    this._searchParameters.ccProtocolSelectedId = event.target.value;
-  }
-  
-  public onTechnologiesOptionsChanged(event: any){
-    this._searchParameters.technologySelectedId = event.target.value;
-  }  
-  
-  public onStatusOptionsChanged(event: any){
-    this._searchParameters.statusSelectedId = event.target.value;
-  }
-
-  public onTargetICOptionsChanged(event: any){
-    this._searchParameters.targetICSelectedId = event.target.value;
-  }
-  
-}
-
-export class MinMaxNumberOption {
-  min: number;
-  max: number;
-  constructor(){
-    this.min = undefined;
-    this.max = undefined;
-  }
 }
 
 export class SearchParameters {
@@ -81,101 +58,44 @@ export class SearchParameters {
   get searchName(): string {
     return this._searchName;
   }
+ 
   set searchName(newName: string){
     this._searchName = newName;
   }  
 
-  private _cdProtocolSelectedId: string;
-  get cdProtocolSelectedId() : string{
+  private _cdProtocolSelectedId: number;
+  get cdProtocolSelectedId() : number{
     return this._cdProtocolSelectedId;
   }
-  set cdProtocolSelectedId (selectedId : string){
+
+  set cdProtocolSelectedId (selectedId : number){
     this._cdProtocolSelectedId = selectedId;
   }  
 
-  private _ccProtocolSelectedId: string;
-  get ccProtocolSelectedId() : string{
-    return this._ccProtocolSelectedId;
-  }
-  set ccProtocolSelectedId (selectedId : string){
-    this._ccProtocolSelectedId = selectedId;
-  }  
-
-  private _technologySelectedId: string;
-  get technologySelectedId() : string{
-    return this._technologySelectedId;
-  }
-  set technologySelectedId (selectedId : string){
-    this._technologySelectedId = selectedId;
-  }   
-
-  private _durationMinMax: MinMaxNumberOption;
-  get durationMin(): number{
-    return this._durationMinMax.min;
-  }
-  set durationMin(duration: number){
-    this._durationMinMax.min = duration;
-  }
-  get durationMax(): number{
-    return this._durationMinMax.max;
-  }
-  set durationMax(duration: number){
-    this._durationMinMax.max = duration;
-  }
-
-  private _referencesMinMax: MinMaxNumberOption;
-  get referencesMin(): number{
-    return this._referencesMinMax.min;
-  }
-  set referencesMin(references: number){
-    this._referencesMinMax.min = references;
-  }
-  get referencesMax(): number{
-    return this._referencesMinMax.max;
-  }
-  set referencesMax(references: number){
-    this._referencesMinMax.max = references;
-  }
-
-  private _projectsMinMax: MinMaxNumberOption;
-  get projectsMin(): number{
-    return this._projectsMinMax.min;
-  }
-  set projectsMin(projects: number){
-    this._projectsMinMax.min = projects;
-  }
-  get projectsMax(): number{
-    return this._projectsMinMax.max;
-  }
-  set projectsMax(projects: number){
-    this._projectsMinMax.max = projects;
-  }
-
-  private _statusSelectedId: string;
-  get statusSelectedId() : string{
-    return this._statusSelectedId;
-  }
-  set statusSelectedId (selectedId : string){
-    this._statusSelectedId = selectedId;
-  } 
-
-  private _targetICSelectedId : string;
-  set targetICSelectedId (selectedId : string){
-    this._targetICSelectedId = selectedId;
-  } 
-  
-
   constructor(){
     this._searchName = "";
-    
-    this._cdProtocolSelectedId = "";
-    this._ccProtocolSelectedId = "";
-    this._technologySelectedId = "";
-    
-    this._durationMinMax = new MinMaxNumberOption();
-    this._referencesMinMax = new MinMaxNumberOption();
-    this._projectsMinMax = new MinMaxNumberOption();
+    this._cdProtocolSelectedId = 1;
+  }
+}
 
-    this._statusSelectedId = "";  
-  } 
+export class SearchCdProtocolOption {
+  id: number;
+  displayName: string;
+}
+
+export class SearchOptions {
+  public populateFromJson(jsonString: string) : void {
+    var jsonObj = JSON.parse(jsonString);
+    if(jsonObj["transport"])
+    {
+      this._cdProtocolOptions = jsonObj["transport"];
+    }
+  }
+
+  private _cdProtocolOptions : SearchCdProtocolOption[];
+
+  get cdProtocolOptions() : SearchCdProtocolOption[]{
+    return this._cdProtocolOptions;
+  }
+
 }

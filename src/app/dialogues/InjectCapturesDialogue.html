@@ -60,11 +60,9 @@
 								</mat-form-field>
 							</td>
 							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X2 Transport</mat-label>
-									  <select matNativeControl class="x2trans" required>
-										<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.ID}}">{{x2.name}}</option>
-									  </select>
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X2 Transport</mat-label>
+									<input matInput class="x2trans" value="{{this.getSettingsForCapture(idx).X2Transport}}">
 								</mat-form-field>
 							</td>
 							<td>							
@@ -74,11 +72,9 @@
 								</mat-form-field>
 							</td>
 							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X2 Transport</mat-label>
-									  <select matNativeControl class="x3trans" required>
-										<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.ID}}">{{x3.name}}</option>
-									  </select>
+								<mat-form-field [style.width.px]=50>
+								<mat-label>Dst X3 Transport</mat-label>
+									<input matInput class="x3trans" value="{{this.getSettingsForCapture(idx).X3Transport}}">
 								</mat-form-field>
 							</td>						
 					</tr>									
