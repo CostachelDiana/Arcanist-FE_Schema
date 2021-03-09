@@ -1,19 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class ="card card-body" *ngIf="!this.isPageReady()">
+	<button class="btn btn-primary" type="button" (click)="this.onGeneratePageClick()"> Generate Page</button>
+	<button class="btn btn-primary" type="button" (click)="this.onRequestBEUpdateClick()"> Request Page from BE</button>
+</div>
 
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-
-<main role="main" > 
+<main role="main" *ngIf="this.isPageReady()"> 
  
 	<div class="card card-body">
 		<h1 class="text-center"> Capture: {{this.getPageInfo().capName}}</h1>	
-		<button class="btn btn-primary" type="button"> Inject Capture </button>
+		<button class="btn btn-primary" type="button" (click)="this.onInjectCaptureClick()"> Inject Capture </button>
 		<button class="btn btn-primary" type="button"> Add to Favorites </button>
+		<button class="btn btn-primary" type="button" (click)="onGeneratePresetsJsonClick()"> generate Preset Types Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectPresetsJsonClick()"> inject Preset Types Json</button>
+		<button class="btn btn-primary" type="button" (click)="onGenerateStreamJsonClick()"> generate Streams Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectStreamsJsonClick()"> inject Streams Json</button>
+		<button class="btn btn-primary" type="button" (click)="onGeneratePageJsonClick()"> generate Page Json</button>
+		<button class="btn btn-primary" type="button" (click)="onInjectPageJsonClick()"> inject Page Json</button>
+		
 	</div>
 	<br>
 	<br>
@@ -136,15 +138,23 @@
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
-						<ul style="list-style:none">
-							<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
-								<div>
-									{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
-									<br>
-									<br>
-								</div>
-							</li>
-						</ul>
+						<div *ngIf="!this.isStreamReady()">
+							<button class="btn btn-primary" type="button" (click)="this.onGetStreamsClick()"> GetStreams </button>
+							<div class="text-center">
+								<img width="300px" class="text-center" src="assets/loading.gif" />							  
+							</div>
+						</div>
+						<div *ngIf="this.isStreamReady()">
+							<ul style="list-style:none" >
+								<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
+									<div>
+										{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
+										<br>
+										<br>
+									</div>
+								</li>
+							</ul>
+						</div>
 						</div>
 					</td>
 				</tr>
@@ -159,11 +169,7 @@
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
 						  <select matNativeControl required>
-							<option value="1">LIID</option>
-							<option value="2">MSISDN</option>
-							<option value="3">TelURI</option>
-							<option value="4">IMSI</option>
-							<option value="4">IMEI</option>
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.ID}}">{{ic.name}}</option>							
 						  </select>
 					</mat-form-field>
 					&nbsp;
@@ -182,7 +188,7 @@
 					</mat-form-field>
 					<ul style="list-style:none">						
 						<li style="display:inline" *ngFor="let info of this.getPageInfo().getCaptureInfos(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureInfoClick(idx)"> X</button>
 							&nbsp;
 							 <span style="font-weight:bold;color: #0000BB">{{info.infoTypeName}}:</span> {{info.infoValName}}
 							 &nbsp;
@@ -190,7 +196,7 @@
 						</li>
 					</ul>
 					<br>
-					<button class="btn btn-primary" type="button" > Add Capture Info </button>
+					<button class="btn btn-primary" type="button" (click)="onAddCaptureInfoClick()" > Add Capture Info </button>
 			</div>
 		</div>
 		<br>
@@ -202,16 +208,25 @@
 			</div>
 			<ul style="list-style:none">
 						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button"> X</button>
+							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
 							 {{tg.tagName}}
 							 &nbsp;
 							 &nbsp;
 						</li>
 			</ul>
-			<button class="btn btn-primary" type="button" > Add Capture Tag </button>
+			<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
 		</div>
 			
 	</div>
+	<br>
+	<div>
+		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
+		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
 	<br>
 	<br>
 	<div class="card card-body">
@@ -235,4 +250,5 @@
 			</ul>
 		</div>		
 	</div>
+	
 </main>

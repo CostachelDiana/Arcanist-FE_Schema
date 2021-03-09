@@ -1,62 +1,246 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
-import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct} from './CaptureStructures';
-import {ProjMember} from '../project/projectPageComponents'
+import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
+import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/projectPageComponents'
+import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
+import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
+import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
+import {CaptureEditPageSerializer} from '../captureedit/CaptureEditPageSerializer'
+import {IPage, IBEAbstractionGeneric} from '../project/IProject'
 
 @Component({
   selector: 'app-project',
   templateUrl: './captureedit.component.html',
   styleUrls: ['./captureedit.component.css']
 })
-export class CaptureEditPage {
+export class CaptureEditPage implements IPage{
 
+	
 	pageInfo: FullCaptureInfo;
 
-	capICTypes: PredefinedTypeStruct[];
-	capTechnologyTypes: PredefinedTypeStruct[];
-	capX2Protos: PredefinedTypeStruct[];
-	capX3Protos: PredefinedTypeStruct[];
-	capTransportTypes: PredefinedTypeStruct[];
-	
+	presetInfo: PresetTypesInfo;
 	capStreams: StreamInfo[];
 	
-
-	constructor() { 
+	serializer: CaptureEditPageSerializer;
+	pageReady: boolean;
+	streamsReady: boolean;
 	
+
+	constructor(public dialogue: MatDialog) { 
+	
+		this.pageReady= false;
+		this.streamsReady=false;
+		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
-		this.capICTypes=[];
-		this.capTechnologyTypes=[];
-		this.capX2Protos=[];
-		this.capX3Protos=[];
-		this.capTransportTypes=[];
-		this.testInit();
+		
+		this.serializer = new CaptureEditPageSerializer();
+		
+	}
+	
+	public initPage(pgJson: string): void
+	{
+	}
+	public onBEEventReceived(evtJson: string): void {
+		
+		var jObj = JSON.parse(evtJson);
+		var evt = jObj["event-type"];
+		
+		if (evt=="presets-received")
+		{
+			this.presetInfo = this.serializer.deserializePresetValues(jObj);
+		} else if (evt=="streams-received")
+		{
+			this.capStreams = this.serializer.deserializeStreamInfo(jObj);
+		} else if (evt=="capture-page-received")
+		{
+			console.log("Capture page received");
+			var elRezo = this.serializer.deserializePageInfo(jObj);
+			console.log("elRezo info is "+JSON.stringify(elRezo));
+			this.pageInfo = elRezo;
+			
+			console.log("new page info is "+JSON.stringify(this.pageInfo));
+		}
+		
+	}
+	public setBEAbstraction(be: IBEAbstractionGeneric ): void {
+		
 	}
 	
 	public getPageInfo(): FullCaptureInfo {
 		return this.pageInfo;
 	}
 	public getICTypes(): PredefinedTypeStruct[] {
-		return this.capICTypes;
+		return this.presetInfo.capICTypes;
 	}
 	public getCapTechnologyTypes(): PredefinedTypeStruct[] {
-		return this.capTechnologyTypes;
+		return this.presetInfo.capTechnologyTypes;
 	}
 	
 	public getCapX3Protos(): PredefinedTypeStruct[] {
-		return this.capX3Protos;
+		return this.presetInfo.capX3Protos;
 	}
 	public getCapX2Protos(): PredefinedTypeStruct[] {
-		return this.capX2Protos;
+		return this.presetInfo.capX2Protos;
 	}
 	public getStreamInfos(): StreamInfo[] {
 		return this.capStreams;
 	}
 	public getCapTransportTypes(): PredefinedTypeStruct[] {
-		return this.capTransportTypes;
+		return this.presetInfo.capTransportTypes;
 	}
 	
-
+	public isStreamReady(): boolean {
+		return this.streamsReady;
+	}
+	public isPageReady(): boolean {
+		return this.pageReady;
+	}
+	
+	
+	
+	
+	// to be called from html 
+	public requestBackendData(capID: string) {
+	}
+	
+	// button hooks
+	public onInjectCaptureClick():void {
+		
+		var capInfo = new ProjPageCaptureInfo("NoProj","noid");
+		capInfo.captureX2Port=this.pageInfo.capX2Port;
+		capInfo.captureX2Transport=this.pageInfo.capX2Trans;
+		capInfo.captureX3Port=this.pageInfo.capX3Port;
+		capInfo.captureX3Transport=this.pageInfo.capX3Trans;
+		capInfo.captureID = this.pageInfo.capID;
+		
+		var injSett = new InjectionSettings();
+		
+		
+		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
+		{width:'1100px',
+		height:'800px',
+		 data: {callback: null, cap: capInfo,set: injSett,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.presetInfo.capTransportTypes, X3TransVals: this.presetInfo.capTransportTypes}
+		}
+		);
+	}
+	public onAddToFavoritesClick(): void {
+		
+	}
+	public onValidateCaptureClick(): void {
+	}
+	public onAddCaptureInfoCallback(typeID: string, valueID: string ): void {
+		//	capInfoValsList: PredefinedTypeStruct[][];
+		// 		capInfoTypesList: PredefinedTypeStruct[];
+		//
+		var aInfo = new CaptureInfo();
+		for (var i=0;i<this.presetInfo.capInfoTypesList.length;i++)
+		{
+			if (this.presetInfo.capInfoTypesList[i].ID == typeID)
+			{
+				aInfo.infoTypeID=typeID;
+				aInfo.infoTypeName=this.presetInfo.capInfoTypesList[i].name;
+				
+				for (var j=0;j<this.presetInfo.capInfoValsList[i].length;j++)
+				{
+					if (this.presetInfo.capInfoValsList[i][j].ID == valueID)
+					{
+						aInfo.infoValID=valueID;
+						aInfo.infoValName=this.presetInfo.capInfoValsList[i][j].name;
+					}
+				}
+			}
+		}
+		this.pageInfo.addCaptureInfo(aInfo);
+	}
+	public onAddCaptureInfoClick(): void {
+		var dialogRef = this.dialogue.open(AddCaptureInfoDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureInfoCallback.bind(this),eventTypes: this.presetInfo.capInfoTypesList, eventValues:this.presetInfo.capInfoValsList}
+		}
+		);
+	}
+	public onAddCaptureTagCallback(tagID: string): void {
+		
+		for (var i=0;i<this.presetInfo.capTagList.length;i++)
+		{
+			if (this.presetInfo.capTagList[i].ID == tagID)
+			{
+				var capTag = new CaptureTag();
+				capTag.tagID = this.presetInfo.capTagList[i].ID;
+				capTag.tagName = this.presetInfo.capTagList[i].name;
+				this.pageInfo.addCaptureTag(capTag);
+			}
+		}
+	}
+	public onAddCaptureTagClick(): void{
+		
+		var dialogRef = this.dialogue.open(AddCaptureTagDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureTagCallback.bind(this),tagList: this.presetInfo.capTagList}
+		}
+		);
+	}
+	
+	public onRemoveCaptureInfoClick(index: number): void{
+		this.pageInfo.removeCaptureInfo(index);
+	}
+	public onRemoveCaptureTagClick(index: number):void {
+		this.pageInfo.removeCaptureTag(index);
+	}
+	// CMS debug methods 
+	
+	public onGeneratePageClick() {
+		this.testInit();
+	}
+	
+	public onRequestBEUpdateClick() {
+		this.requestBackendData("hahahlera");
+	}
+	public onGetStreamsClick() {
+		this.streamsReady=true;
+	}
+	
+	
+	public onGeneratePresetsJsonClick(): void {
+		
+		var jSon = this.serializer.serializePresetInfo(this.presetInfo);
+		// update
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+		// 
+	}
+	public onInjectPresetsJsonClick(): void {
+		
+		var jStr = this.serializer.getHardcodedPresetJson();		
+		this.onBEEventReceived(jStr);
+	}
+	public onGenerateStreamJsonClick(): void {
+		
+		var jSon = this.serializer.serializeStreams(this.capStreams);
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
+		
+	}
+	public onInjectStreamsJsonClick(): void {
+		var jStr = this.serializer.getHardcodedStreamJson();
+		
+		this.onBEEventReceived(jStr);
+	}
+	public onGeneratePageJsonClick(): void {
+		
+		var jStr = this.serializer.serializeFullPageInfo(this.pageInfo);
+		
+		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jStr;
+	}
+	public onInjectPageJsonClick(): void {
+		var jStr = this.serializer.getHardcodedPageJson();
+		console.log("inejcting page json");
+		this.onBEEventReceived(jStr);
+	}
+	
+	
 	testInit(): void {
 		
 		var pgInfo = new FullCaptureInfo();
@@ -193,10 +377,14 @@ export class CaptureEditPage {
 		this.pageInfo = pgInfo;
 		
 		this.testInitBEValues();
+		
+		this.pageReady=true;
 	}
 	testInitBEValues(): void {
 		
 		// stream info 
+		
+		/*
 		var aStreamInfo = new StreamInfo();
 		aStreamInfo.port= "22";
 		aStreamInfo.trans= "FTP";
@@ -227,111 +415,9 @@ export class CaptureEditPage {
 		aStreamInfo.packets= "322";
 		aStreamInfo.size="5312";
 		aStreamInfo.protocol="unknown";
-		this.capStreams.push(aStreamInfo);
+		this.capStreams.push(aStreamInfo);*/
 		
-		// technologies
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="VoLTE";
-		aPresetType.ID="ptt123";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="VOIP";
-		aPresetType.ID="ptt13";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MPD";
-		aPresetType.ID="ptt11";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MPD 5G";
-		aPresetType.ID="ptt22";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="CS";
-		aPresetType.ID="ptt14";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		
-		// X2 Protocols capX3Protos 
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Unknown";
-		aPresetType.ID="x3tunk1";		
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="plain RTP";
-		aPresetType.ID="x3rtp";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ULIC";
-		aPresetType.ID="x3lic";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ULIC EPS";
-		aPresetType.ID="x3eps";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Huawei SAE";
-		aPresetType.ID="x3sae";
-		this.capX3Protos.push(aPresetType);
-		
-		// X2 protos
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Unknown";
-		aPresetType.ID="x2tunk1";		
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 33 108 v271";
-		aPresetType.ID="x2rtp";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 102 232-5 v331";
-		aPresetType.ID="x2lic";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 33 128 v152";
-		aPresetType.ID="x2eps";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Huawei DKBA 2011";
-		aPresetType.ID="x2sae";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="TCP";
-		aPresetType.ID="tttcp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="UDP";
-		aPresetType.ID="ttudp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="FTP";
-		aPresetType.ID="ttftp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MSMQ";
-		aPresetType.ID="ttmsmq";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="SMTP";
-		aPresetType.ID="ttsmtp";
-		this.capTransportTypes.push(aPresetType);
+		// this.presetInfo.testInit();
 		
 	}
 

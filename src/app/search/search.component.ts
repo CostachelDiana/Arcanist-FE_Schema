@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { textSpanIntersectsWithPosition } from 'typescript';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
+import {CaptureInfo, CaptureTag, PresetTypesInfo} from "../captureedit/CaptureStructures";
+import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
+import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 
 @Component({
   selector: 'app-search',
@@ -10,13 +14,13 @@ import { textSpanIntersectsWithPosition } from 'typescript';
 export class SearchComponent implements OnInit {
 
   private _pageInited: boolean;
-  private _searchOptions: SearchOptions;
+  private _typesInfo: PresetTypesInfo;
   private _searchParameters: SearchParameters;
   
 
-  constructor() { 
+  constructor(public dialogue: MatDialog) { 
     this._pageInited = false;
-    this._searchOptions = null;
+    this._typesInfo = new PresetTypesInfo();
     this._searchParameters = new SearchParameters();
   }
 
@@ -24,15 +28,11 @@ export class SearchComponent implements OnInit {
   }
 
   private testInit(): void {
-    this._searchOptions = new SearchOptions();
-    
-    var jsonTest = "{\"codec\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"AMRA\"}],\"product\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"Voice\"},{\"id\":3,\"displayName\":\"Voip\"}],\"scenario\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"IncomingCall\"},{\"id\":3,\"displayName\":\"OutgoingCall\"}],\"transport\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"TCP\"},{\"id\":3,\"displayName\":\"UDP\"}],\"technology\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"CS\"},{\"id\":3,\"displayName\":\"MPD\"},{\"id\":4,\"displayName\":\"VoIP\"},{\"id\":5,\"displayName\":\"VoLTE\"}],\"tag\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"Target to Target\"},{\"id\":3,\"displayName\":\"5G Location\"}],\"family\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"ETSI\"},{\"id\":3,\"displayName\":\"CALEA\"},{\"id\":4,\"displayName\":\"HUAWEI\"},{\"id\":5,\"displayName\":\"NOKIA\"},{\"id\":6,\"displayName\":\"ALCATEL LUCENT\"}],\"event\":[{\"id\":1,\"displayName\":\"Unknown\"},{\"id\":2,\"displayName\":\"StartCell\"},{\"id\":3,\"displayName\":\"EndCell\"},{\"id\":4,\"displayName\":\"GPRSAttach\"}]}";
-
-    this._searchOptions.populateFromJson(jsonTest);
+    this._typesInfo.testInit();
   }
 
-  get searchOptions() : SearchOptions{
-    return this._searchOptions;
+  get typesInfo() : PresetTypesInfo{
+    return this._typesInfo;
   }
 
   get searchParameters() : SearchParameters{
@@ -51,6 +51,94 @@ export class SearchComponent implements OnInit {
   public onCdProtocolOptionsChanged(event: any){
     this._searchParameters.cdProtocolSelectedId = event.target.value;
   }
+
+  public onCcProtocolOptionsChanged(event: any){
+    this._searchParameters.ccProtocolSelectedId = event.target.value;
+  }
+  
+  public onTechnologiesOptionsChanged(event: any){
+    this._searchParameters.technologySelectedId = event.target.value;
+  }  
+  
+  public onStatusOptionsChanged(event: any){
+    this._searchParameters.statusSelectedId = event.target.value;
+  }
+
+  public onTargetICOptionsChanged(event: any){
+    this._searchParameters.targetICSelectedId = event.target.value;
+  }
+
+  public onAddCaptureInfoCallback(typeID: string, valueID: string ): void {
+		var aInfo = new CaptureInfo();
+		for (var i=0;i<this._typesInfo.capInfoTypesList.length;i++)
+		{
+			if (this._typesInfo.capInfoTypesList[i].ID == typeID)
+			{
+				aInfo.infoTypeID=typeID;
+				aInfo.infoTypeName=this._typesInfo.capInfoTypesList[i].name;
+				
+				for (var j=0;j<this._typesInfo.capInfoValsList[i].length;j++)
+				{
+					if (this._typesInfo.capInfoValsList[i][j].ID == valueID)
+					{
+						aInfo.infoValID=valueID;
+						aInfo.infoValName=this._typesInfo.capInfoValsList[i][j].name;
+					}
+				}
+			}
+		}
+		this._searchParameters.addCaptureInfo(aInfo);
+	}
+
+	public onAddCaptureInfoClick(): void {
+		var dialogRef = this.dialogue.open(AddCaptureInfoDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureInfoCallback.bind(this),eventTypes: this._typesInfo.capInfoTypesList, eventValues:this._typesInfo.capInfoValsList}
+		}
+		);
+	}
+  
+	public onRemoveCaptureInfoClick(index: number): void{
+		this._searchParameters.removeCaptureInfo(index);
+	}
+
+  public onAddCaptureTagCallback(tagID: string): void {
+		
+		for (var i=0;i<this._typesInfo.capTagList.length;i++)
+		{
+			if (this._typesInfo.capTagList[i].ID == tagID)
+			{
+				var capTag = new CaptureTag();
+				capTag.tagID = this._typesInfo.capTagList[i].ID;
+				capTag.tagName = this._typesInfo.capTagList[i].name;
+				this._searchParameters.addCaptureTag(capTag);
+			}
+		}
+	}
+
+	public onAddCaptureTagClick(): void{
+		
+		var dialogRef = this.dialogue.open(AddCaptureTagDialogue, 
+		{width:'900px',
+		height:'800px',
+		 data: {callback: this.onAddCaptureTagCallback.bind(this),tagList: this._typesInfo.capTagList}
+		}
+		);
+	} 
+
+	public onRemoveCaptureTagClick(index: number):void {
+		this._searchParameters.removeCaptureTag(index);
+	}  
+}
+
+export class MinMaxNumberOption {
+  min: number;
+  max: number;
+  constructor(){
+    this.min = undefined;
+    this.max = undefined;
+  }
 }
 
 export class SearchParameters {
@@ -58,44 +146,134 @@ export class SearchParameters {
   get searchName(): string {
     return this._searchName;
   }
- 
   set searchName(newName: string){
     this._searchName = newName;
   }  
 
-  private _cdProtocolSelectedId: number;
-  get cdProtocolSelectedId() : number{
+  private _cdProtocolSelectedId: string;
+  get cdProtocolSelectedId() : string{
     return this._cdProtocolSelectedId;
   }
-
-  set cdProtocolSelectedId (selectedId : number){
+  set cdProtocolSelectedId (selectedId : string){
     this._cdProtocolSelectedId = selectedId;
   }  
 
+  private _ccProtocolSelectedId: string;
+  get ccProtocolSelectedId() : string{
+    return this._ccProtocolSelectedId;
+  }
+  set ccProtocolSelectedId (selectedId : string){
+    this._ccProtocolSelectedId = selectedId;
+  }  
+
+  private _technologySelectedId: string;
+  get technologySelectedId() : string{
+    return this._technologySelectedId;
+  }
+  set technologySelectedId (selectedId : string){
+    this._technologySelectedId = selectedId;
+  }   
+
+  private _durationMinMax: MinMaxNumberOption;
+  get durationMin(): number{
+    return this._durationMinMax.min;
+  }
+  set durationMin(duration: number){
+    this._durationMinMax.min = duration;
+  }
+  get durationMax(): number{
+    return this._durationMinMax.max;
+  }
+  set durationMax(duration: number){
+    this._durationMinMax.max = duration;
+  }
+
+  private _referencesMinMax: MinMaxNumberOption;
+  get referencesMin(): number{
+    return this._referencesMinMax.min;
+  }
+  set referencesMin(references: number){
+    this._referencesMinMax.min = references;
+  }
+  get referencesMax(): number{
+    return this._referencesMinMax.max;
+  }
+  set referencesMax(references: number){
+    this._referencesMinMax.max = references;
+  }
+
+  private _projectsMinMax: MinMaxNumberOption;
+  get projectsMin(): number{
+    return this._projectsMinMax.min;
+  }
+  set projectsMin(projects: number){
+    this._projectsMinMax.min = projects;
+  }
+  get projectsMax(): number{
+    return this._projectsMinMax.max;
+  }
+  set projectsMax(projects: number){
+    this._projectsMinMax.max = projects;
+  }
+
+  private _statusSelectedId: string;
+  get statusSelectedId() : string{
+    return this._statusSelectedId;
+  }
+  set statusSelectedId (selectedId : string){
+    this._statusSelectedId = selectedId;
+  } 
+
+  private _targetICSelectedId : string;
+  get targetICSelectedId() : string{
+    return this._targetICSelectedId;
+  }
+  set targetICSelectedId (selectedId : string){
+    this._targetICSelectedId = selectedId;
+  } 
+
+  private _capTags: CaptureTag[];
+  get capTags(): CaptureTag[] {
+		return this._capTags;
+	}
+	public removeCaptureTag(idx: number): void {
+		 if (idx > -1 && idx < this._capTags.length)
+		 {
+			  this._capTags.splice(idx,1);
+		 }
+	}
+	public addCaptureTag(aTag: CaptureTag): void {
+		this._capTags.push(aTag);
+	}
+
+	private _capInfos: CaptureInfo[];
+	get capInfos(): CaptureInfo[] {
+		return this._capInfos;
+	}
+	public removeCaptureInfo(idx: number): void {
+		if (idx > -1 && idx < this._capInfos.length)
+		{
+			this._capInfos.splice(idx,1);
+		}
+	}
+	public addCaptureInfo(aInfo: CaptureInfo): void {
+		this._capInfos.push(aInfo);
+	}
+
   constructor(){
     this._searchName = "";
-    this._cdProtocolSelectedId = 1;
-  }
-}
+    
+    this._cdProtocolSelectedId = "";
+    this._ccProtocolSelectedId = "";
+    this._technologySelectedId = "";
+    
+    this._durationMinMax = new MinMaxNumberOption();
+    this._referencesMinMax = new MinMaxNumberOption();
+    this._projectsMinMax = new MinMaxNumberOption();
 
-export class SearchCdProtocolOption {
-  id: number;
-  displayName: string;
-}
+    this._statusSelectedId = "";  
 
-export class SearchOptions {
-  public populateFromJson(jsonString: string) : void {
-    var jsonObj = JSON.parse(jsonString);
-    if(jsonObj["transport"])
-    {
-      this._cdProtocolOptions = jsonObj["transport"];
-    }
-  }
-
-  private _cdProtocolOptions : SearchCdProtocolOption[];
-
-  get cdProtocolOptions() : SearchCdProtocolOption[]{
-    return this._cdProtocolOptions;
-  }
-
+    this._capTags = [];
+    this._capInfos = [];
+  } 
 }

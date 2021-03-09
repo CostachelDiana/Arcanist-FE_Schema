@@ -14,7 +14,7 @@ import {AddCapturesSetDialogue} from '../dialogues/AddCapturesSetDialogue'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {ProjectPageEventSerializer} from './projectPageEventSerializer'
 import {ProjectBEAbstraction} from './projectBEAbstraction'
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import {PredefinedTypeStruct} from '../captureedit/CaptureStructures'
 
 
 
@@ -27,12 +27,11 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
-	public projNamesList: string[];
-	public filename: string;
-	public strProjDetails: string;
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
+	
+	capTransportTypes: PredefinedTypeStruct[];
 	
 	// CMS debug purposes
 	projNotes: HTMLInputElement;
@@ -40,21 +39,7 @@ export class ProjectComponent implements IProject {
 	pageInited: boolean;
 	
 	// initing methods
-	constructor(public dialogue: MatDialog,
-		 private router:Router, private activatedRoute:ActivatedRoute) {
-		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
-			console.log("url is: "+window.location.href);
-			console.log("activatedRoute is: "+this.activatedRoute.toString());
-
-		rez: this.activatedRoute.queryParams.subscribe(params => {
-			this.filename = params['projName'] || "";
-			this.strProjDetails = params['projDetails'] || "";
-		  });
-
-		  console.log("Route str: "+ this.activatedRoute.toString());
-		  console.log("filename is: "+this.filename);
-		  console.log("projDetails is: "+this.strProjDetails);
-		
+	constructor(public dialogue: MatDialog) {
 		this.projInfo=null;
 		
 		this.pageInited=false;
@@ -63,10 +48,38 @@ export class ProjectComponent implements IProject {
 		this.BEAbs.setProject(this);
 		this.BEAbs.connect("121.69.69.666","4040");
 		
-		//get from BE the list of existing proj
-		this.projNamesList = [];
-		this.projNamesList.push("ProjName1_predef");
-		this.projNamesList.push("ProjName2_predef");
+		this.capTransportTypes=[];
+		
+		this.initBEData();
+	
+	}
+	
+	initBEData(): void {
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="TCP";
+		aPresetType.ID="tttcp";
+		this.capTransportTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="UDP";
+		aPresetType.ID="ttudp";
+		this.capTransportTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="FTP";
+		aPresetType.ID="ttftp";
+		this.capTransportTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="MSMQ";
+		aPresetType.ID="ttmsmq";
+		this.capTransportTypes.push(aPresetType);
+		
+		var aPresetType = new PredefinedTypeStruct();
+		aPresetType.name="SMTP";
+		aPresetType.ID="ttsmtp";
+		this.capTransportTypes.push(aPresetType);
 	}
 	
 	public onFetchProjectClick(): void {
@@ -411,7 +424,7 @@ export class ProjectComponent implements IProject {
 	public onCaptureInfoClick(capN: number, setN:number): void {
 	}
 	
-	public onCaptureSettingsClick(capN:number, setN:number): void {
+	/*public onCaptureSettingsClick(capN:number, setN:number): void {
 		
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
 		{width:'900px',
@@ -420,15 +433,15 @@ export class ProjectComponent implements IProject {
 		 setIdx:setN}
 		}
 		);	
-	}
+	}*/
 	
 	public onInjectionSettingsClick(setN:number): void {
 		
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
-		{width:'900px',
+		{width:'1200px',
 		height:'800px',
 		 data: {callback: this.onSetDefaultCaptureSettingsCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:true,
-		 setIdx:setN}
+		 setIdx:setN,X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
 		}
 		);	
 	}
@@ -436,9 +449,10 @@ export class ProjectComponent implements IProject {
 	public onPlayAllClick(setN: number): void {
 		
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
-		{width:'900px',
+		{width:'1200px',
 		height:'800px',
-		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false, setIdx:setN}
+		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false, setIdx:setN,
+		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
 		}
 		);
 	}
@@ -447,19 +461,21 @@ export class ProjectComponent implements IProject {
 		
 		
 		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
-		{width:'900px',
+		{width:'1000px',
 		height:'800px',
-		 data: {callback: this.onSingleInjectSettingCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:true, setIdx:setN, capN: capN}
-		}
+		 data: {callback: this.onSingleInjectSettingCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:true, setIdx:setN, capN: capN,
+		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}		 
+		 }		
 		);
 	}
 	
 	public onSinglePlayClick(setN: number, capN:number): void {
 		
 		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
-		{width:'900px',
+		{width:'1000px',
 		height:'800px',
-		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:false, setIdx:setN, capN: capN}
+		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:false, setIdx:setN, capN: capN,
+		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
 		}
 		);
 	}

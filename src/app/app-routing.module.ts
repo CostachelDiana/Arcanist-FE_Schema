@@ -20,7 +20,7 @@ const routes: Routes = [
   {path:'HomePage', component: HomeComponent},
   {path:'LoginPage', component: LoginComponent},
   {path:'SearchPage', component: SearchComponent},
-  //{path:'UploadPage', component: UploadComponent}, //need to disable this
+  {path:'UploadPage', component: UploadComponent}, //need to disable this
   {path:'ProjectPage', component: ProjectComponent},
   {path:'CaptureEdit', component: CaptureEditPage},
   {path:'FirstPage', component: FirstPage}
