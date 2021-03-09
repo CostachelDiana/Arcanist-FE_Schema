@@ -201,18 +201,18 @@ export class SearchComponent implements OnInit {
 		
 		var aStruct = new PredefinedTypeStruct();
 		aStruct.displayName="VoLTE";
-		aStruct.id="vlt13";		
+		aStruct.id=1;		
 		pgInfo.capTechnology=aStruct;
 		
 		var aStruct = new PredefinedTypeStruct();
 		aStruct.displayName="Verified";
-		aStruct.id="vrf123";
+		aStruct.id=2;
 		pgInfo.capStatus = aStruct;
 			
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeID=1;
 		aCapInfo.infoTypeName="LIID";
-		aCapInfo.infoValID="";
+		aCapInfo.infoValID=-1;
 		aCapInfo.infoValName="12334";
 		pgInfo.capIC=aCapInfo;		
 		
@@ -220,51 +220,51 @@ export class SearchComponent implements OnInit {
 		
 		// TAGS
 		var aCapTag=  new CaptureTag();
-		aCapTag.tagID="tgzuku";
+		aCapTag.tagID=1;
 		aCapTag.tagName="Target to Target";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
 		aCapTag=  new CaptureTag();
-		aCapTag.tagID="tgzuku2";
+		aCapTag.tagID=2;
 		aCapTag.tagName="X3 DTMF";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
 		aCapTag=  new CaptureTag();
-		aCapTag.tagID="tgzuku2";
+		aCapTag.tagID=3
 		aCapTag.tagName="Dynamic Codecs";
 		
 		pgInfo.addCaptureTag(aCapTag);
 		
 		// INFOS
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeID=2;
 		aCapInfo.infoTypeName="Event";
-		aCapInfo.infoValID="evt3312";
+		aCapInfo.infoValID=2;
 		aCapInfo.infoValName="Bearer Activation";
 		
 		pgInfo.addCaptureInfo(aCapInfo);
 		
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gaga";
+		aCapInfo.infoTypeID=1;
 		aCapInfo.infoTypeName="Event";
-		aCapInfo.infoValID="evt3322";
+		aCapInfo.infoValID=2;
 		aCapInfo.infoValName="Incoming call";		
 		pgInfo.addCaptureInfo(aCapInfo);
 		
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gugu";
+		aCapInfo.infoTypeID=1;
 		aCapInfo.infoTypeName="Codec";
-		aCapInfo.infoValID="cod12";
+		aCapInfo.infoValID=2;
 		aCapInfo.infoValName="EVS";
 		
 		pgInfo.addCaptureInfo(aCapInfo);
 		
 		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID="gugu";
+		aCapInfo.infoTypeID=1;
 		aCapInfo.infoTypeName="Codec";
-		aCapInfo.infoValID="cod13";
+		aCapInfo.infoValID=2;
 		aCapInfo.infoValName="AMR-WB";		
 		pgInfo.addCaptureInfo(aCapInfo);
 		
