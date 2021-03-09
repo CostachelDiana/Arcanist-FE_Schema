@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
+
 import {ProjMember} from '../project/projectPageComponents'
 import {IPage, IBEAbstractionGeneric} from '../project/IProject'
+
 
 import {BackendAPIHandler} from '../common/BackendAPIHandler'
 
@@ -8,7 +11,10 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	
 	capEditPage: IPage;
 	
-	constructor() {
+	api: BackendAPIHandler;
+	
+	constructor(http: HttpClient) {
+		this.api = new BackendAPIHandler(http);
 	}
 	
 	public sendBEUpdate(beJson: string): void {
@@ -20,6 +26,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		
 		if (evtType == "request-stream-info")
 		{
+			this.api.getPresetValues(this);
 			this.debugSendRequestStreamInfo();
 		} else if (evtType == "request-presets") {
 			this.debugSendPresetResponse();

@@ -50,7 +50,7 @@ export class CaptureEditPage implements IPage{
 		this.serializer = new CaptureEditPageSerializer();
 		this.captureInjectSerializer = new CaptureInjectSerializer();
 		
-		this.backend = new CaptureEditBEAbstraction();
+		this.backend = new CaptureEditBEAbstraction(http);
 		this.backend.setPage(this);
 		
 		this.requestPage();
