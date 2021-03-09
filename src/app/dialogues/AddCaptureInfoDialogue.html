@@ -6,14 +6,14 @@
 		<mat-form-field appearance="fill">
 			<mat-label>Capture Info Type</mat-label>
 			  <select matNativeControl #typeID required (change)="this.onEventTypeChange(typeID.value)">
-					<option *ngFor="let type of this.getEventTypes(); let idx = index" value="{{type.ID}}">{{type.name}}</option>
+					<option *ngFor="let type of this.getEventTypes(); let idx = index" value="{{type.id}}">{{type.displayName}}</option>
 			  </select>
 		</mat-form-field>
 		<br>
 		<mat-form-field appearance="fill">
 			<mat-label>Capture Info Value</mat-label>
 			  <select matNativeControl #valID required>
-					<option *ngFor="let val of this.getEventValues(); let idx = index" value="{{val.ID}}">{{val.name}}</option>
+					<option *ngFor="let val of this.getEventValues(); let idx = index" value="{{val.id}}">{{val.displayName}}</option>
 			  </select>
 		</mat-form-field>
 		<br>
