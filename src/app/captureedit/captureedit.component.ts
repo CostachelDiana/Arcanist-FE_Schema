@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
-import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct} from './CaptureStructures';
+import {FullCaptureInfo,CapProjLink,StreamInfo,CaptureTag,CaptureInfo,PredefinedTypeStruct,PresetTypesInfo} from './CaptureStructures';
 import {ProjMember, ProjPageCaptureInfo,InjectionSettings} from '../project/projectPageComponents'
 import {SingleInjectCaptureDialogue} from '../dialogues/SingleInjectCaptureDialogue'
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
@@ -17,17 +17,8 @@ export class CaptureEditPage {
 	
 	pageInfo: FullCaptureInfo;
 
-	capICTypes: PredefinedTypeStruct[];
-	capTechnologyTypes: PredefinedTypeStruct[];
-	capX2Protos: PredefinedTypeStruct[];
-	capX3Protos: PredefinedTypeStruct[];
-	capTransportTypes: PredefinedTypeStruct[];
-	
+	presetInfo: PresetTypesInfo;
 	capStreams: StreamInfo[];
-	
-	capTagList: PredefinedTypeStruct[];	
-	capInfoValsList: PredefinedTypeStruct[][];
-	capInfoTypesList: PredefinedTypeStruct[];
 	
 	
 	pageReady: boolean;
@@ -36,17 +27,10 @@ export class CaptureEditPage {
 
 	constructor(public dialogue: MatDialog) { 
 	
-		this. pageReady= false;
+		this.pageReady= false;
 		this.streamsReady=false;
+		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
-		this.capICTypes=[];
-		this.capTechnologyTypes=[];
-		this.capX2Protos=[];
-		this.capX3Protos=[];
-		this.capTransportTypes=[];
-		this.capTagList=[];
-		this.capInfoValsList=[];
-		this.capInfoTypesList=[];
 		
 			
 		
@@ -56,23 +40,23 @@ export class CaptureEditPage {
 		return this.pageInfo;
 	}
 	public getICTypes(): PredefinedTypeStruct[] {
-		return this.capICTypes;
+		return this.presetInfo.capICTypes;
 	}
 	public getCapTechnologyTypes(): PredefinedTypeStruct[] {
-		return this.capTechnologyTypes;
+		return this.presetInfo.capTechnologyTypes;
 	}
 	
 	public getCapX3Protos(): PredefinedTypeStruct[] {
-		return this.capX3Protos;
+		return this.presetInfo.capX3Protos;
 	}
 	public getCapX2Protos(): PredefinedTypeStruct[] {
-		return this.capX2Protos;
+		return this.presetInfo.capX2Protos;
 	}
 	public getStreamInfos(): StreamInfo[] {
 		return this.capStreams;
 	}
 	public getCapTransportTypes(): PredefinedTypeStruct[] {
-		return this.capTransportTypes;
+		return this.presetInfo.capTransportTypes;
 	}
 	
 	public isStreamReady(): boolean {
@@ -115,7 +99,7 @@ export class CaptureEditPage {
 		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
 		{width:'1100px',
 		height:'800px',
-		 data: {callback: null, cap: capInfo,set: injSett,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.capTransportTypes, X3TransVals: this.capTransportTypes}
+		 data: {callback: null, cap: capInfo,set: injSett,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.presetInfo.capTransportTypes, X3TransVals: this.presetInfo.capTransportTypes}
 		}
 		);
 	}
@@ -129,19 +113,19 @@ export class CaptureEditPage {
 		// 		capInfoTypesList: PredefinedTypeStruct[];
 		//
 		var aInfo = new CaptureInfo();
-		for (var i=0;i<this.capInfoTypesList.length;i++)
+		for (var i=0;i<this.presetInfo.capInfoTypesList.length;i++)
 		{
-			if (this.capInfoTypesList[i].ID == typeID)
+			if (this.presetInfo.capInfoTypesList[i].ID == typeID)
 			{
 				aInfo.infoTypeID=typeID;
-				aInfo.infoTypeName=this.capInfoTypesList[i].name;
+				aInfo.infoTypeName=this.presetInfo.capInfoTypesList[i].name;
 				
-				for (var j=0;j<this.capInfoValsList[i].length;j++)
+				for (var j=0;j<this.presetInfo.capInfoValsList[i].length;j++)
 				{
-					if (this.capInfoValsList[i][j].ID == valueID)
+					if (this.presetInfo.capInfoValsList[i][j].ID == valueID)
 					{
 						aInfo.infoValID=valueID;
-						aInfo.infoValName=this.capInfoValsList[i][j].name;
+						aInfo.infoValName=this.presetInfo.capInfoValsList[i][j].name;
 					}
 				}
 			}
@@ -152,19 +136,19 @@ export class CaptureEditPage {
 		var dialogRef = this.dialogue.open(AddCaptureInfoDialogue, 
 		{width:'900px',
 		height:'800px',
-		 data: {callback: this.onAddCaptureInfoCallback.bind(this),eventTypes: this.capInfoTypesList, eventValues:this.capInfoValsList}
+		 data: {callback: this.onAddCaptureInfoCallback.bind(this),eventTypes: this.presetInfo.capInfoTypesList, eventValues:this.presetInfo.capInfoValsList}
 		}
 		);
 	}
 	public onAddCaptureTagCallback(tagID: string): void {
 		
-		for (var i=0;i<this.capTagList.length;i++)
+		for (var i=0;i<this.presetInfo.capTagList.length;i++)
 		{
-			if (this.capTagList[i].ID == tagID)
+			if (this.presetInfo.capTagList[i].ID == tagID)
 			{
 				var capTag = new CaptureTag();
-				capTag.tagID = this.capTagList[i].ID;
-				capTag.tagName = this.capTagList[i].name;
+				capTag.tagID = this.presetInfo.capTagList[i].ID;
+				capTag.tagName = this.presetInfo.capTagList[i].name;
 				this.pageInfo.addCaptureTag(capTag);
 			}
 		}
@@ -174,7 +158,7 @@ export class CaptureEditPage {
 		var dialogRef = this.dialogue.open(AddCaptureTagDialogue, 
 		{width:'900px',
 		height:'800px',
-		 data: {callback: this.onAddCaptureTagCallback.bind(this),tagList: this.capTagList}
+		 data: {callback: this.onAddCaptureTagCallback.bind(this),tagList: this.presetInfo.capTagList}
 		}
 		);
 	}
@@ -360,308 +344,7 @@ export class CaptureEditPage {
 		aStreamInfo.protocol="unknown";
 		this.capStreams.push(aStreamInfo);
 		
-		// technologies
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="VoLTE";
-		aPresetType.ID="ptt123";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="VOIP";
-		aPresetType.ID="ptt13";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MPD";
-		aPresetType.ID="ptt11";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MPD 5G";
-		aPresetType.ID="ptt22";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="CS";
-		aPresetType.ID="ptt14";
-		this.capTechnologyTypes.push(aPresetType);
-		
-		
-		// X2 Protocols capX3Protos 
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Unknown";
-		aPresetType.ID="x3tunk1";		
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="plain RTP";
-		aPresetType.ID="x3rtp";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ULIC";
-		aPresetType.ID="x3lic";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ULIC EPS";
-		aPresetType.ID="x3eps";
-		this.capX3Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Huawei SAE";
-		aPresetType.ID="x3sae";
-		this.capX3Protos.push(aPresetType);
-		
-		// X2 protos
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Unknown";
-		aPresetType.ID="x2tunk1";		
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 33 108 v271";
-		aPresetType.ID="x2rtp";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 102 232-5 v331";
-		aPresetType.ID="x2lic";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="ETSI 33 128 v152";
-		aPresetType.ID="x2eps";
-		this.capX2Protos.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Huawei DKBA 2011";
-		aPresetType.ID="x2sae";
-		this.capX2Protos.push(aPresetType);
-		
-		
-		// cap transport types
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="TCP";
-		aPresetType.ID="tttcp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="UDP";
-		aPresetType.ID="ttudp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="FTP";
-		aPresetType.ID="ttftp";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MSMQ";
-		aPresetType.ID="ttmsmq";
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="SMTP";
-		aPresetType.ID="ttsmtp";
-		this.capTransportTypes.push(aPresetType);
-		
-		// IC Types 
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="LIID";
-		aPresetType.ID="ictliid";
-		this.capICTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="MSISDN";
-		aPresetType.ID="ictmsisdn";
-		this.capICTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="IPv4";
-		aPresetType.ID="ictipv4";
-		this.capICTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="IMSI";
-		aPresetType.ID="ictimsi";
-		this.capICTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="IMEI";
-		aPresetType.ID="ictimei";
-		this.capICTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="PhoneNumber";
-		aPresetType.ID="ictphone";
-		this.capICTypes.push(aPresetType);
-		
-		// tag list 
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Target To Target";
-		aPresetType.ID="ctagttt";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Generated";
-		aPresetType.ID="ctgen";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="CD Bypass";
-		aPresetType.ID="ctcdbpass";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="TLS1.2";
-		aPresetType.ID="cttls12";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="multiprotocol";
-		aPresetType.ID="ctmltp";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="X3DTMF";
-		aPresetType.ID="ctx3dtmf";
-		this.capTagList.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Dynamic Codecs";
-		aPresetType.ID="ctdcdcs";
-		this.capTagList.push(aPresetType);
-		
-		// capture Info List 
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Event";
-		aPresetType.ID="citev";
-		this.capInfoTypesList.push(aPresetType);
-		var aValArray: PredefinedTypeStruct[];
-		aValArray=[];
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Bearer Activation";
-		aPresetType.ID="cievba";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Bearer Deactivation";		
-		aPresetType.ID="cievbd";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Call Begin";
-		aPresetType.ID="cievbeg";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Location Update";
-		aPresetType.ID="cievlocu";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Supplementary services - conference";
-		aPresetType.ID="cievssc";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="SMS";
-		aPresetType.ID="cievsms";
-		aValArray.push(aPresetType);
-		this.capInfoValsList.push(aValArray);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Codec";
-		aPresetType.ID="citcdc";
-		this.capInfoTypesList.push(aPresetType);
-		var aValArray: PredefinedTypeStruct[];
-		aValArray=[];
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="EVS";
-		aPresetType.ID="cicdcevs";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="AMR";		
-		aPresetType.ID="cicdcamr";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="AMR-WB";
-		aPresetType.ID="cicdcamrwb";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="G781";
-		aPresetType.ID="cicdcg781";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="T38";
-		aPresetType.ID="ccdt38";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="GSM8";
-		aPresetType.ID="cdcgsm8";
-		aValArray.push(aPresetType);
-		this.capInfoValsList.push(aValArray);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Scenario";
-		aPresetType.ID="citsc";
-		this.capInfoTypesList.push(aPresetType);
-		var aValArray: PredefinedTypeStruct[];
-		aValArray=[];
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Simple Call - incoming";
-		aPresetType.ID="ciscsci";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Call Forward Initiating";		
-		aPresetType.ID="cisccfi";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Call Forward Redirecting";
-		aPresetType.ID="cisccfr";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Simple Call - outgoing";
-		aPresetType.ID="ciscsco";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Long SMS";
-		aPresetType.ID="ciscsms";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Location Update";
-		aPresetType.ID="csclocup";
-		aValArray.push(aPresetType);
-		this.capInfoValsList.push(aValArray);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Language";
-		aPresetType.ID="cilng";
-		this.capInfoTypesList.push(aPresetType);
-		var aValArray: PredefinedTypeStruct[];
-		aValArray=[];
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="English";
-		aPresetType.ID="cilngen";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Hebrew";		
-		aPresetType.ID="cilngheb";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Arabic";
-		aPresetType.ID="cilngar";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Chinese";
-		aPresetType.ID="cilngchn";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Russian";
-		aPresetType.ID="cilngrus";
-		aValArray.push(aPresetType);
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.name="Romanian";
-		aPresetType.ID="cilngro";
-		aValArray.push(aPresetType);
-		this.capInfoValsList.push(aValArray);
+		this.presetInfo.testInit();
 		
 	}
 
