@@ -146,6 +146,28 @@ export class PresetTypesInfo {
 		this.capInfoValsList=[];
 		this.capInfoTypesList=[];
 	}
+	
+	public genericGetNameForID(arr: PredefinedTypeStruct[], ID: string): string {
+		for (var i =0; i< arr.length;i++)
+			if (arr[i].ID == ID) return arr[i].name;
+			
+		return "";
+	}
+	public genericGetIDForName(arr: PredefinedTypeStruct[], name: string): string {
+		for (var i =0; i< arr.length;i++)
+			if (arr[i].name == name) return arr[i].ID;
+			
+		return "";
+	}
+	public genericGetIdxForID(arr: PredefinedTypeStruct[], ID: string): number {
+		for (var i =0; i< arr.length;i++)
+			if (arr[i].ID == ID) return i;
+			
+		return -1;
+	}
+	
+	
+	
 	public testInit():void {
 		// technologies
 		var aPresetType = new PredefinedTypeStruct();

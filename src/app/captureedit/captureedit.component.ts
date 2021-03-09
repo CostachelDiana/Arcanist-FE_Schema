@@ -169,7 +169,25 @@ export class CaptureEditPage {
 	public onRemoveCaptureTagClick(index: number):void {
 		this.pageInfo.removeCaptureTag(index);
 	}
-
+	// CMS debug methods 
+	
+	public onGeneratePresetsJsonClick(): void {
+		// fetch user notes
+		
+		// 
+	}
+	public onInjectPresetsJsonClick(): void {
+	}
+	public onGenerateStreamJsonClick(): void {
+	}
+	public onInjectStreamsJsonClick(): void {
+	}
+	public onGeneratePageJsonClick(): void {
+	}
+	public onInjectPageJsonClick(): void {
+	}
+	
+	
 	testInit(): void {
 		
 		var pgInfo = new FullCaptureInfo();
