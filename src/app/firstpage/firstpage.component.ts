@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {BackendAPIHandler,IBEApiConsumer} from "../common/BackendAPIHandler"
 
-
 @Component({
   selector: 'app-project',
   templateUrl: './firstpage.component.html',
   styleUrls: ['./firstpage.component.css']
 })
+
 export class FirstPage implements OnInit, IBEApiConsumer {
 
   private fileName;
-  private router: Router;
+  
 
   showUploadError: boolean;
   isCaptureUploading: boolean;
   fileToUpload: File;
   
-  constructor(private api: BackendAPIHandler) { 
+  constructor(private api: BackendAPIHandler, private router: Router) { 
 	this.showUploadError=false;
 	this.fileToUpload=null;
   }
@@ -43,7 +43,7 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   }
   
   public onCaptureUploadClick() {	
-		console.log("file upload click ");
+		
 	  if (this.fileToUpload !=null)
 	  {
 		  this.isCaptureUploading=true;
@@ -57,7 +57,8 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 	  if (evtType=="capture-uploaded")
 	  {
 		  var capID = jObj["uuid"];
-		  this.router.navigate(["/CaptureEdit?capid="+capID]);
+		  (<HTMLElement>document.querySelector("#closeModal")).click();
+		  this.router.navigateByUrl("/CaptureEdit?capid="+capID);
 		  this.isCaptureUploading=false;
 	  }
   }
