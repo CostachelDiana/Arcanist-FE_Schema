@@ -21,48 +21,52 @@
 			 aria-controls="projDetailsSection" id="btnProjectDetails" (click)="this.onExpandProjectDetails()"> + Expand </button>			
 			Project Details			
 		</p>
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+		<hr style="height:2px;border:none;color:#555;background-color:#333;" />
 		
-		<div id="projectDetails" class="content card card-body" *ngIf="this.isProjectDetailsVisible()">
-		
-		<!-- <div class="collapse" id="projDetailsSection"> -->
-			<div class="card card-body" >
+		<div id="projectDetails" class="card card-body" *ngIf="this.isProjectDetailsVisible()">
+
+			<!-- <div class="collapse" id="projDetailsSection"> -->
+			<div class="card card-body">
 				<p>Creation date: {{this.getProjectCreationDate()}}</p>
 				<p>Last update: {{this.getProjectLastEdited()}}</p>
 				<p>Project Owner: {{this.getProjectOwnerName()}}</p>
 			</div>
-			
-			<div class="card card-body" >
-			<p class="text-center"> Project Notes </p>
+
+			<div class="card card-body">
+				<p class="text-center"> Project Notes </p>
 				<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value="{{this.getProjDetails()}}"></textarea>
 			</div>
-		<!-- </div>-->
-		<br>
-		<br>
-		<p class="font-weight-bold">
-			ProjectMembers
-		</p>
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-		<div class ="card card-body">
-			<ul style="list-style:none">
-				<div class="card card-body">
-					<tr>
-						<td> <button class="btn btn-secondary" type="button " (click)="onSetOwnerClick()"> Change </button>  &nbsp; {{this.getProjectOwnerName()}} - Owner </td>
-						
-					</tr>
-				</div>
-				<li *ngFor="let member of this.getProjMembers(); let idx = index">
-				<div class="card card-body">
-					<tr>					
-						<td> <button class="btn btn-secondary" type="button" (click)="onRemoveMemberClick(idx)"> Remove </button> &nbsp; {{member.surname}}, {{member.name}} - {{member.role}}  </td>						
-					</tr>
-				</div>
-				</li>
-			</ul>
-			
-			<button class="btn btn-primary" type="button" (click)="onAddMemberClick()">Add Member</button>
-		</div>
-		
+			<!-- </div>-->
+			<br>
+			<br>
+			<p class="font-weight-bold">
+				ProjectMembers
+			</p>
+			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+			<div class="card card-body">
+				<ul style="list-style:none">
+						<div class="card card-body">
+							<table>
+								<tr>
+									<td> <button class="btn btn-secondary" type="button" (click)="onSetOwnerClick()"> Change </button>  &nbsp; {{this.getProjectOwnerName()}} - Owner </td>
+
+								</tr>
+							</table>
+						</div>
+					<li *ngFor="let member of this.getProjMembers(); let idx = index">
+						<div class="card card-body">
+							<table>
+								<tr>
+									<td> <button class="btn btn-secondary" type="button" (click)="onRemoveMemberClick(idx)"> Remove </button> &nbsp; {{member}}</td>
+								</tr>
+							</table>
+						</div>
+					</li>
+				</ul>
+
+				<button class="btn btn-primary" type="button" (click)="onAddMemberClick()">Add Member</button>
+			</div>
+
 		</div>
 		
 		<br>
@@ -88,8 +92,8 @@
 							<tr>
 								<th scope="col"><button class="btn btn-secondary" type="button" (click)="onRemoveSetClick(idx)"> Remove </button> </th>
 								<th scope="col">{{capSet.capSetName}}</th>
-								<th scope="col">{{capSet.capSetX2Protocol}}</th>
-								<th scope="col">{{capSet.capSetX3Protocol}}</th>
+								<th scope="col">{{this.getX2ProtocolName(capSet.capSetX2Protocol)}}</th>
+								<th scope="col">{{this.getX3ProtocolName(capSet.capSetX3Protocol)}}</th>
 								<th scope="col"> <button class="btn btn-primary"> (+) Total Number:{{capSet.getCapNumber()}} </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button" (click)="onAddCaptureClick(idx)"> Add Capture </button> </th>
 								<th scope="col"><button class="btn btn-primary" type="button" (click)="onInjectionSettingsClick(idx)"> Injection Settings </button> </th>
@@ -147,4 +151,3 @@
 	</main>
 
 	
-		

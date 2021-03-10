@@ -62,13 +62,14 @@ export class ProjectPageEventSerializer {
 		return JSON.stringify(jsObj);
     }
 
-    public serializeCaptureSet(aSet: CaptureSet, projID : string): string {
+    public serializeCaptureSet(aSet: CaptureSet, projID: string): string {
+        console.log("capture set id: " + aSet.capSetID);
         var jsObj = {
             "projectID": projID,
-            "id": aSet.capSetID,
             "name": aSet.capSetName,
-            "x2SetProtocolId": aSet.capSetX2Protocol,
-            "x3SetProtocolId": aSet.capSetX3Protocol
+            "x2SetProtocolId": new Number(aSet.capSetX2Protocol),
+            "x3SetProtocolId": new Number(aSet.capSetX3Protocol),
+            "id": new Number(Math.floor(Math.random() * 100)) // TODO modify this afte BE update
         }
         return JSON.stringify(jsObj);
     }
@@ -93,6 +94,8 @@ export class ProjectPageEventSerializer {
         projInfo.projName = jObj["name"];
         projInfo.projOwner = jObj["owner"];
         var sets = projInfo["sets"];
+        projInfo.projCapSets = [];
+        projInfo.projMembers = [];
         if (sets != undefined) {
             for (var i = 0; i < projInfo["sets"]; i++) {
                 var jSet = sets[i];
@@ -100,11 +103,23 @@ export class ProjectPageEventSerializer {
                 set.capSetID = jSet["id"];
                 set.capSetX2Protocol = jSet["x2SetProtocolId"];
                 set.capSetX3Protocol = jSet["x3SetProtocolId"];
+                projInfo.projCapSets.push(set);
             }
         }
+        else
+            projInfo.projCapSets = [];
+        //var members = projInfo["memebers"];
+        
         return projInfo;
     } 
 
+    public deserializeCaptureSet(jObj: Object): CaptureSet {
+        var capSet = new CaptureSet(jObj["name"]);
+        capSet.capSetID = jObj["id"];
+        capSet.capSetX2Protocol = jObj["x2SetProtocolId"];
+        capSet.capSetX3Protocol = jObj["x3SetProtocolId"];
+        return capSet;
+    }
 
 /*	public deserializeProjectPageUpdate(proj: ProjPageInfo, jObj: Object): void
 	{

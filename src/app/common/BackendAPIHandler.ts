@@ -28,7 +28,8 @@ export class BackendAPIHandler {
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
     PROJECTS_URL = this.API_PATH + '/projects';
     SETS_URL = this.API_PATH + '/sets';
-	
+    GET_LABELS_URL = this.API_PATH + "/labels";
+
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
 	POST_CREATE_PROJECT_URL=this.API_PATH + '/projects'
@@ -184,7 +185,7 @@ export class BackendAPIHandler {
 
     public removeMemberFromProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric)
     {
-        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contributors/" + memberId;
         this.http.delete<any>(elURL, { responseType: 'json' }).subscribe(data => {
             if (consumer != undefined)
                 consumer.onBEDataReceived("remove-project-member", JSON.stringify(data));
@@ -192,10 +193,16 @@ export class BackendAPIHandler {
     }
 
     public addMemberInProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric) {
-        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contributors/" + memberId;
         this.http.post<any>(elURL, { responseType: 'json' }).subscribe(data => {
             if (consumer != undefined)
                 consumer.onBEDataReceived("add-project-member", JSON.stringify(data));
+        });
+    }
+
+    public getAllLabels(consumer: IBEAbstractionGeneric) {
+        this.http.get<any>(this.GET_LABELS_URL, { responseType: 'json' }).subscribe(data => {
+            consumer.onBEDataReceived("get-all-labels",JSON.stringify(data));
         });
     }
 
