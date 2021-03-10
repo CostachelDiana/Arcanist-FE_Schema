@@ -1,42 +1,31 @@
-import {IProject,IBEAbstraction} from './IProject'
+import {IPage,IBEAbstractionGeneric} from './IProject'
 import {projectBEComStub} from './projectBEComStub'
+import { HttpClient } from '@angular/common/http';
 
+import {BackendAPIHandler} from '../common/BackendAPIHandler'
 
-export class ProjectBEAbstraction implements IBEAbstraction {
+export class ProjectBEAbstraction implements IBEAbstractionGeneric {
 	
-	prjPage: IProject;
+	prjPage: IPage;
 	
 	beCommStub: projectBEComStub;
+	api: BackendAPIHandler;
 	
-	constructor() {
-	}
-	
-	public connect(servAddr: string, servPort: string): void {
-		console.log("BE connecting to "+servAddr+" servPort");
-		this.beCommStub = new projectBEComStub();
-		this.beCommStub.servUpdateCback = this.onServUpdateReceivedCb.bind(this);
-		this.beCommStub.simulateConnect(servAddr, servPort);
+	constructor(http: HttpClient) {
+		this.api = new BackendAPIHandler(http);
+			
 	}
 	
-	public request(beJson: string)
-	{
-		console.log("Sending request to BE "+beJson+" [EndOfRequest]");
-		this.beCommStub.simulateUpdateReceived();
+	
+	
+	public sendBEUpdate(beJson: string): void {
+		
+	}
+	public setPage(page: IPage): void {
 	}
 	
-	public sendBEUpdate(beJson: string): void
-	{
-		console.log("Be update request received!");
-	}
-	public setProject(prj: IProject): void
-	{
-		this.prjPage = prj;
+	public onBEDataReceived(evtType: string, data: string): void {
 	}
 	
-	public onServUpdateReceivedCb(jstr: string): void {
-		if (this.prjPage !=null)
-		{
-			this.prjPage.onBEEventReceived(jstr);
-		}
-	}
+	
 }

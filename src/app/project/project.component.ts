@@ -2,13 +2,15 @@ import { stringify } from '@angular/compiler/src/util';
 import { Component } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
+
+import { HttpClient } from '@angular/common/http';
 // import { CaptureDetails, CaptureSets } from './ICapture';
 // import { Member, ProjectDetails, Protocol } from './IProject';
 
 import { CaptureSet, ProjMember, ProjPageInfo } from './projectPageComponents'
 import { CaptureInjectionSettings, CaptureInjectInfo } from '../utils/captureInfoComponents'
 import { CaptureInjectSerializer } from '../utils/captureInjectSerializer'
-import {IProject, IBEAbstraction} from './IProject'
+import {IPage, IBEAbstractionGeneric} from './IProject'
 import {SelectUserDialogue} from '../dialogues/SelectUserDialogue.component'
 import {SelectCaptureDialogue} from '../dialogues/SelectCaptureDialogue'
 import {InjectCapturesDialogue} from '../dialogues/InjectCapturesDialogue'
@@ -21,18 +23,19 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 
 
+
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
 
-export class ProjectComponent implements IProject {
+export class ProjectComponent implements IPage {
 	
 	projInfo: ProjPageInfo ;
 	public projNamesList: string[];
 	 
-	BEAbs: ProjectBEAbstraction;
+	BEAbs: IBEAbstractionGeneric;
 	serializer: ProjectPageEventSerializer;
 	captureInjectSerializer: CaptureInjectSerializer;
 	
@@ -47,7 +50,7 @@ export class ProjectComponent implements IProject {
 	
 	// initing methods
 	constructor(public dialogue: MatDialog,
-		 private router:Router, private activatedRoute:ActivatedRoute) {
+		 private router:Router, private activatedRoute:ActivatedRoute, private http:HttpClient) {
 		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
 			console.log("url is: "+window.location.href);
 
@@ -60,6 +63,16 @@ export class ProjectComponent implements IProject {
 
 		  console.log("filename is: "+ projName);
 		  console.log("projDetails is: "+ projDetails);
+		  
+			this.BEAbs= new ProjectBEAbstraction(http);
+			this.BEAbs.setPage(this);
+			
+			this.serializer = new ProjectPageEventSerializer();
+			this.captureInjectSerializer = new CaptureInjectSerializer();
+			
+			this.pageInited=false;
+			this.projectDetailsVisible = false;
+			this.projectCaptureSetsVisible = false;
 		
 		  if (projName!="") {
 		  	console.log("filename is not null");
@@ -69,66 +82,46 @@ export class ProjectComponent implements IProject {
 			// 	//error and redirect to projpage
 			//   }
 			//   else { //create proj
-				this.onGeneratePageClick();
+				
 				this.projInfo.projName = projName;
 				this.projInfo.projDetails = projDetails;
+				this.testInit();
 			//  }
 		  }
 		  else {
-		this.projInfo=null;
-		
-		this.pageInited=false;
 
-		this.projectDetailsVisible = false;
-		this.projectCaptureSetsVisible = false;
-		
-		this.serializer = new ProjectPageEventSerializer();
-		this.BEAbs= new ProjectBEAbstraction();
-		this.BEAbs.setProject(this);
-		this.BEAbs.connect("121.69.69.666","4040");
-		
-		//get from BE the list of existing proj
-		this.projNamesList = [];
-		this.projNamesList.push("ProjName1_predef");
-		this.projNamesList.push("ProjName2_predef");
+			//get from BE the list of existing proj
+			this.projNamesList = [];
+			this.projNamesList.push("ProjName1_predef");
+			this.projNamesList.push("ProjName2_predef");
 
-		this.capTransportTypes=[];
-		this.initBEData();
-    		this.captureInjectSerializer = new CaptureInjectSerializer();
-	}
+			this.projInfo=null;
+			
+			this.pageInited=false;
+
+
+			this.projectDetailsVisible = false;
+			this.projectCaptureSetsVisible = false;
+			
+			//get from BE the list of existing proj
+			this.projNamesList = [];
+			this.projNamesList.push("ProjName1_predef");
+			this.projNamesList.push("ProjName2_predef");
+
+			this.capTransportTypes=[];
+			this.initBEData();
+    		
+		}
 	}
 	
 	initBEData(): void {
 		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="TCP";
-		aPresetType.id=1;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="UDP";
-		aPresetType.id=2;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="FTP";
-		aPresetType.id=3;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="MSMQ";
-		aPresetType.id=4;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="SMTP";
-		aPresetType.id=5;
-		this.capTransportTypes.push(aPresetType);
+	
 	}
 	
 	public onFetchProjectClick(): void {
-		var aJson = this.serializer.serializeProjectPageRequest("projIDPlaceholder");
-		this.BEAbs.request(aJson);
+		var aJson = this.serializer.serializeProjectPageRequest("ProjectIDPlaceholder");
+		this.BEAbs.sendBEUpdate(aJson);
 	}
 	
 	public onGeneratePageClick(): void {
@@ -149,114 +142,11 @@ export class ProjectComponent implements IProject {
 	}
 	
 	
-	public testInit(): void {
-		console.log("initing proj data");
-		
-		this.projInfo = new ProjPageInfo("projIDPlaceholder");
-		
-		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
-		this.projInfo.projName="Generated proj";
-		
-		this.projInfo.projOwner=new ProjMember("Marius");
-		this.projInfo.projOwner.surname="Aldea";
-		this.projInfo.projDetails="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		
-		// add project members
-		var aMember = new ProjMember("Daniel");
-		aMember.surname="Ciotoracu";
-		
-		this.projInfo.projMembers.push(aMember);
-		
-		aMember = new ProjMember("Mihai");
-		aMember.surname="Cuatu";
-		this.projInfo.projMembers.push(aMember);
-		
-		
-		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
-		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
-		aCapSet.capSetX3Protocol="ULIC RTP";
-		
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6001";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="LIID";
-		aCapture.captureICVal="442312";
-		
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
-		aCapture.captureX2Port="5005";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="0000";
-		aCapture.captureX3Transport="unknown";
-		aCapture.captureX3Protocol="unknown";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD";
-		aCapture.captureIC="Phone";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6005";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="MSISDN";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		this.projInfo.projCapSets.push(aCapSet);
-		
-		aCapSet = new CaptureSet("MPD Orage UMD");
-		aCapSet.capSetX2Protocol="ETSI 33 108 v271";
-		aCapSet.capSetX3Protocol="ULIC EPS";
-		
-		var aCapture = new CaptureInjectInfo("Leo MPD Browsing","ADGr123");
-		aCapture.captureX2Port="22";
-		aCapture.captureX2Transport="FTP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6001";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC EPS";
-		aCapture.switchDate="18-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="IMSI";
-		aCapture.captureICVal="34312561";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo MPD on/off","ADGr123");
-		aCapture.captureX2Port="22";
-		aCapture.captureX2Transport="FTP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="0000";
-		aCapture.captureX3Transport="unkonwn";
-		aCapture.captureX3Protocol="unknown";
-		aCapture.switchDate="18-01-2011";
-		aCapture.captureType="CD";
-		aCapture.captureIC="IMSI";
-		aCapture.captureICVal="34312561";
-		
-		aCapSet.addCapture(aCapture);
-		
-		this.projInfo.projCapSets.push(aCapSet);
-	}
 	
+	public initPage(pgJson: string): void
+	{
+	
+	}
 	public initProjectPage(info: ProjPageInfo): void {
 		this.projInfo = info;
 	}
@@ -264,7 +154,7 @@ export class ProjectComponent implements IProject {
 	public refresh():void {
 		// nothing to do right now
 	}
-	public setBEAbstraction(be: IBEAbstraction): void {
+	public setBEAbstraction(be: IBEAbstractionGeneric): void {
 		
 	}
 
@@ -401,58 +291,6 @@ export class ProjectComponent implements IProject {
 		}
 		);
 		
-		
-		// CMS Debug
-		
-		/*
-		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
-		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
-		aCapSet.capSetX3Protocol="ULIC RTP";
-		
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6001";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="LIID";
-		aCapture.captureICVal="442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
-		aCapture.captureX2Port="5005";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="0000";
-		aCapture.captureX3Transport="unknown";
-		aCapture.captureX3Protocol="unknown";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD";
-		aCapture.captureIC="Phone";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6005";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="MSISDN";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		this.projInfo.projCapSets.push(aCapSet);*/
 	
 		
 	}
@@ -626,5 +464,114 @@ export class ProjectComponent implements IProject {
 			this.pageInited=true;
 		}
 	}
+	
+	public testInit(): void {
+		console.log("initing proj data");
+		
+		this.projInfo = new ProjPageInfo("projIDPlaceholder");
+		
+		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
+		this.projInfo.projName="Generated proj";
+		
+		this.projInfo.projOwner=new ProjMember("Marius");
+		this.projInfo.projOwner.surname="Aldea";
+		this.projInfo.projDetails="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+		
+		// add project members
+		var aMember = new ProjMember("Daniel");
+		aMember.surname="Ciotoracu";
+		
+		this.projInfo.projMembers.push(aMember);
+		
+		aMember = new ProjMember("Mihai");
+		aMember.surname="Cuatu";
+		this.projInfo.projMembers.push(aMember);
+		
+		
+		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
+		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
+		aCapSet.capSetX3Protocol="ULIC RTP";
+		
+		
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6001";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="LIID";
+		aCapture.captureICVal="442312";
+		
+		
+		aCapSet.addCapture(aCapture);
+		
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
+		aCapture.captureX2Port="5005";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="0000";
+		aCapture.captureX3Transport="unknown";
+		aCapture.captureX3Protocol="unknown";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD";
+		aCapture.captureIC="Phone";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.addCapture(aCapture);
+		
+		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
+		aCapture.captureX2Port="5001";
+		aCapture.captureX2Transport="TCP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6005";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC RTP";
+		aCapture.switchDate="15-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="MSISDN";
+		aCapture.captureICVal="+31332442312";
+		
+		aCapSet.addCapture(aCapture);
+		
+		this.projInfo.projCapSets.push(aCapSet);
+		
+		aCapSet = new CaptureSet("MPD Orage UMD");
+		aCapSet.capSetX2Protocol="ETSI 33 108 v271";
+		aCapSet.capSetX3Protocol="ULIC EPS";
+		
+		var aCapture = new CaptureInjectInfo("Leo MPD Browsing","ADGr123");
+		aCapture.captureX2Port="22";
+		aCapture.captureX2Transport="FTP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="6001";
+		aCapture.captureX3Transport="TCP";
+		aCapture.captureX3Protocol="ULIC EPS";
+		aCapture.switchDate="18-01-2011";
+		aCapture.captureType="CD&CC";
+		aCapture.captureIC="IMSI";
+		aCapture.captureICVal="34312561";
+		
+		aCapSet.addCapture(aCapture);
+		
+		var aCapture = new CaptureInjectInfo("Leo MPD on/off","ADGr123");
+		aCapture.captureX2Port="22";
+		aCapture.captureX2Transport="FTP";
+		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
+		aCapture.captureX3Port="0000";
+		aCapture.captureX3Transport="unkonwn";
+		aCapture.captureX3Protocol="unknown";
+		aCapture.switchDate="18-01-2011";
+		aCapture.captureType="CD";
+		aCapture.captureIC="IMSI";
+		aCapture.captureICVal="34312561";
+		
+		aCapSet.addCapture(aCapture);
+		
+		this.projInfo.projCapSets.push(aCapSet);
+	}
+	
 	
 }

@@ -137,7 +137,7 @@ export class CaptureEditPage implements IPage{
 			console.log("new page info is "+JSON.stringify(this.pageInfo));
 		}
 		
-	}
+	} 
 	public setBEAbstraction(be: IBEAbstractionGeneric ): void {
 		
 	}
