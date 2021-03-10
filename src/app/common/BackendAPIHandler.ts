@@ -29,6 +29,8 @@ export class BackendAPIHandler {
 	constructor(private http: HttpClient) {
 		this.getPresetValues(null);
 		this.getPresetInfoValues(null);
+		this.serializer = new CaptureEditPageSerializer();
+		this.presetTypes = new PresetTypesInfo();
 	}
 	
 	public getPresetValues(consumer: IBEAbstractionGeneric): void {
