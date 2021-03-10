@@ -30,7 +30,10 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		// create jObject, interpret the string, etc
 		
 		//		
-		//var evtType = jObj["event-type"];		
+		//var evtType = jObj["event-type"];
+		
+		var useAPI = true;
+		useAPI =true;
 		
 		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
@@ -38,17 +41,26 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
         } else if (evtType == "play-capture") {
             console.log("Sending capture play");
             this.api.playCaptures(beJson,this);
-		} else if (evtType == "request-presets") {	
-			this.api.getPresetValues(this);
-			//this.debugSendPresetResponse();
+		} else if (evtType == "request-presets") {
+			if (useAPI) {
+				this.api.getPresetValues(this);
+			} else {
+				this.debugSendPresetResponse();
+			}
 		} else if (evtType == "request-info-presets") {			
-			this.api.getPresetInfoValues(this);
-			//this.debugSendInfoPresetResponse();
+			if (useAPI) {
+				this.api.getPresetInfoValues(this);
+			} else {
+				this.debugSendInfoPresetResponse();
+			}
         } else if (evtType == "request-capturePage") {
             var jObj = JSON.parse(beJson);
 			var capID = jObj["captureID"];
-			this.api.getCapturePageById(this,capID);
-			// this.debugSendCapturePageReponse();
+			if (useAPI) {
+				this.api.getCapturePageById(this,capID);
+			} else {
+			    this.debugSendCapturePageReponse();
+			}
 		}
 	}
 	
@@ -83,7 +95,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	}
 	
 	debugSendCapturePageReponse() {
-		var theJson ='';
+		var theJson ='{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"\\\\10.164.61.102\\hackathon\\test\\captures\\20210310\\3a51c229-cb22-4fc2-9292-73d509029632\\Target-to-Target-origination-8157.pcap","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}';
 		this.onBEResponseReceived("capture-page-received",theJson);
 	}
 	
