@@ -25,6 +25,8 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		
 		var jObj = JSON.parse(beJson);		
 		var evtType = jObj["event-type"];		
+		
+		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
             this.debugSendRequestStreamInfo();
         } else if (evtType == "play-capture") {
@@ -37,7 +39,9 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 			this.api.getPresetInfoValues(this);
 			//this.debugSendInfoPresetResponse();
 		} else if (evtType == "request-capturePage") {
-			this.debugSendCapturePageReponse();
+			var capID = jObj["captureID"];
+			this.api.getCapturePageById(this,capID);
+			// this.debugSendCapturePageReponse();
 		}
 	}
 	

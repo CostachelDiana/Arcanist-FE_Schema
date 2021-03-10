@@ -146,19 +146,19 @@ export class SearchComponent implements OnInit {
 		this._searchParameters.removeCaptureTag(index);
 	}  
 
-  public onSearchClick():void {
-    this._searchFinished = false;
-    //TODO: serialize from _searchParameters & send REST request
-    this.testFillSearchResults();
-    this._searchFinished = true;
+  	public onSearchClick():void {
+		this._searchFinished = false;
+		this._searchParameters.serializeSearchParams();
+		this.testFillSearchResults();
+		this._searchFinished = true;
 	}  
-  
-  private testFillSearchResults() : void {
-    this.addTestCaptureResult();
-    this.addTestCaptureResult();
-    this.addTestCaptureResult();
-    this.addTestCaptureResult();
-  }
+
+	private testFillSearchResults() : void {
+		this.addTestCaptureResult();
+		this.addTestCaptureResult();
+		this.addTestCaptureResult();
+		this.addTestCaptureResult();
+	}
 
   private addTestCaptureResult() : void{
     var pgInfo = new FullCaptureInfo();
@@ -314,27 +314,27 @@ export class SearchParameters {
     this._searchName = newName;
   }  
 
-  private _cdProtocolSelectedId: string;
-  get cdProtocolSelectedId() : string{
+  private _cdProtocolSelectedId: number;
+  get cdProtocolSelectedId() : number{
     return this._cdProtocolSelectedId;
   }
-  set cdProtocolSelectedId (selectedId : string){
+  set cdProtocolSelectedId (selectedId : number){
     this._cdProtocolSelectedId = selectedId;
   }  
 
-  private _ccProtocolSelectedId: string;
-  get ccProtocolSelectedId() : string{
+  private _ccProtocolSelectedId: number;
+  get ccProtocolSelectedId() : number{
     return this._ccProtocolSelectedId;
   }
-  set ccProtocolSelectedId (selectedId : string){
+  set ccProtocolSelectedId (selectedId : number){
     this._ccProtocolSelectedId = selectedId;
   }  
 
-  private _technologySelectedId: string;
-  get technologySelectedId() : string{
+  private _technologySelectedId: number;
+  get technologySelectedId() : number{
     return this._technologySelectedId;
   }
-  set technologySelectedId (selectedId : string){
+  set technologySelectedId (selectedId : number){
     this._technologySelectedId = selectedId;
   }   
 
@@ -380,19 +380,19 @@ export class SearchParameters {
     this._projectsMinMax.max = projects;
   }
 
-  private _statusSelectedId: string;
-  get statusSelectedId() : string{
+  private _statusSelectedId: number;
+  get statusSelectedId() : number{
     return this._statusSelectedId;
   }
-  set statusSelectedId (selectedId : string){
+  set statusSelectedId (selectedId : number){
     this._statusSelectedId = selectedId;
   } 
 
-  private _targetICSelectedId : string;
-  get targetICSelectedId() : string{
+  private _targetICSelectedId : number;
+  get targetICSelectedId() : number{
     return this._targetICSelectedId;
   }
-  set targetICSelectedId (selectedId : string){
+  set targetICSelectedId (selectedId : number){
     this._targetICSelectedId = selectedId;
   } 
 
@@ -424,18 +424,176 @@ export class SearchParameters {
 		this._capInfos.push(aInfo);
 	}
 
+	public serializeSearchParams() : string{
+		var jsonObj = [];
+		
+		if(this._searchName)
+		{
+			jsonObj.push({
+				["field"] : "name",
+				["operator"] : "LIKE",
+				["value"] : this._searchName,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}
+		
+		if(this._cdProtocolSelectedId)
+		{
+			jsonObj.push({
+				["field"] : "cdProtocolId",
+				["operator"] : "EQUALS",
+				["value"] : this._cdProtocolSelectedId,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}
+
+		if(this._ccProtocolSelectedId)
+		{
+			jsonObj.push({
+				["field"] : "ccProtocolId",
+				["operator"] : "EQUALS",
+				["value"] : this._ccProtocolSelectedId,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}
+
+		if(this._technologySelectedId)
+		{
+			jsonObj.push({
+				["field"] : "ccProtocolId",
+				["operator"] : "EQUALS",
+				["value"] : this._technologySelectedId,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}
+
+		if(this.durationMin || this.durationMax)
+		{
+			var lower = (this.durationMin) ? this.durationMin : null;
+			var upper = (this.durationMax) ? this.durationMax : null;
+			jsonObj.push({
+				["field"] : "length",
+				["operator"] : "BETWEEN_SIZE",
+				["value"] : null,
+				["values"] : null,
+				["lower"] : lower,
+				["upper"] : upper
+			});			
+		}
+		if(this.projectsMin || this.projectsMax)
+		{
+			var lower = (this.projectsMin) ? this.projectsMin : null;
+			var upper = (this.projectsMax) ? this.projectsMax : null;
+			jsonObj.push({
+				["field"] : "projectsCount",
+				["operator"] : "BETWEEN_SIZE",
+				["value"] : null,
+				["values"] : null,
+				["lower"] : lower,
+				["upper"] : upper
+			});				
+		}
+		if(this.referencesMin || this.referencesMax)
+		{
+			var lower = (this.referencesMin) ? this.referencesMin : null;
+			var upper = (this.referencesMax) ? this.referencesMax : null;
+			jsonObj.push({
+				["field"] : "referencesCount",
+				["operator"] : "BETWEEN_SIZE",
+				["value"] : null,
+				["values"] : null,
+				["lower"] : lower,
+				["upper"] : upper
+			});				
+		}		
+		if(this._statusSelectedId)
+		{
+			jsonObj.push({
+				["field"] : "status",
+				["operator"] : "EQUALS",
+				["value"] : this._statusSelectedId,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}		
+		if(this._targetICSelectedId)
+		{
+			jsonObj.push({
+				["field"] : "interceptionCriteriaId",
+				["operator"] : "EQUALS",
+				["value"] : this._targetICSelectedId,
+				["values"] : null,
+				["lower"] : null,
+				["upper"] : null
+			});
+		}		
+		if(this._capTags.length > 0)
+		{
+			var tagArray = [];
+			for(var i = 0; i < this._capTags.length; i++)
+			{
+				tagArray.push(new Number(this._capTags[i].id));
+			}
+			jsonObj.push({
+				["field"] : "Tag",
+				["operator"] : "IN",
+				["value"] : null,
+				["values"] : tagArray,
+				["lower"] : null,
+				["upper"] : null				
+			})
+		}
+		if(this._capInfos.length > 0)
+		{
+			var infoArrays = [];
+			for(var i = 0; i < this._capInfos.length; i++)
+			{
+				if(!(this.capInfos[i].infoTypeName in infoArrays))
+				{
+					infoArrays[this.capInfos[i].infoTypeName] = [];
+				}
+				infoArrays[this.capInfos[i].infoTypeName].push(new Number(this.capInfos[i].infoValID));
+				console.log('infoArrays: ' +  infoArrays[this.capInfos[i].infoTypeName]);
+			}
+			for(var info in infoArrays)
+			{
+				jsonObj.push({
+					["field"] : info,
+					["operator"] : "IN",
+					["value"] : null,
+					["values"] : infoArrays[info],
+					["lower"] : null,
+					["upper"] : null	
+				})
+			}
+		}
+
+		var jsonString =JSON.stringify(jsonObj);
+		console.log('serializeSearchParams: ' +  jsonString);
+		return jsonString;
+	}
+
   constructor(){
-    this._searchName = "";
+    this._searchName = undefined;
     
-    this._cdProtocolSelectedId = "";
-    this._ccProtocolSelectedId = "";
-    this._technologySelectedId = "";
+    this._cdProtocolSelectedId = undefined;
+    this._ccProtocolSelectedId = undefined;
+    this._technologySelectedId = undefined;
     
     this._durationMinMax = new MinMaxNumberOption();
     this._referencesMinMax = new MinMaxNumberOption();
     this._projectsMinMax = new MinMaxNumberOption();
 
-    this._statusSelectedId = "";  
+    this._statusSelectedId = undefined;  
 
     this._capTags = [];
     this._capInfos = [];

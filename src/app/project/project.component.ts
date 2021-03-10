@@ -110,12 +110,14 @@ export class ProjectComponent implements IPage {
 
 			this.capTransportTypes=[];
 			this.initBEData();
+			this.testInit();
     		
 		}
 	}
 	
 	initBEData(): void {
-		
+		var reqStr = this.serializer.serializeRequestPresetInfo();
+		this.BEAbs.sendBEUpdate(reqStr);
 	
 	}
 	
@@ -450,18 +452,12 @@ export class ProjectComponent implements IPage {
 		return this.projInfo.projCapSets;
 	}
 	
-	public onBEEventReceived(evtJson: string): void {
+	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-		var evtType = jObj["event-type"];
-		console.log("received BE Update! evt ["+evtType+"]");
-		if (evtType == "connection-success") {
-			console.log("connection established! server says"+jObj["message"]);
-		} else if (evtType == "project-fetched") {
-			console.log("project page received!");
-			this.projInfo = new ProjPageInfo("projIDPlaceholder");
-			this.serializer.deserializeProjectPageUpdate(this.projInfo,jObj);
-			this.pageInited=true;
+		if (evtType == "request-presets")
+		{
+			this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
 		}
 	}
 	

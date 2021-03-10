@@ -17,6 +17,8 @@ export class BackendAPIHandler {
     INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
 	
+	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
+	
 	constructor(private http: HttpClient) {
 	}
 	
@@ -45,4 +47,13 @@ export class BackendAPIHandler {
                 consumer.onBEDataReceived("play-capture", JSON.stringify(data));
         });
     }
+	
+	public getCapturePageById(consumer: IBEAbstractionGeneric, capID: string): void {
+		var elURL = this.GET_CAPTURE_PAGE_URL+"/"+capID;
+		console.log("request cap page with url "+ elURL);
+		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
+			console.log("received BE cap page with json "+JSON.stringify(data));
+            consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
+        });
+	}
 }
