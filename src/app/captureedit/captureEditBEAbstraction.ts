@@ -22,13 +22,13 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		// create jObject, interpret the string, etc
 		
 		var jObj = JSON.parse(beJson);		
-		var evtType = jObj["event-type"];
-		
+		var evtType = jObj["event-type"];		
 		if (evtType == "request-stream-info")
 		{
-			this.api.getPresetValues(this);
 			this.debugSendRequestStreamInfo();
-		} else if (evtType == "request-presets") {
+		} else if (evtType == "request-presets") {	
+			
+			this.api.getPresetValues(this);
 			this.debugSendPresetResponse();
 		} else if (evtType == "request-info-presets") {
 			this.debugSendInfoPresetResponse();

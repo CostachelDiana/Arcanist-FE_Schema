@@ -16,7 +16,7 @@ export class BackendAPIHandler {
 	public getPresetValues(consumer: IBEAbstractionGeneric): void {
 		console.log("Requesting get preset values, accessing url "+this.PRESET_VALUES_URL);
 		this.http.get<any>(this.PRESET_VALUES_URL,{responseType: 'json'}).subscribe(data => {
-			console.log("received BE Response for p vals "+data);
+			console.log("received BE Response for p vals "+JSON.stringify(data));
             consumer.onBEDataReceived(data)
         });
 	}
