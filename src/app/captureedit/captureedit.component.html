@@ -33,7 +33,7 @@
 					&nbsp;
 					<mat-form-field>
 						<mat-label>Capture Name</mat-label>
-						<input matInput #capName value="{{this.getPageInfo().capName}}">			
+						<input matInput #capName value="{{this.getPageInfo().capName}}" (blur)="this.getPageInfo().capName = capName.value">			
 					</mat-form-field>
 					</div>
 					<div>
@@ -42,22 +42,20 @@
 					&nbsp;
 					<mat-form-field appearance="fill">
 						<mat-label>X2 Protocol</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}" 
+						  <select matNativeControl required (change)="this.onX2ProtocolSelectionChanged($event)">
+							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.displayName}}" 
 							[selected]="x2.displayName==this.getPageInfo().capX2Protocol">{{x2.displayName}}</option>
-							<!-- selected is this.getPageInfo().capX2Protocol == x2.displayName-->
 						  </select>
 					</mat-form-field>
 					</div>
-					
 					<div>
 					CC Protocol
 					&nbsp;
 					&nbsp;
 					<mat-form-field appearance="fill">
 						<mat-label>X3 Protocol</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.id}}"
+						  <select matNativeControl required (change)="this.onX3ProtocolSelectionChanged($event)">
+							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.displayName}}"
 							[selected]="x3.displayName==this.getPageInfo().capX3Protocol">{{x3.displayName}}</option>							
 						  </select>
 					</mat-form-field>
@@ -69,8 +67,8 @@
 					&nbsp;
 					<mat-form-field appearance="fill">
 						<mat-label>Core Technology</mat-label>
-						  <select matNativeControl required>
-								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.id}}"
+						  <select matNativeControl required (change)="this.onTechnologySelectionChanged($event)">
+								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.displayName}}"
 								[selected]="tech.displayName==this.getPageInfo().capTechnology.displayName">{{tech.displayName}}</option>					
 						  </select>
 					</mat-form-field>
@@ -93,7 +91,8 @@
 		</table>
 		<h5 class="font-weight-bold"> User Comments</h5>
 		<div class="card card-body">
-			<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value=" {{this.getPageInfo().capUserNotes}}"></textarea>
+			<textarea class="usrNotes" #ursNotesTextArea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" 
+			value="{{this.getPageInfo().capUserNotes}}" (blur)="this.getPageInfo().capUserNotes = ursNotesTextArea.value"></textarea>
 		</div>
 	</div>
 
@@ -116,22 +115,22 @@
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
 							<mat-label>X2 IP</mat-label>
-							<input matInput #x2ip value="{{this.getPageInfo().capX2Ip}}">
+							<input matInput #x2ip value="{{this.getPageInfo().capX2Ip}}" (blur)="this.getPageInfo().capX2Ip = x2ip.value">
 						</mat-form-field>
 						<br>
 						CD Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
 							<mat-label>X2 port</mat-label>
-							<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">
+							<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}" (blur)="this.getPageInfo().capX2Port = x2prt.value">
 						</mat-form-field>
 						<br>
 						CD Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
 							<mat-label>X2 Transport</mat-label>
-							<select matNativeControl required>
-								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}"
+							<select matNativeControl required (change)="this.onX2TransportSelectionChanged($event)">
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.displayName}}"
 								[selected]="trans.displayName==this.getPageInfo().capX2Trans">{{trans.displayName}}</option>
 							</select>
 						</mat-form-field>
@@ -140,22 +139,22 @@
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
 							<mat-label>X3 IP</mat-label>
-							<input matInput #x3ip value="{{this.getPageInfo().capX3Ip}}">
+							<input matInput #x3ip value="{{this.getPageInfo().capX3Ip}}" (blur)="this.getPageInfo().capX3Ip = x3ip.value">
 						</mat-form-field>
 						<br>
 						CC Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
 							<mat-label>X3 port</mat-label>
-							<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
+							<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}" (blur)="this.getPageInfo().capX3Port = x3prt.value">
 						</mat-form-field>
 						<br>
 						CC Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
 							<mat-label>X3 Transport</mat-label>
-							<select matNativeControl required>
-								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}"
+							<select matNativeControl required  (change)="this.onX3TransportSelectionChanged($event)">
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.displayName}}"
 								[selected]="trans.displayName==this.getPageInfo().capX3Trans">{{trans.displayName}}</option>
 							</select>
 						</mat-form-field>
@@ -193,8 +192,8 @@
 					Target IC 
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let ic of this.getICTypes()" value="{{ic.id}}"
+						  <select matNativeControl required (change)="this.onICTypeSelectionChanged($event)">
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.displayName}}"
 							[selected]="ic.displayName==this.getPageInfo().capIC.infoTypeName">{{ic.displayName}}</option>							
 						  </select>
 					</mat-form-field>
@@ -203,7 +202,7 @@
 					IC Value
 					<mat-form-field [style.width.px]=100>
 							<mat-label>ICValue</mat-label>
-							<input matInput #icvalue value="{{this.getPageInfo().capIC.infoValName}}">
+							<input matInput #icvalue value="{{this.getPageInfo().capIC.infoValName}}" (blur)="this.getPageInfo().capIC.infoValName = icvalue.value">
 					</mat-form-field>
 					&nbsp;
 					&nbsp;
