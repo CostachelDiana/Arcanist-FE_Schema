@@ -96,7 +96,7 @@ export class BackendAPIHandler {
 		console.log("posting upload request for file "+file.name);
 		const headers = new HttpHeaders();
 		const formData: FormData = new FormData();
-		formData.append('filekey', file, file.name);
+		formData.append('file', file, file.name);
 		this.http.post<any> (this.POST_UPLOAD_CAPTURE_URL, formData, {headers: headers, responseType: 'json'}).subscribe(data => {
 			console.log("received BE Capture upload response with json" + JSON.stringify(data));
 			consumer.handleBEResponse(data,"capture-uploaded");
