@@ -18,13 +18,18 @@ export class ProjectBEAbstraction implements IBEAbstractionGeneric {
 	
 	
 	
-	public sendBEUpdate(beJson: string): void {
+	public sendBEUpdate(beJson: string, evt : string): void {
 		
+		if (evt == "request-info-presets")
+		{
+			this.api.getPresetValues(this);
+		}
 	}
 	public setPage(page: IPage): void {
 	}
 	
 	public onBEDataReceived(evtType: string, data: string): void {
+		this.prjPage.onBEEventReceived(evtType,data);
 	}
 	
 	

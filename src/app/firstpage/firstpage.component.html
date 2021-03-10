@@ -25,29 +25,39 @@
             <div class="modal-content">
 
               <div class="modal-header">
-                <h5 class="modal-title" id="uploadCaptureLabel">New Capture</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+				<div *ngIf="!this.isCaptureUploading">
+					<h5 class="modal-title text-center" id="uploadCaptureLabel">Upload New Capture</h5>					
+				</div>
+				<div *ngIf="this.isCaptureUploading">
+					<h5 class="modal-title text-center" id="uploadingCaptureLabel">Uploading capture, please wait</h5>
+				</div>
               </div>
 
               <div class="modal-body">
-                Browse for a capture (or drag and drop the capture below):
-                <label for="files" class="btn" (change)="onFileChange($event)"><i class="fas fa-folder"></i></label>
-                <input id="files" name="fileToUpload" type="file" accept=".snoop, .torrent, .pcap, .pcapng">
-                <!--<table width="100%" disabled><td><form class="dropzone dz-clickable">
-                  <div class="dz-default dz-message"><span><s>Drop files here to upload</s></span></div>
-                </form></td></table>-->
-                
-                <!--<div>
-                  <label for="files" class="btn"><i class="fas fa-folder"></i>Select Image</label>
-                  <input id="files" style="visibility:hidden;" type="file">
-                </div>-->
+				<div *ngIf="!this.isCaptureUploading">
+					Browse for a capture
+					<!-- <label for="files" class="btn" (change)="onFileChange($event)"><i class="fas fa-folder"></i></label>-->
+					<div>
+					<input id="files"
+						name="fileToUpload" 
+						type="file" 
+						accept=".snoop, .torrent, .pcap, .pcapng"
+						(change)="onFileSelected($event.target.files)">
+					</div>				
+					<div *ngIf="this.showUploadError">
+						<p style="color:#DD0000">*Please select a file for upload</p>
+					</div>
+				</div>
+				<div *ngIf="this.isCaptureUploading">
+					<div class="text-center">
+						<img width="200px" class="text-center" src="assets/loading.gif" />					  
+					</div>
+				</div>
               </div>
 
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="submit">Upload Now</button>
+              <div class="modal-footer" *ngIf="!this.isCaptureUploading">
+                <button type="button" class="btn btn-secondary" id="closeModal" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary" type="submit" (click)="onCaptureUploadClick()">Upload Now</button>
               </div>
             </div>
           </form>

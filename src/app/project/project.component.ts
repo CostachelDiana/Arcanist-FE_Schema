@@ -110,18 +110,20 @@ export class ProjectComponent implements IPage {
 
 			this.capTransportTypes=[];
 			this.initBEData();
+			this.testInit();
     		
 		}
 	}
 	
 	initBEData(): void {
-		
+		var reqStr = this.serializer.serializeRequestPresetInfo();
+        this.BEAbs.sendBEUpdate(reqStr,"request-presets");
 	
 	}
 	
 	public onFetchProjectClick(): void {
 		var aJson = this.serializer.serializeProjectPageRequest("ProjectIDPlaceholder");
-		this.BEAbs.sendBEUpdate(aJson);
+        this.BEAbs.sendBEUpdate(aJson, "fetch-project-page");
 	}
 	
 	public onGeneratePageClick(): void {
@@ -217,6 +219,7 @@ export class ProjectComponent implements IPage {
 	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
         var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap, isSeq);
+        //this.BEAbs.playCaptures(jSon, this);
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
@@ -404,7 +407,7 @@ export class ProjectComponent implements IPage {
 		
 		if (this.BEAbs !=null )
 		{
-			this.BEAbs.sendBEUpdate(jSon);
+            this.BEAbs.sendBEUpdate(jSon, "full-project-update");
 		}
 	}
 	
@@ -450,18 +453,12 @@ export class ProjectComponent implements IPage {
 		return this.projInfo.projCapSets;
 	}
 	
-	public onBEEventReceived(evtJson: string): void {
+	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-		var evtType = jObj["event-type"];
-		console.log("received BE Update! evt ["+evtType+"]");
-		if (evtType == "connection-success") {
-			console.log("connection established! server says"+jObj["message"]);
-		} else if (evtType == "project-fetched") {
-			console.log("project page received!");
-			this.projInfo = new ProjPageInfo("projIDPlaceholder");
-			this.serializer.deserializeProjectPageUpdate(this.projInfo,jObj);
-			this.pageInited=true;
+		if (evtType == "request-presets")
+		{
+			this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
 		}
 	}
 	

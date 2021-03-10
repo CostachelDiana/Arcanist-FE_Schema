@@ -36,7 +36,7 @@ export class CaptureEditPage implements IPage{
 	capStreams: StreamInfo[];
 	
 	serializer: CaptureEditPageSerializer;
-	backend: CaptureEditBEAbstraction;
+	//backend: CaptureEditBEAbstraction;
 	pageReady: boolean;
 	basicInfoVisible: boolean;
 	advancedInfoVisible: boolean;
@@ -48,69 +48,70 @@ export class CaptureEditPage implements IPage{
 	
 
 	constructor(public dialogue: MatDialog, private http: HttpClient,
-		private activatedRoute:ActivatedRoute) { 
+		private activatedRoute:ActivatedRoute, private backend : CaptureEditBEAbstraction) { 
 		
 		this.basicInfoVisible = true;
-		this.advancedInfoVisible = false;
-		this.streamInfoVisible = false;
-		this.captureInfoVisible = false;
-		this.captureTagVisible = false;
+		this.advancedInfoVisible = true;
+		this.streamInfoVisible = true;
+		this.captureInfoVisible = true;
+		this.captureTagVisible = true;
 		this.captureReferenceVisible = false;
+		
 		this.pageReady = false;
 		this.streamsReady =false;
 		console.log("url is: "+window.location.href);
 
-		let fileToUpload: string;
-		rez: this.activatedRoute.queryParams.subscribe(params => {
-			fileToUpload = params['fileToUpload'] || "";
-		  });
-
-		  console.log("filename is: " + fileToUpload);
 		
-		  if (fileToUpload!="") {
-		  	console.log("filename is not null");
-
-			  //check on BE is proj already exist
-			//   if (fileExist) {
-			// 	//error and redirect to capture edit
-			//   }
-			//   else { //create proj
-				this.onGeneratePageClick();
-				this.pageInfo.capName = fileToUpload;
-			//  }
-		  }
-		  else {
-		
-			this.pageReady= false;
-			this.streamsReady=false;
 		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
 		
 		this.serializer = new CaptureEditPageSerializer();
 		this.captureInjectSerializer = new CaptureInjectSerializer();
 		
-		this.backend = new CaptureEditBEAbstraction(http);
 		this.backend.setPage(this);
+		this.presetInfo = backend.getPresets();
 		
 		this.requestPage();
-	}
-	}
+		//this.requestBEPresets();
+		//this.requestBEPresets();
+		
+	//	this.requestBEStreams();
 	
+	}
+	// BE init methods 
+	/*public requestBEPresets() {		
+		var beStr = this.serializer.serializeRequestPresets();
+		this.backend.sendBEUpdate(beStr);
+	}
+	public requestBEInfoPresets(){
+		var beStr = this.serializer.serializeRequestInfoPresets();
+		this.backend.sendBEUpdate(beStr);
+	}*/
+	public requestBEStreams() {
+		var urlParams = new URLSearchParams(window.location.search);
+		var capID=urlParams.get('capid');
+		var beStr = this.serializer.serializeStreamRequest(capID);
+        this.backend.sendBEUpdate(beStr, "request-stream-info");
+	}
 	public requestPage()
 	{
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
+		if (capID==null)
+		{
+			console.log("no capid provided");
+			capID = "3a51c229-cb22-4fc2-9292-73d509029632";
+		}
 		console.log("requesting page for id "+ capID);
 		
+		var req = this.serializer.serializeRequestCapturePage(capID);
+        this.backend.sendBEUpdate(req, "request-capturePage");
+		console.log("req done");
 	}
-	
-	public initPage(json: string)
-	{
-	}
-	
 	
 	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
+		console.log("received json " +evtJson);
 		var jObj = JSON.parse(evtJson);
 		var evt = evtType;
 		
@@ -130,14 +131,15 @@ export class CaptureEditPage implements IPage{
 		} else if (evt=="capture-page-received")
 		{
 			
-			var elRezo = this.serializer.deserializePageInfo(jObj);			
+			var elRezo = this.serializer.deserializePageInfo(jObj,this.presetInfo);			
 			this.pageInfo = elRezo;
+			this.pageReady=true;
 			
-			this.pageReady=true;			
-			console.log("new page info is "+JSON.stringify(this.pageInfo));
-		}
-		
+		}		
 	} 
+	// methods from IPage(probably not relevant antmore)
+	public initPage(pgJson:string) : void {
+	}
 	public setBEAbstraction(be: IBEAbstractionGeneric ): void {
 		
 	}
@@ -237,7 +239,7 @@ export class CaptureEditPage implements IPage{
 		// CMS to do send to backend
 		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap,false);
 
-          this.backend.sendBEUpdate(jSon);
+          this.backend.sendBEUpdate(jSon, "play-capture");
 		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
 	  }
 
@@ -317,13 +319,6 @@ export class CaptureEditPage implements IPage{
 		this.streamsReady=true;
 	}
 	
-	public onQuerryBEClick() {
-		
-		console.log("Backend querried");
-		 this.http.post<any>('https://jsonplaceholder.typicode.com/posts', { title: 'Angular POST Request Example' }).subscribe(data => {
-            (<HTMLInputElement> document.querySelector(".usrNotes")).value="BE Response received "+ data.id;
-        })
-	}	
 	
 	public onBEResponseReceived(){
 		
@@ -333,22 +328,22 @@ export class CaptureEditPage implements IPage{
 	
 	public onRequestBEPresetsClick() {		
 		var beStr = this.serializer.serializeRequestPresets();
-		this.backend.sendBEUpdate(beStr);		
+        this.backend.sendBEUpdate(beStr, "request-presets");		
 	}
 	public onRequestBEInfoPresetsClick(){
 		var beStr = this.serializer.serializeRequestInfoPresets();
-		this.backend.sendBEUpdate(beStr);
+        this.backend.sendBEUpdate(beStr, "request-info-presets");
 	}
 	public onRequestBEStreamsClick() {
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
 		var beStr = this.serializer.serializeStreamRequest(capID);
-		this.backend.sendBEUpdate(beStr);
+        this.backend.sendBEUpdate(beStr, "request-stream-info");
 	}
 	public onRequestBEPageClick() {
 		
-	}
-	
+    }
+
 	onExpandBasicInfo(): void {
 		var btnBasicInfo = document.getElementById("btnBasicInfo");
 

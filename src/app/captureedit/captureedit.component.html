@@ -43,8 +43,10 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X2 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
-						  </select>		
+							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}" 
+							[selected]="x2.displayName==this.getPageInfo().capX2Protocol">{{x2.displayName}}</option>
+							<!-- selected is this.getPageInfo().capX2Protocol == x2.displayName-->
+						  </select>
 					</mat-form-field>
 					</div>
 					
@@ -55,7 +57,8 @@
 					<mat-form-field appearance="fill">
 						<mat-label>X3 Protocol</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>							
+							<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.id}}"
+							[selected]="x3.displayName==this.getPageInfo().capX3Protocol">{{x3.displayName}}</option>							
 						  </select>
 					</mat-form-field>
 					</div>
@@ -67,7 +70,8 @@
 					<mat-form-field appearance="fill">
 						<mat-label>Core Technology</mat-label>
 						  <select matNativeControl required>
-								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.id}}">{{tech.displayName}}</option>					
+								<option  *ngFor="let tech of this.getCapTechnologyTypes(); let idx = index" value="{{tech.id}}"
+								[selected]="tech.displayName==this.getPageInfo().capTechnology.displayName">{{tech.displayName}}</option>					
 						  </select>
 					</mat-form-field>
 					</div>					
@@ -127,7 +131,8 @@
 						<mat-form-field appearance="fill" [style.width.px]=100>
 							<mat-label>X2 Transport</mat-label>
 							<select matNativeControl required>
-								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}"
+								[selected]="trans.displayName==this.getPageInfo().capX2Trans">{{trans.displayName}}</option>
 							</select>
 						</mat-form-field>
 						<br>
@@ -150,7 +155,8 @@
 						<mat-form-field appearance="fill" [style.width.px]=100>
 							<mat-label>X3 Transport</mat-label>
 							<select matNativeControl required>
-								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}"
+								[selected]="trans.displayName==this.getPageInfo().capX3Trans">{{trans.displayName}}</option>
 							</select>
 						</mat-form-field>
 <td>
@@ -188,7 +194,8 @@
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
 						  <select matNativeControl required>
-							<option *ngFor="let ic of this.getICTypes()" value="{{ic.id}}">{{ic.displayName}}</option>							
+							<option *ngFor="let ic of this.getICTypes()" value="{{ic.id}}"
+							[selected]="ic.displayName==this.getPageInfo().capIC.infoTypeName">{{ic.displayName}}</option>							
 						  </select>
 					</mat-form-field>
 					&nbsp;
@@ -220,20 +227,23 @@
 		</div>
 		<br>
 		<br>
-		<div id="captureTag" style="margin-left: 30px" *ngIf="this.isCaptureTagVisible()">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
+		<div style="margin-left: 30px">
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<div style="card card-body">
+			<div id="captureTag" *ngIf="this.isCaptureTagVisible()">		
+				<div style="card card-body">
+				
+				<ul style="list-style:none">
+							<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
+								<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
+								 {{tg.displayName}}
+								 &nbsp;
+								 &nbsp;
+							</li>
+				</ul>
+				<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
+				</div>
 			</div>
-			<ul style="list-style:none">
-						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
-							 {{tg.displayName}}
-							 &nbsp;
-							 &nbsp;
-						</li>
-			</ul>
-			<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
 		</div>
 			
 	</div>

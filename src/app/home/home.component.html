@@ -1,5 +1,5 @@
 <br>
-<div class="row">
+<!-- <div class="row">
     <div class="col-sm-3">
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="..." alt="Card image cap">
@@ -105,4 +105,124 @@
         </div>
     </div>
 </div>
-<br><br><br>
+<br><br><br> -->
+
+<table width="95%" align="center">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" src="../../profile-picture.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content. Maybe a 'TO DO' list...
+                    <br>To DO List :
+                    <br> - smth1
+                    <br> - smth1
+                    <br> - smth3
+                    </p>
+                    <button class="btn btn-outline-dark" disabled>Edit</button>
+                </div>
+            </div>
+            <br>
+
+            <div class="card">
+                <h5 class="card-title">User Details</h5>
+                <div class="card-body">
+                    <table>
+                        <td>
+                            <tr>
+                                <td>Name: </td>
+                                <td>{{this.getLoggedInUserName()}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Surname: </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>Email: </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>Others: </td>
+                                <td></td>
+                            </tr>
+                        </td>
+                    </table>
+                    <button class="btn btn-outline-dark" disabled>Edit</button>
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="card">
+                <h5 class="card-title">Owned Proj</h5>
+                <div class="card-body">
+                    NOT Available yet
+                    <!-- <ul style="list-style:none"*ngFor="let prj of this.projInfo_Owner; let idx = index">
+                        <li>{{idx+1}}. {{prj.projName}}</li>
+                    </ul> -->
+                </div>
+            </div>
+            <br>
+
+            <div class="card">
+                <h5 class="card-title">Assign Proj</h5>
+                <div class="card-body">
+                    <ul style="list-style:none"*ngFor="let prj of this.projInfo_Assign; let idx = index">
+                        <li>{{idx+1}}. {{prj.projName}}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <h5 class="card-title">Favorites</h5>
+                <div class="card-body">
+                    <ul style="list-style:none"*ngFor="let prj of this.projInfo_Fav; let idx = index">
+                        <li>{{idx+1}}. {{prj.projName}}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            
+            <div class="card">
+                <h5 class="card-title">Login Activity</h5>
+                <div class="card-body">
+                    <table>
+                        <td>
+                            <tr>
+                                <td>Login Date: </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>Register Date: </td>
+                                <td></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Last Page: </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>Last Update: </td>
+                                <td></td>
+                            </tr>
+                        </td>
+                    </table>
+                </div>
+            </div>
+            <br>
+        </div>
+        
+    </div>
+</table>
+<br><br>
+
