@@ -15,11 +15,13 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 
   showUploadError: boolean;
   isCaptureUploading: boolean;
+  isProjectCreating:boolean;
   fileToUpload: File;
   
   constructor(private api: BackendAPIHandler, private router: Router) { 
 	this.showUploadError=false;
 	this.fileToUpload=null;
+	this.isProjectCreating=false;
   }
 
   ngOnInit(): void {
@@ -42,6 +44,12 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 	  this.showUploadError=false;	  
   }
   
+  public onCreateProjectClick() {
+	  this.isProjectCreating=true;
+	  this.api.postCreateProject(this);
+	  
+  }
+  
   public onCaptureUploadClick() {	
 		
 	  if (this.fileToUpload !=null)
@@ -56,10 +64,14 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   {
 	  if (evtType=="capture-uploaded")
 	  {
-		  var capID = jObj["uuid"];
-		  (<HTMLElement>document.querySelector("#closeModal")).click();
+		  var capID = jObj["uuid"];		  
 		  this.router.navigateByUrl("/CaptureEdit?capid="+capID);
 		  this.isCaptureUploading=false;
+	  } else if (evtType=="project-created")
+	  {
+		  var projID=jObj["id"];
+		  this.router.navigateByUrl("/ProjectPage?projId="+projID);
+		  this.isProjectCreating=false;
 	  }
   }
  

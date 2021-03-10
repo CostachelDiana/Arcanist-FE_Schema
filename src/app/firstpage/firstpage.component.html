@@ -1,4 +1,15 @@
 
+<div *ngIf="this.isProjectCreating">
+	<div class="d-flex justify-content-center">
+		<h1>Creating Project</h1>
+	</div>
+	<br>
+	<div class="text-center">
+		<img width="500px" class="text-center" src="assets/loading.gif" />					  
+	</div>
+</div>
+
+<div *ngIf="!this.isProjectCreating">
 <div class="d-flex justify-content-center">
   <h1>Welcome guest!</h1>
 </div> 
@@ -64,7 +75,11 @@
         </div>
       </div>
     </td>
-    <td><button class="nav-item nav-link" class="btn btn-primary"  data-toggle="modal" data-target="#createProj">Create Project</button></td>
+    <td>
+		<button class="nav-item nav-link" class="btn btn-primary"  data-toggle="modal" data-target="#createProj" (click)="onCreateProjectClick()" >Create Project</button>
+	</td>
+	
+	<!-- 
     <div class="modal fade" id="createProj" role="dialog" aria-labelledby="createProjLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <form method="GET" action="/ProjectPage">
@@ -100,8 +115,11 @@
         </form>
       </div>
     </div>
+	-->
   </tr>
 </table>
+
+</div>
 
 <br><br>
 

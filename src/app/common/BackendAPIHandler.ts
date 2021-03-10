@@ -29,6 +29,7 @@ export class BackendAPIHandler {
 	
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
+	POST_CREATE_PROJECT_URL=this.API_PATH + '/projects'
 	
 	presetTypes: PresetTypesInfo;
 	serializer: CaptureEditPageSerializer;
@@ -102,6 +103,13 @@ export class BackendAPIHandler {
 			consumer.handleBEResponse(data,"capture-uploaded");
 		});
 		
+	}
+	public postCreateProject(consumer: IBEApiConsumer)
+	{
+		console.log("posting create project");
+		this.http.post<any>(this.POST_CREATE_PROJECT_URL, {responseType: 'json'}).subscribe(data => {
+			consumer.handleBEResponse(data,"project-created");
+		});
 	}
 	
 	handlePresetResponse(jObj : Object){
