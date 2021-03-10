@@ -22,6 +22,8 @@ npm install --save @angular/material @angular/cdk
 
 npm install --save jquery
 
+npm install --save moment
+
 7. Install fontawesome
 npm install --save @fortawesome/fontawesome-free
 

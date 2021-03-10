@@ -506,7 +506,7 @@ export class CaptureEditPage implements IPage{
 		aCapInfo.infoValName="12334";
 		pgInfo.capIC=aCapInfo;		
 		
-		pgInfo.capSwitchDate="15.01.2020";
+		pgInfo.capSwitchDate="1/15/2020";
 		
 		// TAGS
 		/*var aCapTag=  new CaptureTag();

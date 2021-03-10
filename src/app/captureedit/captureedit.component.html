@@ -97,14 +97,14 @@
 	</div>
 
 	<br/>
-	<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnAdvancedInfo" (click)="this.onExpandAdvancedInfo()"> + Expand </button>  Advanced Info </h4>
+	<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnAdvancedInfo" (click)="this.onExpandAdvancedInfo()"> - Collapse </button>  Advanced Info </h4>
 	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	<br/>
 
 	<div id="advancedInfo" class="card card-body" *ngIf="this.isAdvancedInfoVisible()" >
 		<div style="margin-left: 30px">
 
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnStreamInfo" (click)="this.onExpandStreamInfo()"> + Expand </button>  Stream Info</h4>
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnStreamInfo" (click)="this.onExpandStreamInfo()"> - Collapse </button>  Stream Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 
 			<div style="card card-body" *ngIf="this.isStreamInfoVisible()">
@@ -158,7 +158,7 @@
 								[selected]="trans.displayName==this.getPageInfo().capX3Trans">{{trans.displayName}}</option>
 							</select>
 						</mat-form-field>
-<td>
+					<td>
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
@@ -186,7 +186,7 @@
 			</div>
 		</div>
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureInfo()"> + Expand </button>  Capture Info</h4>
+			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureInfo()"> - Collapse </button>  Capture Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 			<div id="captureInfo" style="card card-body" *ngIf="this.isCaptureInfoVisible()">				
 					Target IC 
@@ -208,8 +208,12 @@
 					&nbsp;
 					Switch time
 					<mat-form-field [style.width.px]=100>
-							<mat-label>Switch Time</mat-label>
-							<input matInput #swtime value="{{this.getPageInfo().capSwitchDate}}">			
+					<mat-label>Switch Time</mat-label>
+					
+					<input matNativeControl matInput [matDatepicker]="pickerSwitchTimeMin" value="{{this.getPageInfo().capSwitchDate}}">
+					<mat-datepicker-toggle matSuffix [for]="pickerSwitchTimeMin"></mat-datepicker-toggle>
+					<mat-datepicker #pickerSwitchTimeMin></mat-datepicker>
+
 					</mat-form-field>
 					<ul style="list-style:none">						
 						<li style="display:inline" *ngFor="let info of this.getPageInfo().getCaptureInfos(); let idx = index">
@@ -227,7 +231,7 @@
 		<br>
 		<br>
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> - Collapse </button> Capture Tags</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 			<div id="captureTag" *ngIf="this.isCaptureTagVisible()">		
 				<div style="card card-body">
@@ -248,7 +252,7 @@
 	</div>
 	
 	<br>
-	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureReference" (click)="this.onExpandCaptureReference()"> + Expand </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
+	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureReference" (click)="this.onExpandCaptureReference()"> - Collapse </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
 	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	<br>
 	
