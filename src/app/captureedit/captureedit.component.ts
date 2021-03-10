@@ -349,11 +349,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.basicInfoVisible == false) {
 			this.basicInfoVisible = true;
-			btnBasicInfo.textContent = " - Collapse";
+			btnBasicInfo.textContent = "(-)";
 		}
 		else {
 			this.basicInfoVisible = false;
-			btnBasicInfo.textContent = " + Expand";
+			btnBasicInfo.textContent = "(+)";
 		}
 	}
 
@@ -362,11 +362,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.advancedInfoVisible == false) {
 			this.advancedInfoVisible = true;
-			btnAdvancedInfo.textContent = " - Collapse";
+			btnAdvancedInfo.textContent = "(-)";
 		}
 		else {
 			this.advancedInfoVisible = false;
-			btnAdvancedInfo.textContent = " + Expand";
+			btnAdvancedInfo.textContent = "(+)";
 		}
 	}
 
@@ -375,11 +375,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.streamInfoVisible == false) {
 			this.streamInfoVisible = true;
-			btnStreamInfo.textContent = " - Collapse";
+			btnStreamInfo.textContent = "(-)";
 		}
 		else {
 			this.streamInfoVisible = false;
-			btnStreamInfo.textContent = " + Expand";
+			btnStreamInfo.textContent = "(+)";
 		}
 	}
 
@@ -388,11 +388,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.captureInfoVisible == false) {
 			this.captureInfoVisible = true;
-			btnCaptureInfo.textContent = " - Collapse";
+			btnCaptureInfo.textContent = "(-)";
 		}
 		else {
 			this.captureInfoVisible = false;
-			btnCaptureInfo.textContent = " + Expand";
+			btnCaptureInfo.textContent = "(+)";
 		}
 	}
 
@@ -401,11 +401,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.captureTagVisible == false) {
 			this.captureTagVisible = true;
-			btnCaptureTag.textContent = " - Collapse";
+			btnCaptureTag.textContent = "(-)";
 		}
 		else {
 			this.captureTagVisible = false;
-			btnCaptureTag.textContent = " + Expand";
+			btnCaptureTag.textContent = "(+)";
 		}
 	}
 
@@ -414,11 +414,11 @@ export class CaptureEditPage implements IPage{
 
 		if (this.captureReferenceVisible == false) {
 			this.captureReferenceVisible = true;
-			btnCaptureReference.textContent = " - Collapse";
+			btnCaptureReference.textContent = "(-)";
 		}
 		else {
 			this.captureReferenceVisible = false;
-			btnCaptureReference.textContent = " + Expand";
+			btnCaptureReference.textContent = "(+)";
 		}
 	}
 

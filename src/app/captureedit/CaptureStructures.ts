@@ -127,7 +127,6 @@ export class FullCaptureInfo {
 		Object.assign(obj,jObj);
 		
 		
-		console.log("deserializing obj" +JSON.stringify(obj));
 		this.beObj = obj;
 		
 		this.capBEPath = obj.filepath;
@@ -156,8 +155,6 @@ export class FullCaptureInfo {
 		this.capX3Trans = presets.genericGetNameForID(presets.capTransportTypes, obj.ccTransportId);
 		this.capX3Port = obj.ccPort;
 		
-		console.log("rezolving for technology id "+obj.technologyId);
-		console.log("name is " + presets.genericGetEntryForId(presets.capTechnologyTypes, obj.technologyId).displayName );
 		this.capTechnology = presets.genericGetEntryForId(presets.capTechnologyTypes, obj.technologyId);
 		this.capStatus = presets.genericGetEntryForId(presets.capStatusTypes,obj.statusId);
 		

@@ -22,7 +22,7 @@
 	<br>
 
 	
-	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" (click)="this.onExpandBasicInfo()" id="btnBasicInfo" > - Collapse </button> Basic Info </h4>
+	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" (click)="this.onExpandBasicInfo()" id="btnBasicInfo" > (-) </button> Basic Info </h4>
 	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	
 	<div id="basicInfo" class="card card-body" *ngIf="this.isBasicInfoVisible()" >
@@ -99,14 +99,14 @@
 	</div>
 
 	<br/>
-	<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnAdvancedInfo" (click)="this.onExpandAdvancedInfo()"> - Collapse </button>  Advanced Info </h4>
+	<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnAdvancedInfo" (click)="this.onExpandAdvancedInfo()"> (-) </button>  Advanced Info </h4>
 	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	<br/>
 
 	<div id="advancedInfo" class="card card-body" *ngIf="this.isAdvancedInfoVisible()" >
 		<div style="margin-left: 30px">
 
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnStreamInfo" (click)="this.onExpandStreamInfo()"> - Collapse </button>  Stream Info</h4>
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnStreamInfo" (click)="this.onExpandStreamInfo()"> (-) </button>  Stream Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 
 			<div style="card card-body" *ngIf="this.isStreamInfoVisible()">
@@ -188,7 +188,7 @@
 			</div>
 		</div>
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureInfo()"> - Collapse </button>  Capture Info</h4>
+			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureInfo()"> (-) </button>  Capture Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 			<div id="captureInfo" style="card card-body" *ngIf="this.isCaptureInfoVisible()">				
 					Target IC 
@@ -233,7 +233,7 @@
 		<br>
 		<br>
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> - Collapse </button> Capture Tags</h4>
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> (-) </button> Capture Tags</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 			<div id="captureTag" *ngIf="this.isCaptureTagVisible()">		
 				<div style="card card-body">
@@ -254,7 +254,7 @@
 	</div>
 	
 	<br>
-	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureReference" (click)="this.onExpandCaptureReference()"> - Collapse </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
+	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureReference" (click)="this.onExpandCaptureReference()"> (+)</button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
 	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	<br>
 	

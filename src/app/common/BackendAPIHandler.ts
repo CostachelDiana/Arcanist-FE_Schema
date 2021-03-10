@@ -95,7 +95,7 @@ export class BackendAPIHandler {
 		var elURL = this.GET_CAPTURE_PAGE_URL+"/"+capID;
 		console.log("request cap page with url "+ elURL);
 		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
-			console.log("received BE cap page with json "+JSON.stringify(data));
+			
             consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
         });
 	}
@@ -107,7 +107,7 @@ export class BackendAPIHandler {
 		const formData: FormData = new FormData();
 		formData.append('file', file, file.name);
 		this.http.post<any> (this.POST_UPLOAD_CAPTURE_URL, formData, {headers: headers, responseType: 'json'}).subscribe(data => {
-			console.log("received BE Capture upload response with json" + JSON.stringify(data));
+			
 			consumer.handleBEResponse(data,"capture-uploaded");
 		});
 		

@@ -71,8 +71,8 @@ export class ProjectComponent implements IPage {
         this.captureInjectSerializer = new CaptureInjectSerializer();
 
         this.pageInited = false;
-        this.projectDetailsVisible = false;
-        this.projectCaptureSetsVisible = false;
+        this.projectDetailsVisible = true;
+        this.projectCaptureSetsVisible = true;
 
         var urlParams = new URLSearchParams(window.location.search);
         var projID = urlParams.get('projId');
