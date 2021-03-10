@@ -4,6 +4,9 @@ import { catchError, retry } from 'rxjs/operators';
 
 import {IBEAbstractionGeneric} from "../project/IProject"
 
+import {PresetTypesInfo} from "../captureedit/CaptureStructures"
+import {CaptureEditPageSerializer} from "../captureedit/CaptureEditPageSerializer"
+
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -19,14 +22,24 @@ export class BackendAPIHandler {
 	
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	
+	presetTypes: PresetTypesInfo;
+	serializer: CaptureEditPageSerializer;
+	
+	
 	constructor(private http: HttpClient) {
+		this.getPresetValues(null);
+		this.getPresetInfoValues(null);
+		this.serializer = new CaptureEditPageSerializer();
+		this.presetTypes = new PresetTypesInfo();
 	}
 	
 	public getPresetValues(consumer: IBEAbstractionGeneric): void {
 		console.log("Requesting get preset values, accessing url "+this.PRESET_VALUES_URL);
 		this.http.get<any>(this.PRESET_VALUES_URL,{responseType: 'json'}).subscribe(data => {
 			// console.log("received BE Response for p vals "+JSON.stringify(data));
-            consumer.onBEDataReceived("presets-received",JSON.stringify(data));
+            // consumer.onBEDataReceived("presets-received",JSON.stringify(data));
+			console.log("Received BE resposne for preset values" + JSON.stringify(data));
+			this.serializer.deserializePresetValues(data,this.presetTypes);
         });
 	}
 	
@@ -34,7 +47,9 @@ export class BackendAPIHandler {
 		console.log("Requesting get preset values, accessing url "+this.INFO_PRESET_VALUES_URL);
 		this.http.get<any>(this.INFO_PRESET_VALUES_URL,{responseType: 'json'}).subscribe(data => {
 			// console.log("received BE Response for p vals "+JSON.stringify(data));
-            consumer.onBEDataReceived("info-presets-received",JSON.stringify(data));
+            // consumer.onBEDataReceived("info-presets-received",JSON.stringify(data));
+			console.log("Received BE resposne for info values" + JSON.stringify(data));
+			this.serializer.deserializeInfoPresetValues(data,this.presetTypes);
         });
     }
 

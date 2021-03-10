@@ -68,21 +68,24 @@ export class CaptureEditPage implements IPage{
 		this.captureInjectSerializer = new CaptureInjectSerializer();
 		
 		this.backend.setPage(this);
-		this.requestBEPresets();
-		this.requestBEPresets();
+		this.presetInfo = backend.getPresets();
+		
 		this.requestPage();
+		//this.requestBEPresets();
+		//this.requestBEPresets();
+		
 	//	this.requestBEStreams();
 	
 	}
 	// BE init methods 
-	public requestBEPresets() {		
+	/*public requestBEPresets() {		
 		var beStr = this.serializer.serializeRequestPresets();
-        this.backend.sendBEUpdate(beStr, "request-presets");
+		this.backend.sendBEUpdate(beStr);
 	}
 	public requestBEInfoPresets(){
 		var beStr = this.serializer.serializeRequestInfoPresets();
-        this.backend.sendBEUpdate(beStr, "request-info-presets");
-	}
+		this.backend.sendBEUpdate(beStr);
+	}*/
 	public requestBEStreams() {
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
@@ -337,8 +340,8 @@ export class CaptureEditPage implements IPage{
 	}
 	public onRequestBEPageClick() {
 		
-	}
-	
+    }
+
 	onExpandBasicInfo(): void {
 		var btnBasicInfo = document.getElementById("btnBasicInfo");
 
