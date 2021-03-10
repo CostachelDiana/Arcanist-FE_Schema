@@ -30,8 +30,9 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 			
 			this.api.getPresetValues(this);
 			//this.debugSendPresetResponse();
-		} else if (evtType == "request-info-presets") {
-			this.debugSendInfoPresetResponse();
+		} else if (evtType == "request-info-presets") {			
+			this.api.getPresetInfoValues(this);
+			//this.debugSendInfoPresetResponse();
 		} else if (evtType == "request-capturePage") {
 			this.debugSendCapturePageReponse();
 		}
