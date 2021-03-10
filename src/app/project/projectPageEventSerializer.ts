@@ -34,14 +34,14 @@ export class ProjectPageEventSerializer {
 	public serializeFullProjectUpdate(proj: ProjPageInfo) : string 
 	{
 		var jsObj={"projName" : proj.projName,
-		"projID" : proj.projID,
+		"id" : proj.projID,
 		"event-type": "full-project-update",
-		"projDetails": proj.projDetails,
-		"projOwner": proj.projOwner
+		"details": proj.projDetails,
+		"owner": proj.projOwner
 		}
 		
-		jsObj["project-members-arr"]=proj.projMembers;
-		jsObj["project-capture-sets-arr"]=proj.projCapSets;
+		//jsObj["project-members-arr"]=proj.projMembers;
+		//jsObj["project-capture-sets-arr"]=proj.projCapSets;
 		
 		return JSON.stringify(jsObj);
 		
@@ -60,7 +60,19 @@ export class ProjectPageEventSerializer {
 			"event-type" : "request-presets"
 		}
 		return JSON.stringify(jsObj);
-	}
+    }
+
+    public serializeCaptureSet(aSet: CaptureSet, projID : string): string {
+        var jsObj = {
+            "projectID": projID,
+            "id": aSet.capSetID,
+            "name": aSet.capSetName,
+            "x2SetProtocolId": aSet.capSetX2Protocol,
+            "x3SetProtocolId": aSet.capSetX3Protocol
+        }
+        return JSON.stringify(jsObj);
+    }
+
 	public deserializePresetsReceived(jObj: Object): PredefinedTypeStruct[]
 	{
 		// we only care about cap transport types
@@ -69,10 +81,32 @@ export class ProjectPageEventSerializer {
 		rez = jObj["transport"];
 		
 		return rez;
-		
-	}
-	
-	public deserializeProjectPageUpdate(proj: ProjPageInfo, jObj: Object): void
+    }
+
+    public deserializeProject(jObj: Object): ProjPageInfo
+    {
+        var projInfo = new ProjPageInfo("");
+        projInfo.projCreationDate = JSON.stringify(jObj["createdAt"]);
+        projInfo.projDetails = jObj["details"];
+        projInfo.projID = jObj["id"];
+        projInfo.projLastEdit = JSON.stringify(jObj["lastUpdatedAt"]);
+        projInfo.projName = jObj["name"];
+        projInfo.projOwner = jObj["owner"];
+        var sets = projInfo["sets"];
+        if (sets != undefined) {
+            for (var i = 0; i < projInfo["sets"]; i++) {
+                var jSet = sets[i];
+                var set = new CaptureSet(jSet["name"]);
+                set.capSetID = jSet["id"];
+                set.capSetX2Protocol = jSet["x2SetProtocolId"];
+                set.capSetX3Protocol = jSet["x3SetProtocolId"];
+            }
+        }
+        return projInfo;
+    } 
+
+
+/*	public deserializeProjectPageUpdate(proj: ProjPageInfo, jObj: Object): void
 	{
 		// dates go here
 		proj.setProjectInfo("01-02-2021","03-02-2021");
@@ -99,6 +133,6 @@ export class ProjectPageEventSerializer {
 		// console.log("CapSettArr " + JSON.stringify(capSetsArr));
 		// proj.projCapSets = jObj["project-capture-sets-arr"];
 		
-	}
+	}*/
 	
 }

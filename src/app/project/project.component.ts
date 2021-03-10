@@ -20,7 +20,7 @@ import {ProjectPageEventSerializer} from './projectPageEventSerializer'
 import {ProjectBEAbstraction} from './projectBEAbstraction'
 import {PredefinedTypeStruct} from '../captureedit/CaptureStructures'
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-
+import { BackendAPIHandler } from '../common/BackendAPIHandler'
 
 
 
@@ -35,7 +35,7 @@ export class ProjectComponent implements IPage {
 	projInfo: ProjPageInfo ;
 	public projNamesList: string[];
 	 
-	BEAbs: IBEAbstractionGeneric;
+    BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
 	captureInjectSerializer: CaptureInjectSerializer;
 	
@@ -49,31 +49,42 @@ export class ProjectComponent implements IPage {
 	projectCaptureSetsVisible: boolean;
 	
 	// initing methods
-	constructor(public dialogue: MatDialog,
-		 private router:Router, private activatedRoute:ActivatedRoute, private http:HttpClient) {
-		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
-			console.log("url is: "+window.location.href);
+    constructor(public dialogue: MatDialog,
+        private router: Router, private activatedRoute: ActivatedRoute, private http: HttpClient) {
+        console.log("getCurrentNavigation: " + this.router.getCurrentNavigation().extras.state);
+        console.log("url is: " + window.location.href);
 
-			let projName: string;
-			let projDetails: string;
-		rez: this.activatedRoute.queryParams.subscribe(params => {
-			projName = params['projName'] || "";
-			projDetails = params['projDetails'] || "";
-		  });
+        let projName: string;
+        let projDetails: string;
+        rez: this.activatedRoute.queryParams.subscribe(params => {
+            projName = params['projName'] || "";
+            projDetails = params['projDetails'] || "";
+        });
 
-		  console.log("filename is: "+ projName);
-		  console.log("projDetails is: "+ projDetails);
-		  
-			this.BEAbs= new ProjectBEAbstraction(http);
-			this.BEAbs.setPage(this);
-			
-			this.serializer = new ProjectPageEventSerializer();
-			this.captureInjectSerializer = new CaptureInjectSerializer();
-			
-			this.pageInited=false;
-			this.projectDetailsVisible = false;
-			this.projectCaptureSetsVisible = false;
-		
+        console.log("filename is: " + projName);
+        console.log("projDetails is: " + projDetails);
+
+        this.BEAbs = new ProjectBEAbstraction(http,this);
+        this.BEAbs.setPage(this);
+
+        this.serializer = new ProjectPageEventSerializer();
+        this.captureInjectSerializer = new CaptureInjectSerializer();
+
+        this.pageInited = false;
+        this.projectDetailsVisible = false;
+        this.projectCaptureSetsVisible = false;
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var projID = urlParams.get('projId');
+
+        if (projID == undefined)
+            projID = "1";
+        var aJson = this.serializer.serializeProjectPageRequest(projID);
+        this.BEAbs.sendBEUpdate(aJson, "fetch-project-page");
+/*
+
+
+
 		  if (projName!="") {
 		  	console.log("filename is not null");
 
@@ -112,7 +123,7 @@ export class ProjectComponent implements IPage {
 			this.initBEData();
 			this.testInit();
     		
-		}
+		}*/
 	}
 	
 	initBEData(): void {
@@ -198,28 +209,31 @@ export class ProjectComponent implements IPage {
 	
 	public onAddMemberCBack(aMember: ProjMember)
 	{
-		this.projInfo.addProjectMember(aMember);
-		
-		
-		// console.log(" prj notes "+this.projNotes.value);
-		// this.projNotes.value="sadassd";
+	        this.projInfo.addProjectMember(aMember);
+	        this.BEAbs.GetBackendAPI().addMemberInProject(this.projInfo.projID, aMember.id, this.BEAbs);
 	}
 	
 	public onAddCaptureCallback(aCap: CaptureInjectInfo, setN: number)
 	{
-		if (setN > -1 && setN < this.projInfo.projCapSets.length)
-		 this.projInfo.projCapSets[setN].addCapture(aCap);
+	        if (setN > -1 && setN < this.projInfo.projCapSets.length) {
+	            this.projInfo.projCapSets[setN].addCapture(aCap);
+	            this.BEAbs.GetBackendAPI().addCaptureInSet(this.projInfo.projCapSets[setN].capSetID, aCap.captureID, this.BEAbs);
+	        }
+		 
 	}
 	
 	public onAddCaptureSetCallback(aSet:CaptureSet)
 	{
-		this.projInfo.addCaptureSet(aSet);
+	        this.projInfo.addCaptureSet(aSet);
+	        var jSon = this.serializer.serializeCaptureSet(aSet, this.projInfo.projID);
+	        this.BEAbs.sendBEUpdate(jSon, "add-capture-set");
 	}
 	
 	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
         var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap, isSeq);
         //this.BEAbs.playCaptures(jSon, this);
+        this.BEAbs.sendBEUpdate(jSon, "play-capture");
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
@@ -232,7 +246,8 @@ export class ProjectComponent implements IPage {
 		// this.projInfo.projCapSets[setIdx].setNewDefaultSettings(sett);
 		var jSon = this.serializer.serializeCaptureSettingsChange(this.projInfo,setts,cap,
 		this.projInfo.projCapSets[setIdx].capSetName,
-		this.projInfo.projCapSets[setIdx].capSetID);
+            this.projInfo.projCapSets[setIdx].capSetID);
+        this.BEAbs.sendBEUpdate(jSon, "capture-set-cap-settings-update");
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 		
 	}
@@ -242,7 +257,7 @@ export class ProjectComponent implements IPage {
 	{
 		
     	var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap,false);
-		
+        this.BEAbs.sendBEUpdate(jSon, "play-capture");
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	public onSingleInjectSettingCb(sett: CaptureInjectionSettings, cap:CaptureInjectInfo, setIdx:number, capIdx:number)
@@ -260,7 +275,7 @@ export class ProjectComponent implements IPage {
 		capArr.push(cap);
 		
 		var jSon = this.serializer.serializeCaptureSettingsChange(this.projInfo,setArr,capArr,"","");
-		
+        this.BEAbs.sendBEUpdate(jSon, "capture-set-cap-settings-update");
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;		
 	}
 	
@@ -279,8 +294,11 @@ export class ProjectComponent implements IPage {
 	}
 	public onRemoveCaptureClick(setN: number, capN: number): void {
 		
-		if (setN > -1 && setN < this.projInfo.projCapSets.length)
-			this.projInfo.projCapSets[setN].removeCapture(capN);
+        if (setN > -1 && setN < this.projInfo.projCapSets.length) {
+            this.BEAbs.GetBackendAPI().removeCaptureInSet(this.projInfo.projCapSets[setN].capSetID, this.projInfo.projCapSets[setN].capSetCaptures[capN].captureID, this.BEAbs);
+            this.projInfo.projCapSets[setN].removeCapture(capN);
+        }
+			
 				
 	}
 	public onAddSetClick(): void {
@@ -298,11 +316,13 @@ export class ProjectComponent implements IPage {
 		
 	}
 	public onRemoveSetClick(setN: number): void {
-		
-		this.projInfo.removeCaptureSet(setN);
+
+        this.BEAbs.GetBackendAPI().removeSetFromProject(this.projInfo.projID,this.projInfo.projCapSets[setN].capSetID, this.BEAbs);
+        this.projInfo.removeCaptureSet(setN);
+
 	}
-	public onRemoveMemberClick(memN: number): void {
-		
+    public onRemoveMemberClick(memN: number): void {
+        this.BEAbs.GetBackendAPI().removeMemberFromProject(this.projInfo.projID, this.projInfo.projMembers[memN].id, this.BEAbs);
 		this.projInfo.removeProjectMember(memN);
 	}
 	
@@ -456,10 +476,14 @@ export class ProjectComponent implements IPage {
 	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-		if (evtType == "request-presets")
-		{
-			this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
-		}
+	        if (evtType == "request-presets") {
+	            this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
+	        }
+	        else if (evtType == "fetch-project-page") {
+	            console.log("fetch - project - page received response");
+	            this.projInfo = this.serializer.deserializeProject(jObj);
+	            this.pageInited = true;
+	        }
 	}
 	
 	public testInit(): void {
