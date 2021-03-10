@@ -1,5 +1,6 @@
 
-import { CaptureSet, ProjMember, ProjPageInfo } from './projectPageComponents'
+import { CaptureSet, ProjMember, ProjPageInfo} from './projectPageComponents'
+import {PredefinedTypeStruct} from '../captureedit/CaptureStructures'
 import { CaptureInjectInfo, CaptureInjectionSettings } from '../utils/captureInfoComponents'
 
 
@@ -52,6 +53,23 @@ export class ProjectPageEventSerializer {
 			"projID" : projID
 		}
 		return JSON.stringify(jsObj);
+	}
+	
+	public serializeRequestPresetInfo() : string {
+		var jsObj={
+			"event-type" : "request-presets"
+		}
+		return JSON.stringify(jsObj);
+	}
+	public deserializePresetsReceived(jObj: Object): PredefinedTypeStruct[]
+	{
+		// we only care about cap transport types
+		
+		var rez: PredefinedTypeStruct[];
+		rez = jObj["transport"];
+		
+		return rez;
+		
 	}
 	
 	public deserializeProjectPageUpdate(proj: ProjPageInfo, jObj: Object): void
