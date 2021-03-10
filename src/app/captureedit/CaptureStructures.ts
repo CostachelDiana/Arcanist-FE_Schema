@@ -16,7 +16,8 @@ export class CaptureInfo {
 
 
 export class StreamInfo {
-	port: string;
+    port: string;
+    ip: string;
 	trans: string;
 	packets: string;
 	size: string;

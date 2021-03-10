@@ -124,10 +124,51 @@ export class CaptureEditPageSerializer {
 		info.capX3Protos=jObj["X3Protocols"];
 		info.capX2Protos=jObj["X2Protocols"];
 	}
-	public deserializeStreamInfo(jObj: Object): StreamInfo[] {
-		var rez: StreamInfo[];
-		rez=jObj["streams-info"];
-		return rez;
+
+    public deserializeStreamInfo(jObj: Object): StreamInfo[] {
+        var rez = [];
+        var b64 = jObj["streams-info"];
+        var dec = atob(b64);
+        var recvWorkerData = JSON.parse(dec);
+        var jData = recvWorkerData["data"];
+
+        var jTcpStreams = jData["tcpStreams"];
+        for (var i = 0; i < jTcpStreams.length; i++) {
+
+            var si = new StreamInfo();
+            si.port = jTcpStreams[i].dstPort;
+            si.ip = jTcpStreams[i].dstAddress;
+            si.trans = jTcpStreams[i].transportProtocol;
+            si.packets = jTcpStreams[i].count;
+            si.size = jTcpStreams[i].avgSize;
+            si.protocol = jTcpStreams[i].liProtocol;
+            rez.push(si);
+        }
+
+        var jUdpStreams = jData["udpStreams"];
+        for (var i = 0; i < jUdpStreams.length; i++) {
+            var si = new StreamInfo();
+            si.port = jUdpStreams[i].dstPort;
+            si.ip = jUdpStreams[i].dstAddress;
+            si.trans = jUdpStreams[i].transportProtocol;
+            si.packets = jUdpStreams[i].count;
+            si.size = jUdpStreams[i].avgSize;
+            si.protocol = jUdpStreams[i].liProtocol;
+            rez.push(si);
+        }
+        var jFTPStreams = jData["ftpStreams"];
+        for (var i = 0; i < jFTPStreams.length; i++) {
+            var si = new StreamInfo();
+            si.port = jFTPStreams[i].dstPort;
+            si.ip = jFTPStreams[i].dstAddress;
+            si.trans = jFTPStreams[i].transportProtocol;
+            si.packets = jFTPStreams[i].count;
+            si.size = jFTPStreams[i].avgSize;
+            si.protocol = jFTPStreams[i].liProtocol;
+            rez.push(si);
+        }
+
+        return rez;
 	}
 	
 	// CMS debug purposes
