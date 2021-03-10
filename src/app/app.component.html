@@ -69,13 +69,29 @@
 
 </div>
 
-<div class="navbar">
-  <a class="nav-item nav-link" routerLink="/HomePage">UserHomePage</a>
-  <a class="nav-item nav-link" routerLink="/CaptureEdit">CaptureEdit</a>
-  <!--<a class="nav-item nav-link" routerLink="/FirstPage">FirstPage</a>-->
-  <a class="nav-item nav-link" routerLink="/SearchPage">CaptureSearch</a>
-  <!--<a class="nav-item nav-link" routerLink="/UploadPage">CaptureUpload</a>-->
-  <a class="nav-item nav-link" routerLink="/ProjectPage">Project</a>
+<div class="navbar navbar-expand-lg navbar-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon "></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/HomePage">UserHomePage</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/CaptureEdit">CaptureEdit</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/SearchPage">CaptureSearch</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/ProjectPage">Project</a>
+      </li>
+
+      <!--<a class="nav-item nav-link" routerLink="/FirstPage">FirstPage</a>-->
+      <!--<a class="nav-item nav-link" routerLink="/UploadPage">CaptureUpload</a>-->
+    </ul> 
+  </div>
 </div>
 
 <router-outlet></router-outlet>
