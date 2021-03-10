@@ -14,6 +14,8 @@ import { ProjMember } from '../project/projectPageComponents';
 
 export class SearchComponent implements OnInit {
 
+  CAPTURE_EDIT_URL = 'CaptureEdit';
+
   private _pageInited: boolean;
   private _typesInfo: PresetTypesInfo;
   private _searchParameters: SearchParameters;
