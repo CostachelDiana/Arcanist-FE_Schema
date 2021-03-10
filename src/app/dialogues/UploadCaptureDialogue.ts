@@ -59,8 +59,10 @@ export class UploadCaptureDialogue implements IBEApiConsumer {
 		{
 			
 			var capID = jObj["uuid"];
+			this.dialogRef.close();
 			this.data.callback(capID);
 			this.isCaptureUploading=false;
+			
 		}
 	}
 	

@@ -97,7 +97,7 @@ export class BackendAPIHandler {
 		var elURL = this.GET_CAPTURE_PAGE_URL+"/"+capID;
 		console.log("request cap page with url "+ elURL);
 		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
-			
+			console.log("BEAPI: Received response with data "+JSON.stringify(data));
             consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
         });
 	}
