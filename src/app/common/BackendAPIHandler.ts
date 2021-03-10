@@ -7,11 +7,18 @@ import {IBEAbstractionGeneric} from "../project/IProject"
 import {PresetTypesInfo} from "../captureedit/CaptureStructures"
 import {CaptureEditPageSerializer} from "../captureedit/CaptureEditPageSerializer"
 
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
+
+export interface IBEApiConsumer {
+	handleBEResponse(jObj: Object, evtType: string);
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
+
+
 export class BackendAPIHandler {
 	
 	API_PATH = 'http://10.164.69.90:8080/api';
@@ -21,6 +28,7 @@ export class BackendAPIHandler {
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
 	
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
+	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
 	
 	presetTypes: PresetTypesInfo;
 	serializer: CaptureEditPageSerializer;
@@ -81,6 +89,19 @@ export class BackendAPIHandler {
 			console.log("received BE cap page with json "+JSON.stringify(data));
             consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
         });
+	}
+	
+	public postFileUploadRequest(consumer: IBEApiConsumer, file: File)
+	{
+		console.log("posting upload request for file "+file.name);
+		const headers = new HttpHeaders().set('Content-Type','multipart/form-data');
+		const formData: FormData = new FormData();
+		formData.append('filekey', file, file.name);
+		this.http.post<any> (this.POST_UPLOAD_CAPTURE_URL, formData, {headers: headers, responseType: 'json'}).subscribe(data => {
+			console.log("received BE Capture upload response with json" + JSON.stringify(data));
+			consumer.handleBEResponse(data,"capture-uploaded");
+		});
+		
 	}
 	
 	handlePresetResponse(jObj : Object){
