@@ -117,13 +117,13 @@ export class ProjectComponent implements IPage {
 	
 	initBEData(): void {
 		var reqStr = this.serializer.serializeRequestPresetInfo();
-		this.BEAbs.sendBEUpdate(reqStr);
+        this.BEAbs.sendBEUpdate(reqStr,"request-presets");
 	
 	}
 	
 	public onFetchProjectClick(): void {
 		var aJson = this.serializer.serializeProjectPageRequest("ProjectIDPlaceholder");
-		this.BEAbs.sendBEUpdate(aJson);
+        this.BEAbs.sendBEUpdate(aJson, "fetch-project-page");
 	}
 	
 	public onGeneratePageClick(): void {
@@ -219,6 +219,7 @@ export class ProjectComponent implements IPage {
 	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
         var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap, isSeq);
+        //this.BEAbs.playCaptures(jSon, this);
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
@@ -406,7 +407,7 @@ export class ProjectComponent implements IPage {
 		
 		if (this.BEAbs !=null )
 		{
-			this.BEAbs.sendBEUpdate(jSon);
+            this.BEAbs.sendBEUpdate(jSon, "full-project-update");
 		}
 	}
 	

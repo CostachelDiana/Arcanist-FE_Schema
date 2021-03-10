@@ -90,7 +90,7 @@ export class CaptureEditPage implements IPage{
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
 		var beStr = this.serializer.serializeStreamRequest(capID);
-		this.backend.sendBEUpdate(beStr);
+        this.backend.sendBEUpdate(beStr, "request-stream-info");
 	}
 	public requestPage()
 	{
@@ -104,7 +104,7 @@ export class CaptureEditPage implements IPage{
 		console.log("requesting page for id "+ capID);
 		
 		var req = this.serializer.serializeRequestCapturePage(capID);
-		this.backend.sendBEUpdate(req);
+        this.backend.sendBEUpdate(req, "request-capturePage");
 		console.log("req done");
 	}
 	
@@ -238,7 +238,7 @@ export class CaptureEditPage implements IPage{
 		// CMS to do send to backend
 		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap,false);
 
-          this.backend.sendBEUpdate(jSon);
+          this.backend.sendBEUpdate(jSon, "play-capture");
 		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
 	  }
 
@@ -327,22 +327,22 @@ export class CaptureEditPage implements IPage{
 	
 	public onRequestBEPresetsClick() {		
 		var beStr = this.serializer.serializeRequestPresets();
-		this.backend.sendBEUpdate(beStr);		
+        this.backend.sendBEUpdate(beStr, "request-presets");		
 	}
 	public onRequestBEInfoPresetsClick(){
 		var beStr = this.serializer.serializeRequestInfoPresets();
-		this.backend.sendBEUpdate(beStr);
+        this.backend.sendBEUpdate(beStr, "request-info-presets");
 	}
 	public onRequestBEStreamsClick() {
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
 		var beStr = this.serializer.serializeStreamRequest(capID);
-		this.backend.sendBEUpdate(beStr);
+        this.backend.sendBEUpdate(beStr, "request-stream-info");
 	}
 	public onRequestBEPageClick() {
 		
-	}
-	
+    }
+
 	onExpandBasicInfo(): void {
 		var btnBasicInfo = document.getElementById("btnBasicInfo");
 

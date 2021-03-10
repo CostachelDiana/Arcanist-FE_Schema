@@ -25,15 +25,12 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	constructor(private api: BackendAPIHandler) {
 	}
 	
-	public sendBEUpdate(beJson: string): void {
+	public sendBEUpdate(beJson: string, evtType : string): void {
 	
-		var useAPI=true;
-		
-		useAPI= false;
 		// create jObject, interpret the string, etc
 		
-		var jObj = JSON.parse(beJson);		
-		var evtType = jObj["event-type"];		
+		//		
+		//var evtType = jObj["event-type"];		
 		
 		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
@@ -42,27 +39,16 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
             console.log("Sending capture play");
             this.api.playCaptures(beJson,this);
 		} else if (evtType == "request-presets") {	
-		
-			if (useAPI) {
-				this.api.getPresetValues(this);
-			}
-			else {
-				this.debugSendPresetResponse();
-			}
-		} else if (evtType == "request-info-presets") {
-			if (useAPI) {
-				this.api.getPresetInfoValues(this);
-			} else {
-			
-				this.debugSendInfoPresetResponse();
-			}
-		} else if (evtType == "request-capturePage") {
+			this.api.getPresetValues(this);
+			//this.debugSendPresetResponse();
+		} else if (evtType == "request-info-presets") {			
+			this.api.getPresetInfoValues(this);
+			//this.debugSendInfoPresetResponse();
+        } else if (evtType == "request-capturePage") {
+            var jObj = JSON.parse(beJson);
 			var capID = jObj["captureID"];
-			if (useAPI) {
-				this.api.getCapturePageById(this,capID);
-			} else {
-				this.debugSendCapturePageReponse();
-			}
+			this.api.getCapturePageById(this,capID);
+			// this.debugSendCapturePageReponse();
 		}
 	}
 	
@@ -97,7 +83,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	}
 	
 	debugSendCapturePageReponse() {
-		var theJson ='{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"gugu","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}';
+		var theJson ='';
 		this.onBEResponseReceived("capture-page-received",theJson);
 	}
 	

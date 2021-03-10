@@ -11,7 +11,7 @@ export interface IProject {
 
 
 export interface IBEAbstraction {
-	sendBEUpdate(beJson: string): void;
+	sendBEUpdate(beJson: string, evtType: string): void;
 	setProject(prj: IProject): void;
 }
 
@@ -24,7 +24,7 @@ export interface IPage {
 }
 
 export interface IBEAbstractionGeneric {
-	sendBEUpdate(beJson: string): void;
+	sendBEUpdate(beJson: string, evtType : string): void;
 	setPage(page: IPage): void;
 	onBEDataReceived(evtType: string, data: string): void;
 }
