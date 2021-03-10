@@ -269,10 +269,7 @@ export class ProjectComponent implements IProject {
 	
 	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
-		// CMS to do send to backend 
-		// this.projInfo.projName = "Injecting captures" + setts.length;
-		
-    		var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap);
+        var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap, isSeq);
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
@@ -294,7 +291,7 @@ export class ProjectComponent implements IProject {
 	public onSingleInjectCapCb(sett: CaptureInjectionSettings[], cap:CaptureInjectInfo[],setIdx:number, capIdx:number)
 	{
 		
-    		var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap);
+    	var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap,false);
 		
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
