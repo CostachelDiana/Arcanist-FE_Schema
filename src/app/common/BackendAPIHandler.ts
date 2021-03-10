@@ -26,6 +26,8 @@ export class BackendAPIHandler {
 	PRESET_VALUES_URL = this.API_PATH+ '/labels';
     INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
+    PROJECTS_URL = this.API_PATH + '/projects';
+    SETS_URL = this.API_PATH + '/sets';
 	
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
@@ -112,6 +114,92 @@ export class BackendAPIHandler {
 		});
 	}
 	
+
+    public captureSetCaptureSettingsUpdate(json: string, consumer: IBEAbstractionGeneric, capID: string): void {
+        var elURL = this.GET_CAPTURE_PAGE_URL + "/" + capID;
+        console.log("Update capture settings from set " + elURL);
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        this.http.put(elURL, json, { headers: headers, responseType: 'json' }).subscribe(data => {
+            // console.log("received BE Response for p vals "+JSON.stringify(data));
+            if (consumer != undefined)
+                consumer.onBEDataReceived("capture-set-cap-settings-update", JSON.stringify(data));
+        });
+    }
+
+    public fullProjectUpdate(json: string, consumer: IBEAbstractionGeneric, projId: string): void {
+        var elURL = this.PROJECTS_URL + "/" + projId;
+        console.log("Update project " + elURL);
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        this.http.put(projId, json, { headers: headers, responseType: 'json' }).subscribe(data => {
+            // console.log("received BE Response for p vals "+JSON.stringify(data));
+            if (consumer != undefined)
+                consumer.onBEDataReceived("full-project-update", JSON.stringify(data));
+        });
+    }
+
+    public getProjectByID(projID: string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.PROJECTS_URL + "/" + projID;
+        console.log("request proj page with url " + elURL);
+        this.http.get<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            console.log("received BE proj page with json " + JSON.stringify(data));
+            consumer.onBEDataReceived("fetch-project-page", JSON.stringify(data));
+        });
+    }
+
+    public addCaptureInSet(setId: string, captureId: string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.SETS_URL + "/" + setId + "/captures/" + captureId;
+
+        this.http.post<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("add-capture-in-set", JSON.stringify(data));
+        });
+    }
+
+    public removeCaptureInSet(setId: string, captureId: string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.SETS_URL + "/" + setId + "/captures/" + captureId;
+
+        this.http.delete<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("remove-capture-in-set", JSON.stringify(data));
+        });
+    }
+
+    public addCaptureSet(beJson: string, projID: string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.PROJECTS_URL + "/" + projID + "/sets";
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        this.http.post<any>(elURL, beJson, { headers: headers, responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("add-capture-set", JSON.stringify(data));
+        });
+    } 
+
+    public removeSetFromProject(projID: string, setId:string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.PROJECTS_URL + "/" + projID + "/sets/" + setId;
+        this.http.delete<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("remove-capture-set", JSON.stringify(data));
+        });
+
+    }
+
+    public removeMemberFromProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric)
+    {
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        this.http.delete<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("remove-project-member", JSON.stringify(data));
+        });
+    }
+
+    public addMemberInProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric) {
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        this.http.post<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            if (consumer != undefined)
+                consumer.onBEDataReceived("add-project-member", JSON.stringify(data));
+        });
+    }
+
+
 	handlePresetResponse(jObj : Object){
 		this.serializer.deserializePresetValues(jObj,this.presetTypes);
 	}
