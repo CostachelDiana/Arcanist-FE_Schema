@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
   
 
   constructor(public dialogue: MatDialog, private api:BackendAPIHandler) { 
-    this._pageInited = false;
+    this._pageInited = true;
     this._searchFinished = false;
     this._typesInfo = this.api.presetTypes;
     this._searchParameters = new SearchParameters();
