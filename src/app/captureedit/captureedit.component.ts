@@ -102,7 +102,8 @@ export class CaptureEditPage implements IPage{
 		console.log("requesting page for id "+ capID);
 		
 		var req = this.serializer.serializeRequestCapturePage(capID);
-		this.backend.sendBEUpdate(req);		
+		this.backend.sendBEUpdate(req);
+		console.log("req done");
 	}
 	
 	public onBEEventReceived(evtType: string, evtJson: string): void {

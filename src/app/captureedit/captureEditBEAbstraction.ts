@@ -23,6 +23,8 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		
 		var jObj = JSON.parse(beJson);		
 		var evtType = jObj["event-type"];		
+		
+		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
             this.debugSendRequestStreamInfo();
         } else if ("play-capture") {
