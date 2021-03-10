@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 import {CapProjLink, CaptureInfo, FullCaptureInfo, PredefinedTypeStruct, PresetTypesInfo} from "../captureedit/CaptureStructures";
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'

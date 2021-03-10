@@ -20,13 +20,26 @@ import {SingleInjectCaptureDialogue} from './dialogues/SingleInjectCaptureDialog
 import {AddCapturesSetDialogue} from './dialogues/AddCapturesSetDialogue';
 import {AddCaptureTagDialogue} from './dialogues/AddCaptureTagDialogue';
 import {AddCaptureInfoDialogue} from './dialogues/AddCaptureInfoDialogue';
-
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import  {MatDialogModule} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field'
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+    dateInput: 'MMM DD, YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+}; 
 
 @NgModule({
   declarations: [
@@ -56,10 +69,14 @@ import {MatInputModule} from '@angular/material/input';
 	MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
 
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
