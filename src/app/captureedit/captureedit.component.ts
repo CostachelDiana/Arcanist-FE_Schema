@@ -237,6 +237,7 @@ export class CaptureEditPage implements IPage{
 		// CMS to do send to backend
 		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap,false);
 
+          this.backend.sendBEUpdate(jSon);
 		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
 	  }
 
