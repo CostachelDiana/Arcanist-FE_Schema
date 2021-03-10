@@ -4,7 +4,7 @@ import {CapProjLink, CaptureInfo, FullCaptureInfo, PredefinedTypeStruct, PresetT
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 import { ProjMember } from '../project/projectPageComponents';
-import {BackendAPIHandler} from '../common/BackendAPIHandler'
+import {BackendAPIHandler, IBEApiConsumer} from '../common/BackendAPIHandler'
 
 @Component({
   selector: 'app-search',
@@ -12,7 +12,7 @@ import {BackendAPIHandler} from '../common/BackendAPIHandler'
   styleUrls: ['./search.component.css']
 })
 
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, IBEApiConsumer {
 
   CAPTURE_EDIT_URL = 'CaptureEdit';
 
@@ -34,9 +34,16 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  handleBEResponse(jObj: Object, evtType: string){
+	  if(evtType == "search-captures-response")
+	  {
+
+	  }
+  }
+
+
   private testInit(): void {
-	  // to be used only for local testing
-    // this._typesInfo.testInit();
+	  
   }
 
   get typesInfo() : PresetTypesInfo{
@@ -149,8 +156,9 @@ export class SearchComponent implements OnInit {
 
   	public onSearchClick():void {
 		this._searchFinished = false;
-		this._searchParameters.serializeSearchParams();
-		this.testFillSearchResults();
+		var request = this._searchParameters.serializeSearchParams();
+		this.api.searchCaptures(this,request);
+		//this.testFillSearchResults();
 		this._searchFinished = true;
 	}  
 

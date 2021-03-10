@@ -26,6 +26,7 @@ export class BackendAPIHandler {
 	PRESET_VALUES_URL = this.API_PATH+ '/labels';
     INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
+	SEARCH_CAPTURES_URL = this.API_PATH + '/captures/search';
     PROJECTS_URL = this.API_PATH + '/projects';
     SETS_URL = this.API_PATH + '/sets';
     GET_LABELS_URL = this.API_PATH + "/labels";
@@ -229,6 +230,11 @@ export class BackendAPIHandler {
         });
     }
 
+	public searchCaptures(consumer: IBEApiConsumer, json: string){
+		this.http.get<any>(this.SEARCH_CAPTURES_URL, json, { responseType: 'json' }).subscribe(data => {
+            consumer.handleBEResponse(data, "search-captures-response");
+        });
+	}
 
 	handlePresetResponse(jObj : Object){
 		this.serializer.deserializePresetValues(jObj,this.presetTypes);
