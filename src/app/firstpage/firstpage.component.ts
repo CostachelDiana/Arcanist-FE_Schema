@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {BackendAPIHandler,IBEApiConsumer} from "../common/BackendAPIHandler"
 import {CreateProjectDialogue} from "../dialogues/CreateProjectDialogue.component"
+import {UploadCaptureDialogue} from "../dialogues/UploadCaptureDialogue"
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 import * as $ from 'jquery';
 import * as bootstrap from 'bootstrap';
@@ -27,15 +28,12 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   
 
   showUploadError: boolean;
-  isCaptureUploading: boolean;
   
-  fileToUpload: File;
   
   projs: ProjEntry[];
   
   constructor(private api: BackendAPIHandler, private router: Router, public dialogue: MatDialog) { 
-	this.showUploadError=false;
-	this.fileToUpload=null;
+	
 	this.projs=[];
 	
 	/*
@@ -60,20 +58,7 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   public getProjects():ProjEntry[] {
 	  return this.projs;
   }
-  public onFileChange(event) {
-    const reader = new FileReader();
- 
-    if (event.target.files && event.target.files.length) {
-      this.fileName = event.target.files[0].name;
-    }
-  }
   
-  
-  public onFileSelected(files: FileList) {
-	  console.log("Received file selected with list size "+files.length);
-	  this.fileToUpload = files.item(0);
-	  this.showUploadError=false;	  
-  }
   
   public onCreateProjectClick() {
 	  
@@ -93,26 +78,17 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   
   public onCaptureUploadClick() {	
 		
-	  if (this.fileToUpload !=null)
-	  {
-		  this.isCaptureUploading=true;
-		  this.api.postFileUploadRequest(this,this.fileToUpload);
-	  } else {
-		  this.showUploadError=true;
-	  }
+		var dialogRef = this.dialogue.open(UploadCaptureDialogue, 
+		{width:'550px',
+		height:'350px',
+		data: { callback: this.onCaputreUploaded.bind(this)}
+		}
+		);
+	  
   }
   public handleBEResponse(jObj: Object, evtType: string)
   {
-	  if (evtType=="capture-uploaded")
-	  {
-      alert("Capture uploaded successfully");
-
-		  var capID = jObj["uuid"];
-
-      $('#closeModal').click;
-
-		  this.isCaptureUploading=false;
-	  } else if (evtType=="full-project-list")
+	  if (evtType=="full-project-list")
 	  {
 		  console.log("received project list json "+JSON.stringify(jObj));
 		  for (let item in jObj) {			  
@@ -128,6 +104,10 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   public onProjectCreated(projID: string)
   {
 	    this.router.navigateByUrl("/ProjectPage?projId="+projID);		
+  }
+  public onCaputreUploaded(capID: string)
+  {
+	  this.router.navigateByUrl("/CaptureEdit?capid="+capID);
   }
  
   public onSubmit(): void {

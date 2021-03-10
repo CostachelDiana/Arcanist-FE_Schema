@@ -1,0 +1,39 @@
+ <main role="main">
+ 
+	<div class="modal-content">
+              <div class="modal-header">
+				<div *ngIf="!this.isCaptureUploading">
+					<h5 class="modal-title text-center" id="uploadCaptureLabel">Upload New Capture</h5>					
+				</div>
+				<div *ngIf="this.isCaptureUploading">
+					<h5 class="modal-title text-center" id="uploadingCaptureLabel">Uploading capture, please wait</h5>
+				</div>
+              </div>
+
+              <div class="modal-body">
+				<div *ngIf="!this.isCaptureUploading">
+					Browse for a capture
+					<!-- <label for="files" class="btn" (change)="onFileChange($event)"><i class="fas fa-folder"></i></label>-->
+					<div>
+					<input id="files"
+						name="fileToUpload" 
+						type="file" 
+						accept=".snoop, .torrent, .pcap, .pcapng"
+						(change)="onFileSelected($event.target.files)">
+					</div>				
+					<div *ngIf="this.showUploadError">
+						<p style="color:#DD0000">*Please select a file for upload</p>
+					</div>
+				</div>
+				<div *ngIf="this.isCaptureUploading">
+					<div class="text-center">
+						<img width="200px" class="text-center" src="assets/loading.gif" />					  
+					</div>
+				</div>
+              </div>
+
+              <div class="card card-body" *ngIf="!this.isCaptureUploading">             
+                <button class="btn btn-primary" type="submit" (click)="onSubmitClick()">Upload Now</button>
+              </div>
+	</div>
+</main>
