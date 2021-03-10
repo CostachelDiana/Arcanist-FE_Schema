@@ -32,6 +32,7 @@ export class BackendAPIHandler {
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
 	POST_CREATE_PROJECT_URL=this.API_PATH + '/projects'
+	GET_ALL_PROJECT_URL=this.API_PATH + '/projects'
 	
 	presetTypes: PresetTypesInfo;
 	serializer: CaptureEditPageSerializer;
@@ -207,6 +208,14 @@ export class BackendAPIHandler {
                 consumer.onBEDataReceived("add-project-member", JSON.stringify(data));
         });
     }
+	
+	public requestAllProjects(consumer: IBEApiConsumer) {
+		this.http.get<any>(this.GET_ALL_PROJECT_URL, {responseType: 'json'}).subscribe( data => {
+		
+			consumer.handleBEResponse(data,"full-project-list");
+			}		
+		);
+	}
 
 
 	handlePresetResponse(jObj : Object){
