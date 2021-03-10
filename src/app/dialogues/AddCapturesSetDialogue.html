@@ -1,24 +1,32 @@
 	<main role="main">
-	<div class="card card-style">
-		<p class="center-block">Enter New Capture Set Parameters</p>
-		<br>
-		<br>
-		<mat-form-field>
-			<mat-label>Capture Set Name</mat-label>
-			<input matInput #setName>			
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>X2 Protocol</mat-label>
-			<input matInput #x2Prot>			
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>X3 Protocol</mat-label>
-			<input matInput #x3Prot>			
-		</mat-form-field>
-		<br>
-		<br>
-		&nbsp;
-		&nbsp;
-		<button class="btn btn-primary" type="button" (click)="onSubmitClick(setName.value,x2Prot.value,x3Prot.value)">Submit</button>	
-	</div>
+		<div class="card card-style">
+			<p class="center-block">Enter New Capture Set Parameters</p>
+			<br>
+			<br>
+			<mat-form-field>
+				<mat-label>Capture Set Name</mat-label>
+				<input matInput #setName>
+			</mat-form-field>
+			<mat-form-field appearance="fill">
+				<mat-label>X2 Protocol</mat-label>
+				<select matNativeControl required (change)="this.onX2ProtocolSelectionChanged($event)">
+					<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}">
+						{{x2.displayName}}
+					</option>
+				</select>
+			</mat-form-field>
+			<mat-form-field appearance="fill">
+				<mat-label>X3 Protocol</mat-label>
+				<select matNativeControl required (change)="this.onX3ProtocolSelectionChanged($event)">
+					<option *ngFor="let x3 of this.getCapX3Protos(); let idx = index" value="{{x3.id}}">
+						{{x3.displayName}}
+					</option>
+				</select>
+			</mat-form-field>
+			<br>
+			<br>
+			&nbsp;
+			&nbsp;
+			<button class="btn btn-primary" type="button" (click)="onSubmitClick(setName.value)">Submit</button>
+		</div>
 	</main>

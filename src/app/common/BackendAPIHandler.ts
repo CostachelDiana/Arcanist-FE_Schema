@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -26,9 +26,11 @@ export class BackendAPIHandler {
 	PRESET_VALUES_URL = this.API_PATH+ '/labels';
     INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
     PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
+	SEARCH_CAPTURES_URL = this.API_PATH + '/captures/search';
     PROJECTS_URL = this.API_PATH + '/projects';
     SETS_URL = this.API_PATH + '/sets';
-	
+    GET_LABELS_URL = this.API_PATH + "/labels";
+
 	GET_CAPTURE_PAGE_URL=this.API_PATH + '/captures'
 	POST_UPLOAD_CAPTURE_URL=this.API_PATH + '/captures/upload'
 	POST_CREATE_PROJECT_URL=this.API_PATH + '/projects'
@@ -199,7 +201,7 @@ export class BackendAPIHandler {
 
     public removeMemberFromProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric)
     {
-        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contributors/" + memberId;
         this.http.delete<any>(elURL, { responseType: 'json' }).subscribe(data => {
             if (consumer != undefined)
                 consumer.onBEDataReceived("remove-project-member", JSON.stringify(data));
@@ -207,7 +209,7 @@ export class BackendAPIHandler {
     }
 
     public addMemberInProject(projID: string, memberId: string, consumer: IBEAbstractionGeneric) {
-        var elURL = this.PROJECTS_URL + "/" + projID + "/contribuitors/" + memberId;
+        var elURL = this.PROJECTS_URL + "/" + projID + "/contributors/" + memberId;
         this.http.post<any>(elURL, { responseType: 'json' }).subscribe(data => {
             if (consumer != undefined)
                 consumer.onBEDataReceived("add-project-member", JSON.stringify(data));
@@ -222,6 +224,18 @@ export class BackendAPIHandler {
 		);
 	}
 
+    public getAllLabels(consumer: IBEAbstractionGeneric) {
+        this.http.get<any>(this.GET_LABELS_URL, { responseType: 'json' }).subscribe(data => {
+            consumer.onBEDataReceived("get-all-labels",JSON.stringify(data));
+        });
+	}
+
+	public searchCaptures(consumer: IBEApiConsumer, jsonString: string){
+		let params = new HttpParams().set("requestData", jsonString).set("responseType", "json");
+		this.http.get<any>(this.SEARCH_CAPTURES_URL, {params: params}).subscribe(data => {
+            consumer.handleBEResponse(data, "search-captures-response");
+        });
+	}
 
 	handlePresetResponse(jObj : Object){
 		this.serializer.deserializePresetValues(jObj,this.presetTypes);

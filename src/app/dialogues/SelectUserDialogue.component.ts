@@ -6,7 +6,7 @@ import {ProjMember} from "../project/projectPageComponents"
 
 
 export interface SelectUserDialogueData {
-	callback: (member:ProjMember) => void
+	callback: (member:string) => void
 }
 
 
@@ -28,18 +28,11 @@ export class SelectUserDialogue {
 
 	
 	public onSubmitClick(email: string): void {
-		// Resolve 
-		
-		// CMS debug
-		var aMember = new ProjMember("Danielsky");
-		aMember.surname=email;
-		aMember.email=email;
-		aMember.id="3121243";
 		
 		// CMS to do - validate and get data from BE
 		
 		if (this.data.callback != null)
-			this.data.callback(aMember);
+            this.data.callback(email);
 		
 		this.dialogRef.close();
 	}

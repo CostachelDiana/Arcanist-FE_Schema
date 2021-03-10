@@ -81,49 +81,7 @@ export class ProjectComponent implements IPage {
             projID = "1";
         var aJson = this.serializer.serializeProjectPageRequest(projID);
         this.BEAbs.sendBEUpdate(aJson, "fetch-project-page");
-/*
-
-
-
-		  if (projName!="") {
-		  	console.log("filename is not null");
-
-			  //check on BE is proj already exist
-			//   if (projExist) {
-			// 	//error and redirect to projpage
-			//   }
-			//   else { //create proj
-				this.projInfo = new ProjPageInfo("projIDPlaceholder");
-
-				this.projInfo.projName = projName;
-				this.projInfo.projDetails = projDetails;
-			//  }
-		  }
-		  else {
-
-			//get from BE the list of existing proj
-			this.projNamesList = [];
-			this.projNamesList.push("ProjName1_predef");
-			this.projNamesList.push("ProjName2_predef");
-
-			this.projInfo=null;
-			
-			this.pageInited=false;
-
-
-			this.projectDetailsVisible = false;
-			this.projectCaptureSetsVisible = false;
-			
-			//get from BE the list of existing proj
-			this.projNamesList = [];
-			this.projNamesList.push("ProjName1_predef");
-			this.projNamesList.push("ProjName2_predef");
-
-			this.capTransportTypes=[];
-			this.initBEData();
-			this.testInit();
-    		
-		}*/
+        //this.BEAbs.api.getAllLabels(this.BEAbs);
 	}
 	
 	initBEData(): void {
@@ -138,7 +96,6 @@ export class ProjectComponent implements IPage {
 	}
 	
 	public onGeneratePageClick(): void {
-		this.testInit();
 		this.pageInited=true;
 	}
 	
@@ -176,7 +133,7 @@ export class ProjectComponent implements IPage {
 
 		if (this.projectDetailsVisible == false) {
 			this.projectDetailsVisible = true;
-			btnProjectDetails.textContent = " - Collapse";
+            btnProjectDetails.textContent = " - Collapse";
 		}
 		else {
 			this.projectDetailsVisible = false;
@@ -198,19 +155,15 @@ export class ProjectComponent implements IPage {
 	}
 	
 	// callbacks 
-	public onChangeOwnerCback(aMember: ProjMember)
+	public onChangeOwnerCback(aMember: string)
 	{
-		
-		this.projInfo.projOwner.name=aMember.name;
-		this.projInfo.projOwner.surname=aMember.surname;
-		this.projInfo.projOwner.id=aMember.id;
-		this.projInfo.projOwner.email=aMember.email;		
+		this.projInfo.projOwner =aMember;
 	}
 	
-	public onAddMemberCBack(aMember: ProjMember)
-	{
-	        this.projInfo.addProjectMember(aMember);
-	        this.BEAbs.GetBackendAPI().addMemberInProject(this.projInfo.projID, aMember.id, this.BEAbs);
+	public onAddMemberCBack(aMember: string)
+    {
+	    this.projInfo.addProjectMember(aMember);
+	    this.BEAbs.GetBackendAPI().addMemberInProject(this.projInfo.projID, aMember, this.BEAbs);
 	}
 	
 	public onAddCaptureCallback(aCap: CaptureInjectInfo, setN: number)
@@ -224,7 +177,7 @@ export class ProjectComponent implements IPage {
 	
 	public onAddCaptureSetCallback(aSet:CaptureSet)
 	{
-	        this.projInfo.addCaptureSet(aSet);
+	        //this.projInfo.addCaptureSet(aSet);
 	        var jSon = this.serializer.serializeCaptureSet(aSet, this.projInfo.projID);
 	        this.BEAbs.sendBEUpdate(jSon, "add-capture-set");
 	}
@@ -307,8 +260,8 @@ export class ProjectComponent implements IPage {
 			
 		var dialogRef = this.dialogue.open(AddCapturesSetDialogue, 
 		{width:'600px',
-		height:'500px',
-		 data: {callback: this.onAddCaptureSetCallback.bind(this)}
+            height: '500px',
+            data: { callback: this.onAddCaptureSetCallback.bind(this), pdt: this.BEAbs.api.presetTypes }
 		}
 		);
 		
@@ -322,14 +275,13 @@ export class ProjectComponent implements IPage {
 
 	}
     public onRemoveMemberClick(memN: number): void {
-        this.BEAbs.GetBackendAPI().removeMemberFromProject(this.projInfo.projID, this.projInfo.projMembers[memN].id, this.BEAbs);
+        this.BEAbs.GetBackendAPI().removeMemberFromProject(this.projInfo.projID, this.projInfo.projMembers[memN], this.BEAbs);
 		this.projInfo.removeProjectMember(memN);
 	}
 	
 	
 	public onAddMemberClick(): void {
-		
-		
+
 		var dialogRef = this.dialogue.open(SelectUserDialogue, 
 		{width:'400px',
 		height:'300px',
@@ -452,15 +404,14 @@ export class ProjectComponent implements IPage {
 	}
 
 	public getProjectOwnerName(): string{
-		return this.projInfo.projOwner.surname + ", " +
-		this.projInfo.projOwner.name;
+		return this.projInfo.projOwner;
 	}
 
 	public getProjDetails(): string{
 		return this.projInfo.projDetails;
 	}
 	// Members 
-	public getProjMembers(): ProjMember[] {
+	public getProjMembers(): string[] {
 		return this.projInfo.projMembers;
 	}
 	
@@ -471,128 +422,34 @@ export class ProjectComponent implements IPage {
 	
 	public getProjCaptureSets(): CaptureSet[] {
 		return this.projInfo.projCapSets;
-	}
+    }
+
+    public getX2ProtocolName(id: number): string {
+        return this.BEAbs.api.presetTypes.genericGetNameForID(this.BEAbs.api.presetTypes.capX2Protos, id);
+    }
+    public getX3ProtocolName(id: number): string {
+        return this.BEAbs.api.presetTypes.genericGetNameForID(this.BEAbs.api.presetTypes.capX3Protos, id);
+    }
 	
 	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-	        if (evtType == "request-presets") {
-	            this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
-	        }
-	        else if (evtType == "fetch-project-page") {
-	            console.log("fetch - project - page received response");
-	            this.projInfo = this.serializer.deserializeProject(jObj);
-	            this.pageInited = true;
-	        }
+        if (evtType == "request-presets") {
+            this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
+        }
+        else if (evtType == "fetch-project-page") {
+            console.log("fetch - project - page received response");
+            this.projInfo = this.serializer.deserializeProject(jObj);
+            this.pageInited = true;
+        }
+        else if (evtType == "add-capture-set")
+        {
+            var capSet = this.serializer.deserializeCaptureSet(jObj);
+            this.projInfo.addCaptureSet(capSet);
+        }
+        else {
+            console.log("Unprocessed response: " + evtType + " json: " + evtJson);
+        }
 	}
-	
-	public testInit(): void {
-		console.log("initing proj data");
-		
-		this.projInfo = new ProjPageInfo("projIDPlaceholder");
-		
-		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
-		this.projInfo.projName="Generated proj";
-		
-		this.projInfo.projOwner=new ProjMember("Marius");
-		this.projInfo.projOwner.surname="Aldea";
-		this.projInfo.projDetails="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		
-		// add project members
-		var aMember = new ProjMember("Daniel");
-		aMember.surname="Ciotoracu";
-		
-		this.projInfo.projMembers.push(aMember);
-		
-		aMember = new ProjMember("Mihai");
-		aMember.surname="Cuatu";
-		this.projInfo.projMembers.push(aMember);
-		
-		
-		var aCapSet = new CaptureSet("CS VoLTE UMD 1");
-		aCapSet.capSetX2Protocol="ETSI 102 232-5 v331";
-		aCapSet.capSetX3Protocol="ULIC RTP";
-		
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE simple call","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6001";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="LIID";
-		aCapture.captureICVal="442312";
-		
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE location change","ADGr123");
-		aCapture.captureX2Port="5005";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="0000";
-		aCapture.captureX3Transport="unknown";
-		aCapture.captureX3Protocol="unknown";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD";
-		aCapture.captureIC="Phone";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo CS VoLTE conference","ADGr123");
-		aCapture.captureX2Port="5001";
-		aCapture.captureX2Transport="TCP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6005";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC RTP";
-		aCapture.switchDate="15-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="MSISDN";
-		aCapture.captureICVal="+31332442312";
-		
-		aCapSet.addCapture(aCapture);
-		
-		this.projInfo.projCapSets.push(aCapSet);
-		
-		aCapSet = new CaptureSet("MPD Orage UMD");
-		aCapSet.capSetX2Protocol="ETSI 33 108 v271";
-		aCapSet.capSetX3Protocol="ULIC EPS";
-		
-		var aCapture = new CaptureInjectInfo("Leo MPD Browsing","ADGr123");
-		aCapture.captureX2Port="22";
-		aCapture.captureX2Transport="FTP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="6001";
-		aCapture.captureX3Transport="TCP";
-		aCapture.captureX3Protocol="ULIC EPS";
-		aCapture.switchDate="18-01-2011";
-		aCapture.captureType="CD&CC";
-		aCapture.captureIC="IMSI";
-		aCapture.captureICVal="34312561";
-		
-		aCapSet.addCapture(aCapture);
-		
-		var aCapture = new CaptureInjectInfo("Leo MPD on/off","ADGr123");
-		aCapture.captureX2Port="22";
-		aCapture.captureX2Transport="FTP";
-		aCapture.captureX2Protocol="ETSI 102 232-5 v331";
-		aCapture.captureX3Port="0000";
-		aCapture.captureX3Transport="unkonwn";
-		aCapture.captureX3Protocol="unknown";
-		aCapture.switchDate="18-01-2011";
-		aCapture.captureType="CD";
-		aCapture.captureIC="IMSI";
-		aCapture.captureICVal="34312561";
-		
-		aCapSet.addCapture(aCapture);
-		
-		this.projInfo.projCapSets.push(aCapSet);
-	}
-	
 	
 }

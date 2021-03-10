@@ -5,8 +5,8 @@ import { CaptureInjectInfo } from '../utils/captureInfoComponents'
 export class CaptureSet {
 	capSetName: string;
 	capSetID:string;
-	capSetX2Protocol: string;
-	capSetX3Protocol: string;
+	capSetX2Protocol: number;
+    capSetX3Protocol: number;
 	capSetCaptures: CaptureInjectInfo[];
 	capInjectionSett: CaptureInjectionSettings[];
 	
@@ -14,8 +14,6 @@ export class CaptureSet {
 		this.capSetName=name;
 		this.capSetCaptures=[];
 		this.capInjectionSett=[];
-		this.capSetX2Protocol="unknown";
-    		this.capSetX3Protocol = "unknown";
 		this.capSetID = "FillMe";
 		
 	}
@@ -77,8 +75,8 @@ export class ProjPageInfo {
 	projDetails: string;
 	projCreationDate: string;
 	projLastEdit: string;
-	projOwner: ProjMember;
-	projMembers: ProjMember[];
+	projOwner: string;
+	projMembers: string[];
 	projCapSets: CaptureSet[];
 	
 	constructor (id : string) {	
@@ -96,12 +94,12 @@ export class ProjPageInfo {
 	}
 	
 	// proj owner 
-	public setProjectOwner(owner: ProjMember): void {
+	public setProjectOwner(owner: string): void {
 		this.projOwner = owner;
 	}
 	
 	// proj members
-	public addProjectMember(member: ProjMember): void {
+	public addProjectMember(member: string): void {
 		this.projMembers.push(member);
 	}
 	
@@ -111,7 +109,7 @@ export class ProjPageInfo {
 			this.projMembers.splice(idx,1);
 		}
 	}
-	public getProjectMembers(): ProjMember[] {
+	public getProjectMembers(): string[] {
 		return this.projMembers;
 	}
 	

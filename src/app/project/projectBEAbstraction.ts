@@ -41,7 +41,7 @@ export class ProjectBEAbstraction implements IBEAbstractionGeneric {
         else if (evt == "add-capture-set")
         {
             var jObj = JSON.parse(beJson);
-            var projID = jObj["projectId"];
+            var projID = jObj["projectID"];
             this.api.addCaptureSet(beJson, projID, this);
         }
         else if (evt == "request-presets")
