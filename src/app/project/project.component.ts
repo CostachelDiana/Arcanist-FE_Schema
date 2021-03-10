@@ -31,8 +31,8 @@ export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
 	public projNamesList: string[];
-	public filename: string;
-	public strProjDetails: string;
+	// public filename: string;
+	// public strProjDetails: string;
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
@@ -50,33 +50,48 @@ export class ProjectComponent implements IProject {
 		 private router:Router, private activatedRoute:ActivatedRoute) {
 		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
 			console.log("url is: "+window.location.href);
-			console.log("activatedRoute is: "+this.activatedRoute.toString());
 
+			let projName: string;
+			let projDetails: string;
 		rez: this.activatedRoute.queryParams.subscribe(params => {
-			this.filename = params['projName'] || "";
-			this.strProjDetails = params['projDetails'] || "";
+			projName = params['projName'] || "";
+			projDetails = params['projDetails'] || "";
 		  });
 
-		  console.log("Route str: "+ this.activatedRoute.toString());
-		  console.log("filename is: "+this.filename);
-		  console.log("projDetails is: "+this.strProjDetails);
+		  console.log("filename is: "+ projName);
+		  console.log("projDetails is: "+ projDetails);
 		
-		this.projInfo=null;
-		
-		this.pageInited=false;
-		this.serializer = new ProjectPageEventSerializer();
-		this.BEAbs= new ProjectBEAbstraction();
-		this.BEAbs.setProject(this);
-		this.BEAbs.connect("121.69.69.666","4040");
-		
-		//get from BE the list of existing proj
-		this.projNamesList = [];
-		this.projNamesList.push("ProjName1_predef");
-		this.projNamesList.push("ProjName2_predef");
+		  if (projName!="") {
+		  	console.log("filename is not null");
 
-		this.capTransportTypes=[];
-		this.initBEData();
-    		this.captureInjectSerializer = new CaptureInjectSerializer();
+			  //check on BE is proj already exist
+			//   if (projExist) {
+			// 	//error and redirect to projpage
+			//   }
+			//   else { //create proj
+				this.onGeneratePageClick();
+				this.projInfo.projName = projName;
+				this.projInfo.projDetails = projDetails;
+			//  }
+		  }
+		  else {
+			this.projInfo=null;
+			
+			this.pageInited=false;
+			this.serializer = new ProjectPageEventSerializer();
+			this.BEAbs= new ProjectBEAbstraction();
+			this.BEAbs.setProject(this);
+			this.BEAbs.connect("121.69.69.666","4040");
+			
+			//get from BE the list of existing proj
+			this.projNamesList = [];
+			this.projNamesList.push("ProjName1_predef");
+			this.projNamesList.push("ProjName2_predef");
+
+			this.capTransportTypes=[];
+			this.initBEData();
+				this.captureInjectSerializer = new CaptureInjectSerializer();
+		  }
 	}
 	
 	initBEData(): void {

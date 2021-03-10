@@ -16,6 +16,7 @@ import {CaptureEditBEAbstraction} from './captureEditBEAbstraction'
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -40,21 +41,45 @@ export class CaptureEditPage implements IPage{
 	streamsReady: boolean;
 	
 
-	constructor(public dialogue: MatDialog, private http: HttpClient) { 
+	constructor(public dialogue: MatDialog, private http: HttpClient,
+		private activatedRoute:ActivatedRoute) { 
 	
-		this.pageReady= false;
-		this.streamsReady=false;
-		this.presetInfo = new PresetTypesInfo();
-		this.capStreams=[];
+		console.log("url is: "+window.location.href);
+
+		let fileToUpload: string;
+		rez: this.activatedRoute.queryParams.subscribe(params => {
+			fileToUpload = params['fileToUpload'] || "";
+		  });
+
+		  console.log("filename is: " + fileToUpload);
 		
-		this.serializer = new CaptureEditPageSerializer();
-		this.captureInjectSerializer = new CaptureInjectSerializer();
+		  if (fileToUpload!="") {
+		  	console.log("filename is not null");
+
+			  //check on BE is proj already exist
+			//   if (fileExist) {
+			// 	//error and redirect to capture edit
+			//   }
+			//   else { //create proj
+				this.onGeneratePageClick();
+				this.pageInfo.capName = fileToUpload;
+			//  }
+		  }
+		  else {
 		
-		this.backend = new CaptureEditBEAbstraction(http);
-		this.backend.setPage(this);
-		
-		this.requestPage();
-		
+			this.pageReady= false;
+			this.streamsReady=false;
+			this.presetInfo = new PresetTypesInfo();
+			this.capStreams=[];
+			
+			this.serializer = new CaptureEditPageSerializer();
+			this.captureInjectSerializer = new CaptureInjectSerializer();
+			
+			this.backend = new CaptureEditBEAbstraction(http);
+			this.backend.setPage(this);
+			
+			this.requestPage();
+		  }
 	}
 	
 	public requestPage()
