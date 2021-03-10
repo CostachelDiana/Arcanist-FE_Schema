@@ -31,8 +31,6 @@ export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
 	public projNamesList: string[];
-	public filename: string;
-	public strProjDetails: string;
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
@@ -52,17 +50,31 @@ export class ProjectComponent implements IProject {
 		 private router:Router, private activatedRoute:ActivatedRoute) {
 		 console.log("getCurrentNavigation: "+this.router.getCurrentNavigation().extras.state);
 			console.log("url is: "+window.location.href);
-			console.log("activatedRoute is: "+this.activatedRoute.toString());
 
+			let projName: string;
+			let projDetails: string;
 		rez: this.activatedRoute.queryParams.subscribe(params => {
-			this.filename = params['projName'] || "";
-			this.strProjDetails = params['projDetails'] || "";
+			projName = params['projName'] || "";
+			projDetails = params['projDetails'] || "";
 		  });
 
-		  console.log("Route str: "+ this.activatedRoute.toString());
-		  console.log("filename is: "+this.filename);
-		  console.log("projDetails is: "+this.strProjDetails);
+		  console.log("filename is: "+ projName);
+		  console.log("projDetails is: "+ projDetails);
 		
+		  if (projName!="") {
+		  	console.log("filename is not null");
+
+			  //check on BE is proj already exist
+			//   if (projExist) {
+			// 	//error and redirect to projpage
+			//   }
+			//   else { //create proj
+				this.onGeneratePageClick();
+				this.projInfo.projName = projName;
+				this.projInfo.projDetails = projDetails;
+			//  }
+		  }
+		  else {
 		this.projInfo=null;
 		
 		this.pageInited=false;
@@ -83,6 +95,7 @@ export class ProjectComponent implements IProject {
 		this.capTransportTypes=[];
 		this.initBEData();
     		this.captureInjectSerializer = new CaptureInjectSerializer();
+	}
 	}
 	
 	initBEData(): void {
@@ -309,10 +322,7 @@ export class ProjectComponent implements IProject {
 	
 	public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap:CaptureInjectInfo[], isSeq: boolean,setIdx:number)
 	{
-		// CMS to do send to backend 
-		// this.projInfo.projName = "Injecting captures" + setts.length;
-		
-    		var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap);
+        var jSon = this.captureInjectSerializer.serializeCaptureInject(null, this.projInfo.projCapSets[setIdx].capSetID, setts, cap, isSeq);
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}
 	
@@ -334,7 +344,7 @@ export class ProjectComponent implements IProject {
 	public onSingleInjectCapCb(sett: CaptureInjectionSettings[], cap:CaptureInjectInfo[],setIdx:number, capIdx:number)
 	{
 		
-    		var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap);
+    	var jSon = this.captureInjectSerializer.serializeCaptureInject(cap[0].captureID, null, sett, cap,false);
 		
 		(<HTMLInputElement> document.querySelector(".usrNotes")).value=jSon;
 	}

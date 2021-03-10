@@ -16,7 +16,8 @@ export class CaptureInfo {
 
 
 export class StreamInfo {
-	port: string;
+    port: string;
+    ip: string;
 	trans: string;
 	packets: string;
 	size: string;
@@ -35,8 +36,50 @@ export class CapProjLink {
 	}
 }
 
+export class ExplicitDate {
+	date: number;
+	day: number;
+	hours: number;
+	minutes: number;
+	month: number;
+	nanos: number;
+	seconds: number;
+	time: number;
+	timezoneOffset: number;
+	year: number;
+}
+
+export class CaptureBackendObj {
+	ccPort: string;
+	ccProtocolId: number;
+	ccTransportId: number;
+	cdPort: string;
+	cdProtocolId: number;
+	cdTransportId: number;
+	filepath: string;
+	icIdentifier: string;
+	interceptionCriteriaId: number;
+	lastUpdatedAt: ExplicitDate;
+	lastUpdatedBy: string;
+	length: number;
+	name: string;
+	notes: string;
+	size: number;
+	statusId: number;
+	switchTime: ExplicitDate;
+	technologyId: number;
+	uploadedAt: ExplicitDate;
+	uploadedBy: string;
+	uuid: string;
+	verifiedAt: ExplicitDate;
+	verifiedBy: string;
+}
+
 export class FullCaptureInfo {
 	
+	beObj: CaptureBackendObj;
+	
+	capBEPath: string;
 	capID : string ;
 	capName : string ;
 	capSize : string;
@@ -53,12 +96,14 @@ export class FullCaptureInfo {
 	capX2Protocol: string;
 	capX2Trans: string;
 	capX2Port: string;
-  	capX2IP: string;
+  	capX2IP: string;	
 	
+
 	capX3Protocol: string;
 	capX3Trans: string;
 	capX3Port: string;
 	capX3IP: string;
+	
 	
 	capTechnology: PredefinedTypeStruct;
 	capStatus: PredefinedTypeStruct;
@@ -69,6 +114,65 @@ export class FullCaptureInfo {
 	capTags: PredefinedTypeStruct[];
 	capInfos: CaptureInfo[];
 	capProjects: CapProjLink[];
+	
+	public getBeObj(): CaptureBackendObj {
+		return this.beObj;
+	}
+	// updates cap info according to be Obj
+	public setBeObj(obj: CaptureBackendObj, presets: PresetTypesInfo) {
+		
+		this.beObj = obj;
+		
+		this.capBEPath = obj.filepath;
+		this.capID = obj.uuid;
+		this.capName = obj.name;
+		this.capSize = ""+obj.size;
+		this.capLength = ""+obj.length;
+		this.capUserNotes = obj.notes;
+		this.lastUpdateDate = "" +obj.lastUpdatedAt.day+"-"+obj.lastUpdatedAt.month+"-"+obj.lastUpdatedAt.year;
+		this.lastUpdater = new ProjMember("");
+		this.lastUpdater.name = obj.lastUpdatedBy;
+		this.lastUpdater.surname="";
+		this.uploadDate = "" +obj.uploadedAt.day+"-"+obj.uploadedAt.month+"-"+obj.uploadedAt.year;
+		this.uploader = new ProjMember("");
+		this.uploader.name = obj.uploadedBy;
+		this.uploader.surname= "";
+		this.verifier= new ProjMember("");
+		this.verifier.name = obj.verifiedBy;
+		this.verifier.surname="";
+		
+		this.capX2Protocol = presets.genericGetNameForID(presets.capX2Protos,obj.cdProtocolId);
+		this.capX2Trans = presets.genericGetNameForID(presets.capTransportTypes, obj.cdTransportId);
+		this.capX2Port = obj.cdPort;
+		
+		this.capX3Protocol = presets.genericGetNameForID(presets.capX3Protos,obj.ccProtocolId);
+		this.capX3Trans = presets.genericGetNameForID(presets.capTransportTypes, obj.ccTransportId);
+		this.capX3Port = obj.ccPort;
+		
+		this.capTechnology = presets.genericGetEntryForId(presets.capTechnologyTypes, obj.technologyId);
+		this.capStatus = presets.genericGetEntryForId(presets.capStatusTypes,obj.statusId);
+		
+		
+		this.capIC = new CaptureInfo();
+		this.capIC.infoTypeID = obj.interceptionCriteriaId;
+		this.capIC.infoTypeName = presets.genericGetNameForID(presets.capICTypes, obj.interceptionCriteriaId);
+		this.capIC.infoValID = -1;
+		this.capIC.infoValName = obj.icIdentifier;
+		this.capSwitchDate = "" +obj.switchTime.day+"-"+obj.switchTime.month+"-"+obj.switchTime.year;
+	}
+	// updates be obj according to cap info
+	// only updates user editable fields
+	public updateBeObj(presets: PresetTypesInfo) {
+		this.beObj.notes = this.capUserNotes;
+		this.beObj.cdProtocolId = presets.genericGetIDForName(presets.capX2Protos, this.capX2Protocol);
+		this.beObj.cdTransportId = presets.genericGetIDForName(presets.capTransportTypes, this.capX2Trans);
+		
+		this.beObj.ccProtocolId = presets.genericGetIDForName(presets.capX3Protos, this.capX2Protocol);
+		this.beObj.ccTransportId = presets.genericGetIDForName(presets.capTransportTypes, this.capX3Trans);
+		
+		this.beObj.icIdentifier = this.capIC.infoValName;
+		this.beObj.interceptionCriteriaId = this.capIC.infoTypeID;
+	}
 	
 	constructor () {
 		this.capTags=[];
@@ -171,6 +275,22 @@ export class PresetTypesInfo {
 			if (arr[i].id == ID) return i;
 			
 		return -1;
+	}
+	
+	public genericGetEntryForId(arr: PredefinedTypeStruct[], id: number): PredefinedTypeStruct {
+		for (var i=0; i<arr.length;i++)
+			if (arr[i].id == id) return arr[i];
+
+		var rez: PredefinedTypeStruct = { id: -1, displayName:""};
+		return rez;
+	}
+	
+	public genericGetEntryForName(arr: PredefinedTypeStruct[], name:string): PredefinedTypeStruct {
+		for (var i=0; i<arr.length;i++)
+			if (arr[i].displayName == name) return arr[i];
+
+		var rez: PredefinedTypeStruct = { id: -1, displayName:""};
+		return rez;
 	}
 	
 	

@@ -181,7 +181,7 @@
         <ul style="list-style:none">
           <li style="display:inline" *ngFor="let tg of this.searchParameters.capTags; let idx = index">
             <button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
-            {{tg.tagName}}
+            {{tg.displayName}}
             &nbsp;
             &nbsp;
           </li>
@@ -196,7 +196,11 @@
       <hr style="height:2px;border:none;color:#55;background-color:#333;" />
       <table style="margin-left: 30px;border: 2px solid;" *ngFor="let cap of this.searchResults; let idx = index">
         <tr><td style="padding: 20px;">
-          <h4 class="font-weight-bold">{{this.searchResults[idx].capName}}</h4>
+          <h4 class="font-weight-bold">
+            <a href="{{this.CAPTURE_EDIT_URL + '?capid=' + this.searchResults[idx].capID}}">
+            {{this.searchResults[idx].capName}}
+          </a>
+          </h4>
           <hr style="height:2px;border:none;color:#55;background-color:#333;" />
           <div style="margin-left: 30px;">
             <table cols="3" rows="4" style="margin-left: 30px;">
@@ -222,7 +226,7 @@
             <hr style="height:2px;border:none;color:#55;background-color:#333;" />
             <ul style="list-style:none">
               <li style="display:inline" *ngFor="let tg of this.searchResults[idx].capTags">
-                Tag: {{tg.tagName}}
+                Tag: {{tg.displayName}}
                 &nbsp;
                 &nbsp;
               </li>

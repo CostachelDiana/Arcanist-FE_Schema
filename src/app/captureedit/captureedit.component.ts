@@ -16,6 +16,7 @@ import {CaptureEditBEAbstraction} from './captureEditBEAbstraction'
 
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -46,7 +47,8 @@ export class CaptureEditPage implements IPage{
 	streamsReady: boolean;
 	
 
-	constructor(public dialogue: MatDialog, private http: HttpClient) { 
+	constructor(public dialogue: MatDialog, private http: HttpClient,
+		private activatedRoute:ActivatedRoute) { 
 		
 		this.basicInfoVisible = true;
 		this.advancedInfoVisible = false;
@@ -56,6 +58,31 @@ export class CaptureEditPage implements IPage{
 		this.captureReferenceVisible = false;
 		this.pageReady = false;
 		this.streamsReady =false;
+		console.log("url is: "+window.location.href);
+
+		let fileToUpload: string;
+		rez: this.activatedRoute.queryParams.subscribe(params => {
+			fileToUpload = params['fileToUpload'] || "";
+		  });
+
+		  console.log("filename is: " + fileToUpload);
+		
+		  if (fileToUpload!="") {
+		  	console.log("filename is not null");
+
+			  //check on BE is proj already exist
+			//   if (fileExist) {
+			// 	//error and redirect to capture edit
+			//   }
+			//   else { //create proj
+				this.onGeneratePageClick();
+				this.pageInfo.capName = fileToUpload;
+			//  }
+		  }
+		  else {
+		
+			this.pageReady= false;
+			this.streamsReady=false;
 		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
 		
@@ -66,7 +93,7 @@ export class CaptureEditPage implements IPage{
 		this.backend.setPage(this);
 		
 		this.requestPage();
-		
+	}
 	}
 	
 	public requestPage()
@@ -208,7 +235,7 @@ export class CaptureEditPage implements IPage{
 
 	  public onInjectCapturesSetCallback(setts: CaptureInjectionSettings[], cap: CaptureInjectInfo[]) {
 		// CMS to do send to backend
-		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap);
+		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap,false);
 
 		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
 	  }
