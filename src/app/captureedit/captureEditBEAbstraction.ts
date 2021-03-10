@@ -5,16 +5,18 @@ import {IPage, IBEAbstractionGeneric} from '../project/IProject'
 
 
 import {BackendAPIHandler} from '../common/BackendAPIHandler'
+import { Injectable } from '@angular/core';
 
-
+@Injectable({
+	providedIn: 'root'
+  })
 export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	
 	capEditPage: IPage;
 	
-	api: BackendAPIHandler;
+	//api: BackendAPIHandler;
 	
-	constructor(http: HttpClient) {
-		this.api = new BackendAPIHandler(http);
+	constructor(private api: BackendAPIHandler) {
 	}
 	
 	public sendBEUpdate(beJson: string): void {
@@ -25,7 +27,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		var evtType = jObj["event-type"];		
         if (evtType == "request-stream-info") {
             this.debugSendRequestStreamInfo();
-        } else if ("play-capture") {
+        } else if (evtType == "play-capture") {
             console.log("Sending capture play");
             this.api.playCaptures(beJson,this);
 		} else if (evtType == "request-presets") {	

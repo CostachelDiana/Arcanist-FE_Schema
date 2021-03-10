@@ -4,6 +4,11 @@ import { catchError, retry } from 'rxjs/operators';
 
 import {IBEAbstractionGeneric} from "../project/IProject"
 
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class BackendAPIHandler {
 	
 	API_PATH = 'http://10.164.69.90:8080/api';

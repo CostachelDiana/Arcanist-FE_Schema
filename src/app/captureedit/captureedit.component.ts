@@ -36,7 +36,7 @@ export class CaptureEditPage implements IPage{
 	capStreams: StreamInfo[];
 	
 	serializer: CaptureEditPageSerializer;
-	backend: CaptureEditBEAbstraction;
+	//backend: CaptureEditBEAbstraction;
 	pageReady: boolean;
 	basicInfoVisible: boolean;
 	advancedInfoVisible: boolean;
@@ -48,7 +48,7 @@ export class CaptureEditPage implements IPage{
 	
 
 	constructor(public dialogue: MatDialog, private http: HttpClient,
-		private activatedRoute:ActivatedRoute) { 
+		private activatedRoute:ActivatedRoute, private backend : CaptureEditBEAbstraction) { 
 		
 		this.basicInfoVisible = true;
 		this.advancedInfoVisible = false;
@@ -89,7 +89,6 @@ export class CaptureEditPage implements IPage{
 		this.serializer = new CaptureEditPageSerializer();
 		this.captureInjectSerializer = new CaptureInjectSerializer();
 		
-		this.backend = new CaptureEditBEAbstraction(http);
 		this.backend.setPage(this);
 		
 		this.requestPage();
