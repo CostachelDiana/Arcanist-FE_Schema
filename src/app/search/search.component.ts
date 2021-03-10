@@ -4,6 +4,7 @@ import {CapProjLink, CaptureInfo, FullCaptureInfo, PredefinedTypeStruct, PresetT
 import {AddCaptureTagDialogue} from '../dialogues/AddCaptureTagDialogue'
 import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 import { ProjMember } from '../project/projectPageComponents';
+import {BackendAPIHandler} from '../common/BackendAPIHandler'
 
 @Component({
   selector: 'app-search',
@@ -22,10 +23,10 @@ export class SearchComponent implements OnInit {
   private _searchResults: FullCaptureInfo[];
   
 
-  constructor(public dialogue: MatDialog) { 
+  constructor(public dialogue: MatDialog, private api:BackendAPIHandler) { 
     this._pageInited = false;
     this._searchFinished = false;
-    this._typesInfo = new PresetTypesInfo();
+    this._typesInfo = this.api.presetTypes;
     this._searchParameters = new SearchParameters();
     this._searchResults = [];
   }
@@ -34,7 +35,8 @@ export class SearchComponent implements OnInit {
   }
 
   private testInit(): void {
-    this._typesInfo.testInit();
+	  // to be used only for local testing
+    // this._typesInfo.testInit();
   }
 
   get typesInfo() : PresetTypesInfo{
