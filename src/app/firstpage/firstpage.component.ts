@@ -109,11 +109,10 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 	  } else if (evtType=="full-project-list")
 	  {
 		  console.log("received project list json "+JSON.stringify(jObj));
-		  for (let item in jObj) {
-			  console.log("deserializing item "+JSON.stringify(item));
+		  for (let item in jObj) {			  
 			  var entry = new ProjEntry();
-			  entry.projectName=item["name"];
-			  entry.projectId=item["id"];
+			  entry.projectName=jObj[item]["name"];
+			  entry.projectId=jObj[item]["id"];
 			  entry.projectLink="/ProjectPage?projId="+entry.projectId;
 			  this.projs.push(entry);
 		  }
