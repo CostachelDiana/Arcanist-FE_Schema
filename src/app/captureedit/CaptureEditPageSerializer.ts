@@ -18,7 +18,7 @@ export class CaptureEditPageSerializer {
 			"event-type" : "submit-capture-update",
 			"captureID" : info.capID
 		}
-		jObj["capture-tags"] = info.capTags;
+		/*jObj["capture-tags"] = info.capTags;
 		jObj["capture-infos"] = info.capInfos;
 		jObj["capture-IC"] = info.capIC;
 		jObj["capture-sw-date"] = info.capSwitchDate;
@@ -28,7 +28,7 @@ export class CaptureEditPageSerializer {
 		jObj["caputre-x3-trans"] = info.capX3Trans;
 		jObj["capture-x3-protocol"] = info.capX3Protocol;
 		jObj["capture-x3-port"] = info.capX3Port;
-		jObj["capture-technology"] = info.capTechnology;
+		jObj["capture-technology"] = info.capTechnology;*/
 		
 		return JSON.stringify(jObj);
 	}
@@ -69,7 +69,7 @@ export class CaptureEditPageSerializer {
 		
 		var js = jObj["capture-page-info"];
 		
-		
+		/*
 		rez.capTags = js["capTags"];
 		rez.capInfos = js["capInfos"];
 		rez.capProjects = js["capProjects"];
@@ -94,7 +94,7 @@ export class CaptureEditPageSerializer {
 		rez.capStatus=js["capStatus"];
 		rez.capIC=js["capIC"];
 		rez.capSwitchDate=js["capSwitchDate"];
-		
+		*/
 		
 		console.log("rez is "+JSON.stringify(rez));
 		return rez;
