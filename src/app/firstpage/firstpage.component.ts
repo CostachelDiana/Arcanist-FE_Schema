@@ -84,7 +84,7 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 		
 	  
   }
-  public onGetAllProjcetsClick() {
+  public onGetAllProjectsClick() {
 	  
 	  this.api.requestAllProjects(this);
   }
