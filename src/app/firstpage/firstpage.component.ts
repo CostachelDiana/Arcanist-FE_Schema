@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import {BackendAPIHandler,IBEApiConsumer} from "../common/BackendAPIHandler"
 import {CreateProjectDialogue} from "../dialogues/CreateProjectDialogue.component"
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
+import * as $ from 'jquery';
+import * as bootstrap from 'bootstrap';
 
 export class ProjEntry {
 	projectName: string;
@@ -103,8 +105,12 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   {
 	  if (evtType=="capture-uploaded")
 	  {
-		  var capID = jObj["uuid"];		  
-		  this.router.navigateByUrl("/CaptureEdit?capid="+capID);
+      alert("Capture uploaded successfully");
+
+		  var capID = jObj["uuid"];
+
+      $('#closeModal').click;
+
 		  this.isCaptureUploading=false;
 	  } else if (evtType=="full-project-list")
 	  {
