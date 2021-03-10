@@ -150,8 +150,12 @@ export class ProjectComponent implements IProject {
 	
 	
 	public testInit(): void {
+		console.log("initing proj data");
+		
 		this.projInfo = new ProjPageInfo("projIDPlaceholder");
+		
 		this.projInfo.setProjectInfo("01-02-2021","03-02-2021");
+		this.projInfo.projName="Generated proj";
 		
 		this.projInfo.projOwner=new ProjMember("Marius");
 		this.projInfo.projOwner.surname="Aldea";

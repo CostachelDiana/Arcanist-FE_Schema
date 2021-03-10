@@ -7,66 +7,73 @@
 		   <table class="table">
 				<thead>
 					<tr>
+						<th scope="col">SrcX2Ip</th>
 						<th scope="col">SrcX2Port</th>
 						<th scope="col">SrcX2T</th>
+						<th scope="col">SrcX3Ip</th>
 						<th scope="col">SrcX3Port</th>
 						<th scope="col">SrcX3T</th>
 						<th scope="col">DstIP</th>
 						<th scope="col">DstX2Port</th>
 						<th scope="col">DstX2T</th>
 						<th scope="col">DstX3Port</th>
-						<th scope="col">DstX3T</th>						
+						<th scope="col">DstX3T</th>
 					</tr>
 				</thead>
 				<tbody>
-						<tr>							
-							
-							<td>
-								{{this.getCapture()[0].captureX2Port}}
-							</td>
-							<td>
-								{{this.getCapture()[0].captureX2Transport}}
-							</td>
-							<td>
-								{{this.getCapture()[0].captureX3Port}}
-							</td>
-							<td>
-								{{this.getCapture()[0].captureX3Transport}}
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=110>
+					<tr>
+						<td>
+							{{this.getCapture()[0].captureX2IP}}
+						</td>
+						<td>
+							{{this.getCapture()[0].captureX2Port}}
+						</td>
+						<td>
+							{{this.getCapture()[0].captureX2Transport}}
+						</td>
+						<td>
+							{{this.getCapture()[0].captureX3IP}}
+						</td>
+						<td>
+							{{this.getCapture()[0].captureX3Port}}
+						</td>
+						<td>
+							{{this.getCapture()[0].captureX3Transport}}
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=110>
 								<mat-label>Client IP</mat-label>
-									<input matInput #clientIP value="{{this.getSettingsForCapture()[0].clientIP}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=50>
+								<input matInput #clientIP value="{{this.getSettingsForCapture()[0].clientIP}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X2 Port</mat-label>
-									<input matInput #clientX2P value="{{this.getSettingsForCapture()[0].X2Port}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X2 Transport</mat-label>
-									  <select matNativeControl #clientX2T required>
-										<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
-									  </select>
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=50>
+								<input matInput #clientX2P value="{{this.getSettingsForCapture()[0].X2Port}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="fill" [style.width.px]=100>
+								<mat-label>X2 Transport</mat-label>
+								<select matNativeControl #clientX2T required>
+									<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
+								</select>
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X3 Port</mat-label>
-									<input matInput #clientX3P value="{{this.getSettingsForCapture()[0].X3Port}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X3 Transport</mat-label>
-									  <select matNativeControl #clientX3T required>
-										<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>
-									  </select>
-								</mat-form-field>
-							</td>						
+								<input matInput #clientX3P value="{{this.getSettingsForCapture()[0].X3Port}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="fill" [style.width.px]=100>
+								<mat-label>X3 Transport</mat-label>
+								<select matNativeControl #clientX3T required>
+									<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>
+								</select>
+							</mat-form-field>
+						</td>
 					</tr>									
 				</tbody>
 		  </table>

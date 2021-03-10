@@ -108,38 +108,52 @@
 				<table class="table">
 				<tr>
 					<td>
+						CD IP
+						&nbsp;
+						<mat-form-field [style.width.px]=100>
+							<mat-label>X2 IP</mat-label>
+							<input matInput #x2ip value="{{this.getPageInfo().capX2Ip}}">
+						</mat-form-field>
+						<br>
 						CD Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
-								<mat-label>X2 port</mat-label>
-								<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">			
+							<mat-label>X2 port</mat-label>
+							<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">
 						</mat-form-field>
 						<br>
 						CD Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
-						<mat-label>X2 Transport</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
-						  </select>
+							<mat-label>X2 Transport</mat-label>
+							<select matNativeControl required>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+							</select>
 						</mat-form-field>
-						<br>				
+						<br>
+						CC IP
+						&nbsp;
+						<mat-form-field [style.width.px]=100>
+							<mat-label>X3 IP</mat-label>
+							<input matInput #x3ip value="{{this.getPageInfo().capX3Ip}}">
+						</mat-form-field>
+						<br>
 						CC Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
-								<mat-label>X3 port</mat-label>
-								<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
+							<mat-label>X3 port</mat-label>
+							<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
 						</mat-form-field>
 						<br>
 						CC Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
-						<mat-label>X3 Transport</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
-						  </select>
+							<mat-label>X3 Transport</mat-label>
+							<select matNativeControl required>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+							</select>
 						</mat-form-field>
-					<td>
+<td>
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
