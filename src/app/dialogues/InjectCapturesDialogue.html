@@ -9,14 +9,16 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col" *ngIf="!this.isSettingsMode()">
-							<input class="form-check-input"  type="checkbox" value="" id="checkAll" checked>
+							<input class="form-check-input" type="checkbox" value="" id="checkAll" checked>
 							&nbsp;
 							&nbsp;
-							Inject														
+							Inject
 						</th>
-						
+
+						<th scope="col">SrcX2IP</th>
 						<th scope="col">SrcX2Port</th>
 						<th scope="col">SrcX2T</th>
+						<th scope="col">SrcX3IP</th>
 						<th scope="col">SrcX3Port</th>
 						<th scope="col">SrcX3T</th>
 						<th scope="col">DstIP</th>
@@ -27,60 +29,66 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let cap of this.getCaptures(); let idx=index">						
-							<td>{{idx+1}}</td>
-							<td *ngIf="!this.isSettingsMode()">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="inject{{idx}}" checked>
-								</div>
-							</td>
-							
-							<td>
-								{{cap.captureX2Port}}
-							</td>
-							<td>
-								{{cap.captureX2Transport}}
-							</td>
-							<td>
-								{{cap.captureX3Port}}
-							</td>
-							<td>
-								{{cap.captureX3Transport}}
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=110>
+					<tr *ngFor="let cap of this.getCaptures(); let idx=index">
+						<td>{{idx+1}}</td>
+						<td *ngIf="!this.isSettingsMode()">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="inject{{idx}}" checked>
+							</div>
+						</td>
+
+						<td>
+							{{cap.captureX2Ip}}
+						</td>
+						<td>
+							{{cap.captureX2Port}}
+						</td>
+						<td>
+							{{cap.captureX2Transport}}
+						</td>
+						<td>
+							{{cap.captureX3Ip}}
+						</td>
+						<td>
+							{{cap.captureX3Port}}
+						</td>
+						<td>
+							{{cap.captureX3Transport}}
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=110>
 								<mat-label>Client IP</mat-label>
-									<input matInput class="clientIP" value="{{this.getSettingsForCapture(idx).clientIP}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=50>
+								<input matInput class="clientIP" value="{{this.getSettingsForCapture(idx).clientIP}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X2 Port</mat-label>
-									<input matInput class="x2prt" value="{{this.getSettingsForCapture(idx).X2Port}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X2 Transport</mat-label>
-									  <select matNativeControl class="x2trans" required>
-										<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
-									  </select>
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field [style.width.px]=50>
+								<input matInput class="x2prt" value="{{this.getSettingsForCapture(idx).X2Port}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="fill" [style.width.px]=100>
+								<mat-label>X2 Transport</mat-label>
+								<select matNativeControl class="x2trans" required>
+									<option *ngFor="let x2 of this.getX2TransVals(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
+								</select>
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field [style.width.px]=50>
 								<mat-label>Dst X3 Port</mat-label>
-									<input matInput class="x3prt" value="{{this.getSettingsForCapture(idx).X3Port}}">
-								</mat-form-field>
-							</td>
-							<td>							
-								<mat-form-field appearance="fill" [style.width.px]=100>
-									<mat-label>X2 Transport</mat-label>
-									  <select matNativeControl class="x3trans" required>
-										<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>
-									  </select>
-								</mat-form-field>
-							</td>						
+								<input matInput class="x3prt" value="{{this.getSettingsForCapture(idx).X3Port}}">
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="fill" [style.width.px]=100>
+								<mat-label>X2 Transport</mat-label>
+								<select matNativeControl class="x3trans" required>
+									<option *ngFor="let x3 of this.getX3TransVals(); let idx = index" value="{{x3.id}}">{{x3.displayName}}</option>
+								</select>
+							</mat-form-field>
+						</td>
 					</tr>									
 				</tbody>
 		  </table>
