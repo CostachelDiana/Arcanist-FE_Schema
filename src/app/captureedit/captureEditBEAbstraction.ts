@@ -7,6 +7,8 @@ import {IPage, IBEAbstractionGeneric} from '../project/IProject'
 import {BackendAPIHandler} from '../common/BackendAPIHandler'
 import { Injectable } from '@angular/core';
 
+import {PresetTypesInfo} from '../captureedit/CaptureStructures'
+
 @Injectable({
 	providedIn: 'root'
   })
@@ -15,6 +17,10 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	capEditPage: IPage;
 	
 	//api: BackendAPIHandler;
+	
+	public getPresets(): PresetTypesInfo {
+		return this.api.presetTypes;
+	}
 	
 	constructor(private api: BackendAPIHandler) {
 	}

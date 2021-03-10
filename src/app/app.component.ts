@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import {BackendAPIHandler} from './common/BackendAPIHandler'
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent {
   }
   private router: Router;
 
-	constructor() { 
+	constructor(private backendApi:BackendAPIHandler) { 
 		this.index = 0;
 	}
 
