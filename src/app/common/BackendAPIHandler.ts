@@ -94,7 +94,7 @@ export class BackendAPIHandler {
 	public postFileUploadRequest(consumer: IBEApiConsumer, file: File)
 	{
 		console.log("posting upload request for file "+file.name);
-		const headers = new HttpHeaders().set('Content-Type','multipart/form-data');
+		const headers = new HttpHeaders();
 		const formData: FormData = new FormData();
 		formData.append('filekey', file, file.name);
 		this.http.post<any> (this.POST_UPLOAD_CAPTURE_URL, formData, {headers: headers, responseType: 'json'}).subscribe(data => {
