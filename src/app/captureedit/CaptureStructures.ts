@@ -61,19 +61,22 @@ export class CaptureBackendObj {
 	filepath: string;
 	icIdentifier: string;
 	interceptionCriteriaId: number;
-	lastUpdatedAt: ExplicitDate;
+	// lastUpdatedAt: ExplicitDate;
+	lastUpdatedAt: string;
 	lastUpdatedBy: string;
 	length: number;
 	name: string;
 	notes: string;
 	size: number;
 	statusId: number;
-	switchTime: ExplicitDate;
+	switchTime: string;
 	technologyId: number;
-	uploadedAt: ExplicitDate;
+	// uploadedAt: ExplicitDate;
+	uploadedAt: string;
 	uploadedBy: string;
 	uuid: string;
-	verifiedAt: ExplicitDate;
+	// verifiedAt: ExplicitDate;
+	verifiedAt: string;
 	verifiedBy: string;
 }
 
@@ -135,11 +138,13 @@ export class FullCaptureInfo {
 		this.capSize = ""+obj.size;
 		this.capLength = ""+obj.length;
 		this.capUserNotes = obj.notes;
-		this.lastUpdateDate = "" +obj.lastUpdatedAt.day+"-"+obj.lastUpdatedAt.month+"-"+obj.lastUpdatedAt.year;
+		// this.lastUpdateDate = "" +obj.lastUpdatedAt.day+"-"+obj.lastUpdatedAt.month+"-"+obj.lastUpdatedAt.year;
+		this.lastUpdateDate=obj.lastUpdatedAt;
 		this.lastUpdater = new ProjMember("");
 		this.lastUpdater.name = obj.lastUpdatedBy;
 		this.lastUpdater.surname="";
-		this.uploadDate = "" +obj.uploadedAt.day+"-"+obj.uploadedAt.month+"-"+obj.uploadedAt.year;
+		// this.uploadDate = "" +obj.uploadedAt.day+"-"+obj.uploadedAt.month+"-"+obj.uploadedAt.year;
+		this.uploadDate=obj.uploadedAt;
 		this.uploader = new ProjMember("");
 		this.uploader.name = obj.uploadedBy;
 		this.uploader.surname= "";
@@ -164,7 +169,7 @@ export class FullCaptureInfo {
 		this.capIC.infoTypeName = presets.genericGetNameForID(presets.capICTypes, obj.interceptionCriteriaId);
 		this.capIC.infoValID = -1;
 		this.capIC.infoValName = obj.icIdentifier;
-		this.capSwitchDate = "" +obj.switchTime.day+"-"+obj.switchTime.month+"-"+obj.switchTime.year;
+		this.capSwitchDate = obj.switchTime;
 	}
 	// updates be obj according to cap info
 	// only updates user editable fields
