@@ -108,7 +108,7 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 		  this.isCaptureUploading=false;
 	  } else if (evtType=="full-project-list")
 	  {
-		  
+		  console.log("received project list json "+JSON.stringify(jObj));
 		  for (let item in jObj) {
 			  var entry = new ProjEntry();
 			  entry.projectName=item["name"];
