@@ -51,9 +51,11 @@ export class ExplicitDate {
 
 export class CaptureBackendObj {
 	ccPort: string;
+	ccIP: string;	
 	ccProtocolId: number;
 	ccTransportId: number;
 	cdPort: string;
+	cdIP: string;
 	cdProtocolId: number;
 	cdTransportId: number;
 	filepath: string;
@@ -170,17 +172,74 @@ export class FullCaptureInfo {
 	// updates be obj according to cap info
 	// only updates user editable fields
 	public updateBeObj(presets: PresetTypesInfo) {
+		this.beObj.name = this.capName;
 		this.beObj.notes = this.capUserNotes;
+
+		this.beObj.technologyId = presets.genericGetIDForName(presets.capTechnologyTypes, this.capTechnology.displayName);
+
 		this.beObj.cdProtocolId = presets.genericGetIDForName(presets.capX2Protos, this.capX2Protocol);
 		this.beObj.cdTransportId = presets.genericGetIDForName(presets.capTransportTypes, this.capX2Trans);
+		this.beObj.cdPort = this.capX2Port;
+		this.beObj.cdIP = this.capX2IP;
 		
-		this.beObj.ccProtocolId = presets.genericGetIDForName(presets.capX3Protos, this.capX2Protocol);
+		this.beObj.ccProtocolId = presets.genericGetIDForName(presets.capX3Protos, this.capX3Protocol);
 		this.beObj.ccTransportId = presets.genericGetIDForName(presets.capTransportTypes, this.capX3Trans);
+		this.beObj.ccPort = this.capX3Port;
+		this.beObj.ccIP = this.capX3IP;		
 		
 		this.beObj.icIdentifier = this.capIC.infoValName;
 		this.beObj.interceptionCriteriaId = this.capIC.infoTypeID;
 	}
 	
+	public serializeForCaptureUpdate(presets: PresetTypesInfo) : string{
+		var jsonObj = new Object();
+
+		jsonObj["name"] = this.capName;
+		jsonObj["notes"] = this.capUserNotes;
+		jsonObj["icIdentifier"] = this.capIC.infoValName;
+		jsonObj["interceptionCriteriaId"] = this.capIC.infoTypeID;
+		jsonObj["technologyId"] = presets.genericGetIDForName(presets.capTechnologyTypes, this.capTechnology.displayName);
+
+		jsonObj["ccProtocolId"] = presets.genericGetIDForName(presets.capX3Protos, this.capX3Protocol);
+		jsonObj["ccTransportId"] = presets.genericGetIDForName(presets.capTransportTypes, this.capX3Trans);
+		jsonObj["ccPort"] = this.capX3Port;
+		jsonObj["ccIP"] = this.capX3IP;	
+
+		jsonObj["cdProtocolId"] = presets.genericGetIDForName(presets.capX2Protos, this.capX2Protocol);
+		jsonObj["cdTransportId"] = presets.genericGetIDForName(presets.capTransportTypes, this.capX2Trans);
+		jsonObj["cdPort"] = this.capX2Port;
+		jsonObj["cdIP"] = this.capX2IP;			
+
+		//tags
+		if(this.capTags.length > 0)
+		{
+			var tagArray = [];
+			for(var i = 0; i < this.capTags.length; i++)
+			{
+				tagArray.push(new Number(this.capTags[i].id));
+			}
+			jsonObj["tags"] = tagArray;
+		}
+
+		if(this.capInfos.length > 0)
+		{
+			var infoArrays = [];
+			for(var i = 0; i < this.capInfos.length; i++)
+			{
+				if(!(this.capInfos[i].infoTypeName in infoArrays))
+				{
+					infoArrays[this.capInfos[i].infoTypeName] = [];
+				}
+				infoArrays[this.capInfos[i].infoTypeName].push(new Number(this.capInfos[i].infoValID));
+			}		
+			for(var info in infoArrays)
+			{
+				jsonObj[info] = infoArrays[info];
+			}	
+		}
+		return JSON.stringify(jsonObj);;
+	}
+
 	constructor () {
 		this.capTags=[];
 		this.capInfos=[];
