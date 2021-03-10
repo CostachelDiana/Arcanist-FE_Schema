@@ -1,0 +1,16 @@
+
+	<main role="main">
+	<div class="card card-style">
+		<p class="center-block">Enter project Name</p>
+		
+		<mat-form-field>
+			<mat-label>project name</mat-label>
+			<input matInput #projectName>
+		</mat-form-field>
+		
+		<div *ngIf="this.projectNameDuplicated">
+			<p style="color:#DD0000">*Project name already exists</p>
+		</div>
+		<button class="btn btn-primary" type="button" (click)="onSubmitClick(projectName.value)">Submit</button>	
+	</div>
+	</main>
