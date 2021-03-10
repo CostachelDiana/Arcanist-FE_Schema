@@ -18,10 +18,12 @@
 	</div>
 	<br>
 	<br>
-	<div class="card card-body">
-		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Basic Info </h4>
-		
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+
+	
+	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" (click)="this.onExpandBasicInfo()" id="btnBasicInfo" > - Collapse </button> Basic Info </h4>
+	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+	
+	<div id="basicInfo" class="card card-body" *ngIf="this.isBasicInfoVisible()" >
 		<table class="table">
 			<tr>
 				<td>
@@ -90,50 +92,68 @@
 			<textarea class="usrNotes" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="10" cdkAutosizeMaxRows="40" value=" {{this.getPageInfo().capUserNotes}}"></textarea>
 		</div>
 	</div>
-	
-	<div class="card card-body">
-		<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button"> Expand </button>  Advanced Info </h4>
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-		
+
+	<br/>
+	<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnAdvancedInfo" (click)="this.onExpandAdvancedInfo()"> + Expand </button>  Advanced Info </h4>
+	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+	<br/>
+
+	<div id="advancedInfo" class="card card-body" *ngIf="this.isAdvancedInfoVisible()" >
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button>  Stream Info</h4>
+
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnStreamInfo" (click)="this.onExpandStreamInfo()"> + Expand </button>  Stream Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<div style="card card-body">
+
+			<div style="card card-body" *ngIf="this.isStreamInfoVisible()">
 				<table class="table">
 				<tr>
 					<td>
+						CD IP
+						&nbsp;
+						<mat-form-field [style.width.px]=100>
+							<mat-label>X2 IP</mat-label>
+							<input matInput #x2ip value="{{this.getPageInfo().capX2Ip}}">
+						</mat-form-field>
+						<br>
 						CD Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
-								<mat-label>X2 port</mat-label>
-								<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">			
+							<mat-label>X2 port</mat-label>
+							<input matInput #x2prt value="{{this.getPageInfo().capX2Port}}">
 						</mat-form-field>
 						<br>
 						CD Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
-						<mat-label>X2 Transport</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
-						  </select>
+							<mat-label>X2 Transport</mat-label>
+							<select matNativeControl required>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+							</select>
 						</mat-form-field>
-						<br>				
+						<br>
+						CC IP
+						&nbsp;
+						<mat-form-field [style.width.px]=100>
+							<mat-label>X3 IP</mat-label>
+							<input matInput #x3ip value="{{this.getPageInfo().capX3Ip}}">
+						</mat-form-field>
+						<br>
 						CC Port
 						&nbsp;
 						<mat-form-field [style.width.px]=100>
-								<mat-label>X3 port</mat-label>
-								<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
+							<mat-label>X3 port</mat-label>
+							<input matInput #x3prt value="{{this.getPageInfo().capX3Port}}">
 						</mat-form-field>
 						<br>
 						CC Transport
 						&nbsp;
 						<mat-form-field appearance="fill" [style.width.px]=100>
-						<mat-label>X3 Transport</mat-label>
-						  <select matNativeControl required>
-							<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>							
-						  </select>
+							<mat-label>X3 Transport</mat-label>
+							<select matNativeControl required>
+								<option *ngFor="let trans of this.getCapTransportTypes(); let idx = index" value="{{trans.id}}">{{trans.displayName}}</option>
+							</select>
 						</mat-form-field>
-					<td>
+<td>
 					<td>
 						<div class="card card-body">
 						<h5 class="font-weight-bold text-center">Detected Streams</h5>
@@ -161,9 +181,9 @@
 			</div>
 		</div>
 		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button"> Expand </button>  Capture Info</h4>
+			<h4 class="font-weight-bold"> <button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureInfo()"> + Expand </button>  Capture Info</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<div style="card card-body">				
+			<div id="captureInfo" style="card card-body" *ngIf="this.isCaptureInfoVisible()">				
 					Target IC 
 					<mat-form-field appearance="fill" [style.width.px]=100>
 						<mat-label>IC Type</mat-label>
@@ -200,8 +220,8 @@
 		</div>
 		<br>
 		<br>
-		<div style="margin-left: 30px">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Capture Tags</h4>
+		<div id="captureTag" style="margin-left: 30px" *ngIf="this.isCaptureTagVisible()">
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 			<div style="card card-body">
 			</div>
@@ -217,20 +237,14 @@
 		</div>
 			
 	</div>
+	
 	<br>
-	<div>
-		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
-		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
-	</div>
+	<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureReference" (click)="this.onExpandCaptureReference()"> + Expand </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
+	<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<div class="card card-body">
-		<h4 class="font-weight-bold"><button class="btn btn-primary" type="button"> Expand </button> Capture referenced {{this.getPageInfo().getCaptureRefNumber()}} times in {{this.getPageInfo().getCaptureProjsNumber()}} projects</h4>		
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
+	
+	<div id="captureReference" class="card card-body" *ngIf="this.isCaptureReferenceVisible()">
+		
 		<div class="card-card-body" style="margin-left:50px">
 			<ul style="list-style:none">
 				<li *ngFor="let prj of this.getPageInfo().getCaptureProjectLinks(); let idx = index">
@@ -249,5 +263,17 @@
 			</ul>
 		</div>		
 	</div>
+
+	<br>
+	<div>
+		<button class="btn btn-primary float-left" style="margin-left:20px" type="button"> Submit Changes </button>
+		<button class="btn btn-primary float-right" style="margin-right:20px" type="button"> Remove Capture </button>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	
 	
 </main>

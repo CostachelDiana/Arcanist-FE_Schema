@@ -45,6 +45,8 @@ export class ProjectComponent implements IPage {
 	projNotes: HTMLInputElement;
 	
 	pageInited: boolean;
+	projectDetailsVisible: boolean;
+	projectCaptureSetsVisible: boolean;
 	
 	// initing methods
 	constructor(public dialogue: MatDialog,
@@ -64,6 +66,13 @@ export class ProjectComponent implements IPage {
 		  
 			this.BEAbs= new ProjectBEAbstraction(http);
 			this.BEAbs.setPage(this);
+			
+			this.serializer = new ProjectPageEventSerializer();
+			this.captureInjectSerializer = new CaptureInjectSerializer();
+			
+			this.pageInited=false;
+			this.projectDetailsVisible = false;
+			this.projectCaptureSetsVisible = false;
 		
 		  if (projName!="") {
 		  	console.log("filename is not null");
@@ -73,18 +82,26 @@ export class ProjectComponent implements IPage {
 			// 	//error and redirect to projpage
 			//   }
 			//   else { //create proj
-				this.onGeneratePageClick();
+				
 				this.projInfo.projName = projName;
 				this.projInfo.projDetails = projDetails;
+				this.testInit();
 			//  }
 		  }
 		  else {
+
+			//get from BE the list of existing proj
+			this.projNamesList = [];
+			this.projNamesList.push("ProjName1_predef");
+			this.projNamesList.push("ProjName2_predef");
+
 			this.projInfo=null;
 			
 			this.pageInited=false;
-			this.serializer = new ProjectPageEventSerializer();
-			
-			
+
+
+			this.projectDetailsVisible = false;
+			this.projectCaptureSetsVisible = false;
 			
 			//get from BE the list of existing proj
 			this.projNamesList = [];
@@ -93,38 +110,13 @@ export class ProjectComponent implements IPage {
 
 			this.capTransportTypes=[];
 			this.initBEData();
-				this.captureInjectSerializer = new CaptureInjectSerializer();
-		  }
+    		
+		}
 	}
 	
 	initBEData(): void {
 		
-		/*
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="TCP";
-		aPresetType.id=1;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="UDP";
-		aPresetType.id=2;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="FTP";
-		aPresetType.id=3;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="MSMQ";
-		aPresetType.id=4;
-		this.capTransportTypes.push(aPresetType);
-		
-		var aPresetType = new PredefinedTypeStruct();
-		aPresetType.displayName="SMTP";
-		aPresetType.id=5;
-		this.capTransportTypes.push(aPresetType);
-		*/
+	
 	}
 	
 	public onFetchProjectClick(): void {
@@ -139,6 +131,14 @@ export class ProjectComponent implements IPage {
 	
 	public isPageReady(): boolean {
 		return this.pageInited;
+	}
+
+	public isProjectDetailsVisible(): boolean {
+		return this.projectDetailsVisible;
+	}
+
+	public isProjectCaptureSetsVisible(): boolean {
+		return this.projectCaptureSetsVisible;
 	}
 	
 	
@@ -156,6 +156,32 @@ export class ProjectComponent implements IPage {
 	}
 	public setBEAbstraction(be: IBEAbstractionGeneric): void {
 		
+	}
+
+	onExpandProjectDetails(): void {
+		var btnProjectDetails = document.getElementById("btnProjectDetails");
+
+		if (this.projectDetailsVisible == false) {
+			this.projectDetailsVisible = true;
+			btnProjectDetails.textContent = " - Collapse";
+		}
+		else {
+			this.projectDetailsVisible = false;
+			btnProjectDetails.textContent = " + Expand";
+		}
+	}
+
+	onExpandProjectCaptureSets(): void {
+		var btnProjectCaptureSets = document.getElementById("btnProjectCaptureSets");
+
+		if (this.projectCaptureSetsVisible == false) {
+			this.projectCaptureSetsVisible = true;
+			btnProjectCaptureSets.textContent = " - Collapse";
+		}
+		else {
+			this.projectCaptureSetsVisible = false;
+			btnProjectCaptureSets.textContent = " + Expand";
+		}
 	}
 	
 	// callbacks 
