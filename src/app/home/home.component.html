@@ -159,8 +159,8 @@
 
         <div class="col-sm-5">
             <div class="card">
-                <h5 class="card-title">Owned Proj</h5>
-                <div class="card-body">
+                <h5 class="card-title">Owned Projects</h5>
+                <div class="card-body" *ngIf="this.projInfo_Owner.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Owner; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>
@@ -169,8 +169,8 @@
             <br>
 
             <div class="card">
-                <h5 class="card-title">Assign Proj</h5>
-                <div class="card-body">
+                <h5 class="card-title">Assign Projects</h5>
+                <div class="card-body" *ngIf="this.projInfo_Assign.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Assign; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>
@@ -182,7 +182,7 @@
         <div class="col-4">
             <div class="card">
                 <h5 class="card-title">Favorites</h5>
-                <div class="card-body">
+                <div class="card-body" *ngIf="this.projInfo_Fav.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Fav; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>

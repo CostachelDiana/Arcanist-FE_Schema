@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegularExpressionLiteral } from 'typescript';
-import { BackendAPIHandler } from '../common/BackendAPIHandler';
+import { BackendAPIHandler, IBEApiConsumer } from '../common/BackendAPIHandler';
 import { ProjPageInfo } from '../project/projectPageComponents';
 import { AuthenticationService } from '../_services/auth.service';
 import { HomePageSerializer } from './HomePageSerializer';
@@ -12,7 +12,8 @@ import { HomePageSerializer } from './HomePageSerializer';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+
+export class HomeComponent implements OnInit, IBEApiConsumer {
 
   serializer: HomePageSerializer;
   api: BackendAPIHandler;
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
 
     this.requestBEProj();
 
-    this.testInit();
+    //this.testInit();
   }
 
   ngOnInit(): void {
@@ -68,27 +69,55 @@ export class HomeComponent implements OnInit {
 
 
   }
-  
-  private callBackProjOwner(beStr: any) {
-    console.log(beStr);
-    this.projInfo_Owner = this.serializer.deserializeReqProjects(beStr);
-  }
 
   public requestBEProj() {
-    console.log("Homepage: requestBEProj fct");
-		
-    var urlParams = new URLSearchParams(window.location.search);
-		//var capID=urlParams.get('capid');
-		//var beStr = this.serializer.serializeReqProjects("mihai");
-    //console.log("Homepage: requestBEProj: beStr response: " + beStr);
-		
     //this.api.getProjectsByOwner("mihai", this.callBackProjOwner);
-    this.api.getProjects(this.callBackProjOwner);
+    //this.api.getProjects(this.callBackProjOwner);
 
-    //this.projInfo_Owner = this.serializer.deserializeReqProjects(beStr);
-
+    this.api.getProjects(this);
+    //this.api.getProjectsByOwner("mihai", this);
+    //this.api.getProjectsByContributor("mihai", this);
 	}
 
-  
+  handleBEResponse(jObj: Object, evtType: string) {
+    console.log("Homepage: requestBEProj: evtType response: " + evtType);
+    console.log(jObj);
 
+    if (evtType == "full-project-list")
+      this.projInfo_Owner = this.deserializeReqProjects(jObj);
+    //else if (evtType == "owner-project-list")
+    //  this.projInfo_Owner = this.deserializeReqProjects(jObj);
+    else if (evtType == "contributor-project-list")
+      this.projInfo_Assign = this.deserializeReqProjects(jObj);
+    
+  }
+
+  private callBackProjOwner(beStr: string) {
+    console.log(beStr);
+    var jObj = JSON.parse(beStr);
+    this.projInfo_Owner = this.serializer.deserializeReqProjects(jObj);
+  }
+
+  public deserializeReqProjects(jObj: Object): ProjPageInfo[] {
+
+		console.log("deserializeReqProjects" + JSON.stringify(jObj));
+        var rez = [];
+        if(!Array.isArray(jObj)) {
+            console.log("HomePageSerializer: No array received");
+            return rez;
+        }
+
+        for(var i = 0; i < jObj.length; i ++)
+        {          
+            var projInfo = new ProjPageInfo(jObj[i]["id"]);
+            projInfo.projName = jObj[i]["name"];
+            projInfo.projOwner = jObj[i]["owner"];
+            projInfo.projCreationDate = jObj[i]["createdAt"];
+            projInfo.projLastEdit = jObj[i]["lastUpdatedAt"];
+
+            rez.push(projInfo);
+        }
+
+        return rez;
+    }
 }
