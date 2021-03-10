@@ -31,8 +31,6 @@ export class ProjectComponent implements IProject {
 	
 	projInfo: ProjPageInfo ;
 	public projNamesList: string[];
-	// public filename: string;
-	// public strProjDetails: string;
 	 
 	BEAbs: ProjectBEAbstraction;
 	serializer: ProjectPageEventSerializer;
