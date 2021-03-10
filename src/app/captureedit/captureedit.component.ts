@@ -421,7 +421,32 @@ export class CaptureEditPage implements IPage{
 			btnCaptureReference.textContent = " + Expand";
 		}
 	}
+
+	onX2ProtocolSelectionChanged(event: any){
+		this.pageInfo.capX2Protocol = event.target.value;
+	}
+
+	onX3ProtocolSelectionChanged(event: any){
+		this.pageInfo.capX3Protocol = event.target.value;
+	}	
 	
+	onTechnologySelectionChanged(event: any){
+		this.pageInfo.capTechnology = event.target.value;
+	}	
+
+	onX2TransportSelectionChanged(event: any){
+		this.pageInfo.capX2Trans = event.target.value;
+	}	
+
+	onX3TransportSelectionChanged(event: any){
+		this.pageInfo.capX3Trans = event.target.value;
+	}		
+	
+	onICTypeSelectionChanged(event: any){
+		this.pageInfo.capIC.infoTypeName = event.target.value;
+		this.pageInfo.capIC.infoTypeID = this.presetInfo.genericGetIDForName(this.presetInfo.capICTypes, this.pageInfo.capIC.infoTypeName )
+	}		
+		
 	testInit(): void {
 		
 		var pgInfo = new FullCaptureInfo();
