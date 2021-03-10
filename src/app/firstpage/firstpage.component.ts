@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {BackendAPIHandler,IBEApiConsumer} from "../common/BackendAPIHandler"
+import {CreateProjectDialogue} from "../dialogues/CreateProjectDialogue.component"
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'; 
 
 @Component({
   selector: 'app-project',
@@ -18,7 +20,7 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   isProjectCreating:boolean;
   fileToUpload: File;
   
-  constructor(private api: BackendAPIHandler, private router: Router) { 
+  constructor(private api: BackendAPIHandler, private router: Router, public dialogue: MatDialog) { 
 	this.showUploadError=false;
 	this.fileToUpload=null;
 	this.isProjectCreating=false;
@@ -45,8 +47,14 @@ export class FirstPage implements OnInit, IBEApiConsumer {
   }
   
   public onCreateProjectClick() {
-	  this.isProjectCreating=true;
-	  this.api.postCreateProject(this);
+	  
+		var dialogRef = this.dialogue.open(CreateProjectDialogue, 
+		{width:'400px',
+		height:'300px',
+		data: { callback: this.onProjectCreated.bind(this)}
+		}
+		);
+		
 	  
   }
   
@@ -73,6 +81,10 @@ export class FirstPage implements OnInit, IBEApiConsumer {
 		  this.router.navigateByUrl("/ProjectPage?projId="+projID);
 		  this.isProjectCreating=false;
 	  }
+  }
+  public onProjectCreated(projID: string)
+  {
+	    this.router.navigateByUrl("/ProjectPage?projId="+projID);		
   }
  
   public onSubmit(): void {

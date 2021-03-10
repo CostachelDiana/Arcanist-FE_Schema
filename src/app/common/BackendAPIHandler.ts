@@ -104,12 +104,21 @@ export class BackendAPIHandler {
 		});
 		
 	}
-	public postCreateProject(consumer: IBEApiConsumer)
+	public postCreateProject(consumer: IBEApiConsumer, projectName:string)
 	{
 		console.log("posting create project");
-		this.http.post<any>(this.POST_CREATE_PROJECT_URL, {responseType: 'json'}).subscribe(data => {
-			consumer.handleBEResponse(data,"project-created");
-		});
+		var jObj=  { 
+			"name" : projectName
+		};
+		
+		this.http.post<any>(this.POST_CREATE_PROJECT_URL, jObj, {responseType: 'json'}).subscribe(
+			data => {
+				consumer.handleBEResponse(data,"project-created");
+			},
+			error => {
+				consumer.handleBEResponse(error,"project-creation-error");
+			}
+		);
 	}
 	
 	handlePresetResponse(jObj : Object){

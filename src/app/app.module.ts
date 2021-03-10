@@ -20,6 +20,7 @@ import {SingleInjectCaptureDialogue} from './dialogues/SingleInjectCaptureDialog
 import {AddCapturesSetDialogue} from './dialogues/AddCapturesSetDialogue';
 import {AddCaptureTagDialogue} from './dialogues/AddCaptureTagDialogue';
 import {AddCaptureInfoDialogue} from './dialogues/AddCaptureInfoDialogue';
+import {CreateProjectDialogue} from "./dialogues/CreateProjectDialogue.component"
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -56,6 +57,7 @@ export const MY_DATE_FORMATS = {
 	AddCapturesSetDialogue,
 	AddCaptureTagDialogue,
 	AddCaptureInfoDialogue,
+	CreateProjectDialogue,
 	CaptureEditPage,
 	FirstPage
 	
