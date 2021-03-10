@@ -93,10 +93,10 @@ export class ProjectComponent implements IPage {
 			// 	//error and redirect to projpage
 			//   }
 			//   else { //create proj
-				
+				this.projInfo = new ProjPageInfo("projIDPlaceholder");
+
 				this.projInfo.projName = projName;
 				this.projInfo.projDetails = projDetails;
-				this.testInit();
 			//  }
 		  }
 		  else {
