@@ -221,20 +221,23 @@
 		</div>
 		<br>
 		<br>
-		<div id="captureTag" style="margin-left: 30px" *ngIf="this.isCaptureTagVisible()">
-			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureInfo" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
+		<div style="margin-left: 30px">
+			<h4 class="font-weight-bold"><button class="btn btn-primary" type="button" id="btnCaptureTag" (click)="this.onExpandCaptureTag()"> + Expand </button> Capture Tags</h4>
 			<hr style="height:2px;border:none;color:#55;background-color:#333;" />
-			<div style="card card-body">
+			<div id="captureTag" *ngIf="this.isCaptureTagVisible()">		
+				<div style="card card-body">
+				
+				<ul style="list-style:none">
+							<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
+								<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
+								 {{tg.displayName}}
+								 &nbsp;
+								 &nbsp;
+							</li>
+				</ul>
+				<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
+				</div>
 			</div>
-			<ul style="list-style:none">
-						<li style="display:inline" *ngFor="let tg of this.getPageInfo().getCaptureTags(); let idx = index">
-							<button class="btn btn-secondary btn-sm" type="button" (click)="this.onRemoveCaptureTagClick(idx)"> X</button>
-							 {{tg.displayName}}
-							 &nbsp;
-							 &nbsp;
-						</li>
-			</ul>
-			<button class="btn btn-primary" type="button" (click)="this.onAddCaptureTagClick()" > Add Capture Tag </button>
 		</div>
 			
 	</div>

@@ -33,7 +33,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		//var evtType = jObj["event-type"];
 		
 		var useAPI = true;
-		useAPI =true;
+		useAPI =false;
 		
 		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
@@ -95,7 +95,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	}
 	
 	debugSendCapturePageReponse() {
-		var theJson ='{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"\\\\10.164.61.102\\hackathon\\test\\captures\\20210310\\3a51c229-cb22-4fc2-9292-73d509029632\\Target-to-Target-origination-8157.pcap","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}';
+		var theJson ='{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"gugu","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}';
 		this.onBEResponseReceived("capture-page-received",theJson);
 	}
 	

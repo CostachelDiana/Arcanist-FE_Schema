@@ -51,11 +51,12 @@ export class CaptureEditPage implements IPage{
 		private activatedRoute:ActivatedRoute, private backend : CaptureEditBEAbstraction) { 
 		
 		this.basicInfoVisible = true;
-		this.advancedInfoVisible = false;
-		this.streamInfoVisible = false;
-		this.captureInfoVisible = false;
-		this.captureTagVisible = false;
+		this.advancedInfoVisible = true;
+		this.streamInfoVisible = true;
+		this.captureInfoVisible = true;
+		this.captureTagVisible = true;
 		this.captureReferenceVisible = false;
+		
 		this.pageReady = false;
 		this.streamsReady =false;
 		console.log("url is: "+window.location.href);
