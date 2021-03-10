@@ -35,6 +35,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 			this.api.getPresetInfoValues(this);
 			//this.debugSendInfoPresetResponse();
 		} else if (evtType == "request-capturePage") {
+			var capID = jObj["captureID"];
 			this.debugSendCapturePageReponse();
 		}
 	}

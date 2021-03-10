@@ -63,11 +63,11 @@ export class CaptureEditPageSerializer {
 		return JSON.stringify(jObj);
 	}
 	
-	public deserializePageInfo(jObj : Object): FullCaptureInfo {
+	public deserializePageInfo(jObj : Object,infos: PresetTypesInfo ): FullCaptureInfo {
 		
 		var rez= new FullCaptureInfo();
 		
-		var js = jObj["capture-page-info"];
+		rez.setBeObj(jObj,infos);
 		
 		/*
 		rez.capTags = js["capTags"];

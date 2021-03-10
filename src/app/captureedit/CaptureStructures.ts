@@ -119,7 +119,10 @@ export class FullCaptureInfo {
 		return this.beObj;
 	}
 	// updates cap info according to be Obj
-	public setBeObj(obj: CaptureBackendObj, presets: PresetTypesInfo) {
+	public setBeObj(jObj: Object, presets: PresetTypesInfo) {
+		
+		var obj = new CaptureBackendObj();
+		Object.assign(obj,jObj);
 		
 		this.beObj = obj;
 		
