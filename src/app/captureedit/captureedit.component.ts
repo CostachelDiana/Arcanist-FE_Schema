@@ -37,13 +37,25 @@ export class CaptureEditPage implements IPage{
 	serializer: CaptureEditPageSerializer;
 	backend: CaptureEditBEAbstraction;
 	pageReady: boolean;
+	basicInfoVisible: boolean;
+	advancedInfoVisible: boolean;
+	captureReferenceVisible: boolean;
+	streamInfoVisible: boolean;
+	captureInfoVisible: boolean;
+	captureTagVisible: boolean;
 	streamsReady: boolean;
 	
 
 	constructor(public dialogue: MatDialog, private http: HttpClient) { 
-	
-		this.pageReady= false;
-		this.streamsReady=false;
+		
+		this.basicInfoVisible = true;
+		this.advancedInfoVisible = false;
+		this.streamInfoVisible = false;
+		this.captureInfoVisible = false;
+		this.captureTagVisible = false;
+		this.captureReferenceVisible = false;
+		this.pageReady = false;
+		this.streamsReady =false;
 		this.presetInfo = new PresetTypesInfo();
 		this.capStreams=[];
 		
@@ -132,6 +144,31 @@ export class CaptureEditPage implements IPage{
 	public isPageReady(): boolean {
 		return this.pageReady;
 	}
+	
+	public isBasicInfoVisible(): boolean {
+		return this.basicInfoVisible;
+	}
+
+	public isAdvancedInfoVisible(): boolean {
+		return this.advancedInfoVisible;
+	}
+
+	public isStreamInfoVisible(): boolean {
+		return this.streamInfoVisible;
+	}
+
+	public isCaptureInfoVisible(): boolean {
+		return this.captureInfoVisible;
+	}
+
+	public isCaptureTagVisible(): boolean {
+		return this.captureTagVisible;
+	}
+
+	public isCaptureReferenceVisible(): boolean {
+		return this.captureReferenceVisible;
+	}
+
 	
 	
 	
@@ -284,6 +321,83 @@ export class CaptureEditPage implements IPage{
 		
 	}
 	
+	onExpandBasicInfo(): void {
+		var btnBasicInfo = document.getElementById("btnBasicInfo");
+
+		if (this.basicInfoVisible == false) {
+			this.basicInfoVisible = true;
+			btnBasicInfo.textContent = " - Collapse";
+		}
+		else {
+			this.basicInfoVisible = false;
+			btnBasicInfo.textContent = " + Expand";
+		}
+	}
+
+	onExpandAdvancedInfo(): void {
+		var btnAdvancedInfo = document.getElementById("btnAdvancedInfo");
+
+		if (this.advancedInfoVisible == false) {
+			this.advancedInfoVisible = true;
+			btnAdvancedInfo.textContent = " - Collapse";
+		}
+		else {
+			this.advancedInfoVisible = false;
+			btnAdvancedInfo.textContent = " + Expand";
+		}
+	}
+
+	onExpandStreamInfo(): void {
+		var btnStreamInfo = document.getElementById("btnStreamInfo");
+
+		if (this.streamInfoVisible == false) {
+			this.streamInfoVisible = true;
+			btnStreamInfo.textContent = " - Collapse";
+		}
+		else {
+			this.streamInfoVisible = false;
+			btnStreamInfo.textContent = " + Expand";
+		}
+	}
+
+	onExpandCaptureInfo(): void {
+		var btnCaptureInfo = document.getElementById("btnCaptureInfo");
+
+		if (this.captureInfoVisible == false) {
+			this.captureInfoVisible = true;
+			btnCaptureInfo.textContent = " - Collapse";
+		}
+		else {
+			this.captureInfoVisible = false;
+			btnCaptureInfo.textContent = " + Expand";
+		}
+	}
+
+	onExpandCaptureTag(): void {
+		var btnCaptureTag = document.getElementById("btnCaptureTag");
+
+		if (this.captureTagVisible == false) {
+			this.captureTagVisible = true;
+			btnCaptureTag.textContent = " - Collapse";
+		}
+		else {
+			this.captureTagVisible = false;
+			btnCaptureTag.textContent = " + Expand";
+		}
+	}
+
+	onExpandCaptureReference(): void {
+		var btnCaptureReference = document.getElementById("btnCaptureReference");
+
+		if (this.captureReferenceVisible == false) {
+			this.captureReferenceVisible = true;
+			btnCaptureReference.textContent = " - Collapse";
+		}
+		else {
+			this.captureReferenceVisible = false;
+			btnCaptureReference.textContent = " + Expand";
+		}
+	}
 	
 	testInit(): void {
 		

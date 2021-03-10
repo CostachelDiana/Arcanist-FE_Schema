@@ -17,12 +17,13 @@
 	<h1 class="text-center"> Project: {{this.getProjectName()}}</h1>
 	<!--  href="#ProjDetails" -->
 		<p class="font-weight-bold">	
-			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#projDetailsSection" aria-expanded="true" aria-controls="projDetailsSection"> Expand </button>			
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#projDetailsSection" aria-expanded="true"
+			 aria-controls="projDetailsSection" id="btnProjectDetails" (click)="this.onExpandProjectDetails()"> + Expand </button>			
 			Project Details			
 		</p>
 		<hr style="height:2px;border:none;color:#55;background-color:#333;" />
 		
-		<div class="content card card-body">
+		<div id="projectDetails" class="content card card-body" *ngIf="this.isProjectDetailsVisible()">
 		
 		<!-- <div class="collapse" id="projDetailsSection"> -->
 			<div class="card card-body" >
@@ -70,14 +71,16 @@
 		
 		<p class="font-weight-bold">		
 
-			<button class="btn btn-primary"> Expand </button> &nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary" id="btnProjectCaptureSets" (click)="this.onExpandProjectCaptureSets()"> + Expand </button> &nbsp;&nbsp;&nbsp;
 			Project Capture Sets ({{this.getProjCaptureSetsNumber()}})
 			
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button class="btn btn-primary" (click)="onAddSetClick()"> Add new Capture Set </button>
 		</p>
-		<hr style="height:2px;border:none;color:#55;background-color:#333;" />		
-		<div class="card card-body" id="capSetsBody">
+
+		<hr style="height:2px;border:none;color:#55;background-color:#333;" />	
+
+		<div class="card card-body" id="capSetsBody" *ngIf="this.isProjectCaptureSetsVisible()">
 			<ul style="list-style:none">
 				<li *ngFor="let capSet of this.getProjCaptureSets(); let idx = index">
 					<div class="card card-body" style="border: 1px solid black;">

@@ -44,6 +44,8 @@ export class ProjectComponent implements IProject {
 	projNotes: HTMLInputElement;
 	
 	pageInited: boolean;
+	projectDetailsVisible: boolean;
+	projectCaptureSetsVisible: boolean;
 	
 	// initing methods
 	constructor(public dialogue: MatDialog,
@@ -64,6 +66,10 @@ export class ProjectComponent implements IProject {
 		this.projInfo=null;
 		
 		this.pageInited=false;
+
+		this.projectDetailsVisible = false;
+		this.projectCaptureSetsVisible = false;
+		
 		this.serializer = new ProjectPageEventSerializer();
 		this.BEAbs= new ProjectBEAbstraction();
 		this.BEAbs.setProject(this);
@@ -119,6 +125,14 @@ export class ProjectComponent implements IProject {
 	
 	public isPageReady(): boolean {
 		return this.pageInited;
+	}
+
+	public isProjectDetailsVisible(): boolean {
+		return this.projectDetailsVisible;
+	}
+
+	public isProjectCaptureSetsVisible(): boolean {
+		return this.projectCaptureSetsVisible;
 	}
 	
 	
@@ -235,6 +249,32 @@ export class ProjectComponent implements IProject {
 	}
 	public setBEAbstraction(be: IBEAbstraction): void {
 		
+	}
+
+	onExpandProjectDetails(): void {
+		var btnProjectDetails = document.getElementById("btnProjectDetails");
+
+		if (this.projectDetailsVisible == false) {
+			this.projectDetailsVisible = true;
+			btnProjectDetails.textContent = " - Collapse";
+		}
+		else {
+			this.projectDetailsVisible = false;
+			btnProjectDetails.textContent = " + Expand";
+		}
+	}
+
+	onExpandProjectCaptureSets(): void {
+		var btnProjectCaptureSets = document.getElementById("btnProjectCaptureSets");
+
+		if (this.projectCaptureSetsVisible == false) {
+			this.projectCaptureSetsVisible = true;
+			btnProjectCaptureSets.textContent = " - Collapse";
+		}
+		else {
+			this.projectCaptureSetsVisible = false;
+			btnProjectCaptureSets.textContent = " + Expand";
+		}
 	}
 	
 	// callbacks 
