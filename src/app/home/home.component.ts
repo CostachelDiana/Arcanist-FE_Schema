@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RegularExpressionLiteral } from 'typescript';
 import { BackendAPIHandler, IBEApiConsumer } from '../common/BackendAPIHandler';
@@ -21,11 +22,14 @@ export class HomeComponent implements OnInit, IBEApiConsumer {
   public projInfo_Owner: ProjPageInfo [];  
   public projInfo_Assign: ProjPageInfo [];  
   public projInfo_Fav: ProjPageInfo[];
+  private avatar_text: string;
 
-  constructor(private authService: AuthenticationService, private http: HttpClient) {
+  constructor(private authService: AuthenticationService, private http: HttpClient,
+    public dialogue: MatDialog) {
 
     this.api = new BackendAPIHandler(http);
     this.serializer = new HomePageSerializer();
+    this.avatar_text = "Some quick example...";
 
     this.projInfo_Owner = []; //get from BE the list on whitch the user is Owner
     this.projInfo_Assign = []; //get from BE the list on whitch the user is Assign
@@ -43,6 +47,10 @@ export class HomeComponent implements OnInit, IBEApiConsumer {
     let user = this.authService.getLoggedInUserName();
     if (user === null) return '';
     return user;
+  }
+
+  getA_text() {
+    return this.avatar_text;
   }
 
   testInit(): void{
@@ -120,4 +128,9 @@ export class HomeComponent implements OnInit, IBEApiConsumer {
 
         return rez;
     }
+
+  public onSubmitClick(msj_txt: string): void {	
+    //console.log("submit btn: " + msj_txt)	;
+    this.avatar_text = msj_txt;
+	}
 }
