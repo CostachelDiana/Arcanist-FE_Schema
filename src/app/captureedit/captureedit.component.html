@@ -44,7 +44,8 @@
 						<mat-label>X2 Protocol</mat-label>
 						  <select matNativeControl required>
 							<option *ngFor="let x2 of this.getCapX2Protos(); let idx = index" value="{{x2.id}}">{{x2.displayName}}</option>
-						  </select>		
+							<!-- selected is this.getPageInfo().capX2Protocol == x2.displayName-->
+						  </select>
 					</mat-form-field>
 					</div>
 					

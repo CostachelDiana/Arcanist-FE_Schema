@@ -110,6 +110,7 @@ export class CaptureEditPage implements IPage{
 	
 	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
+		console.log("received json " +evtJson);
 		var jObj = JSON.parse(evtJson);
 		var evt = evtType;
 		
