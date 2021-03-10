@@ -68,7 +68,7 @@ export class CaptureBackendObj {
 	name: string;
 	notes: string;
 	size: number;
-	statusId: number;
+	status: number;
 	switchTime: string;
 	technologyId: number;
 	// uploadedAt: ExplicitDate;
@@ -161,7 +161,7 @@ export class FullCaptureInfo {
 		this.capX3Port = obj.ccPort;
 		
 		this.capTechnology = presets.genericGetEntryForId(presets.capTechnologyTypes, obj.technologyId);
-		this.capStatus = presets.genericGetEntryForId(presets.capStatusTypes,obj.statusId);
+		this.capStatus = presets.genericGetEntryForId(presets.capStatusTypes,obj.status);
 		
 		
 		this.capIC = new CaptureInfo();
