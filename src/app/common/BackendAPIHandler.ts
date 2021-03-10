@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -9,7 +9,8 @@ export class BackendAPIHandler {
 	API_PATH = 'http://10.164.69.90:8080/api';
 	
 	PRESET_VALUES_URL = this.API_PATH+ '/labels';
-	INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
+    INFO_PRESET_VALUES_URL = this.API_PATH + '/infos';
+    PLAY_CAPTURES_URL = this.API_PATH + '/captures/play';
 	
 	constructor(private http: HttpClient) {
 	}
@@ -28,5 +29,15 @@ export class BackendAPIHandler {
 			// console.log("received BE Response for p vals "+JSON.stringify(data));
             consumer.onBEDataReceived("info-presets-received",JSON.stringify(data));
         });
-	}
+    }
+
+    public playCaptures(json: string, consumer: IBEAbstractionGeneric): void {
+        const headers = new HttpHeaders().set('Content-Type', 'application/json');
+        console.log("play captures json " + json);
+        this.http.post<any>(this.PLAY_CAPTURES_URL, json, { headers: headers, responseType: 'json' }).subscribe(data => {
+            // console.log("received BE Response for p vals "+JSON.stringify(data));
+            if (consumer != undefined)
+                consumer.onBEDataReceived("play-capture", JSON.stringify(data));
+        });
+    }
 }
