@@ -19,12 +19,12 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 	constructor(private api: BackendAPIHandler) {
 	}
 	
-	public sendBEUpdate(beJson: string): void {
+	public sendBEUpdate(beJson: string, evtType : string): void {
 	
 		// create jObject, interpret the string, etc
 		
-		var jObj = JSON.parse(beJson);		
-		var evtType = jObj["event-type"];		
+		//		
+		//var evtType = jObj["event-type"];		
 		
 		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
@@ -38,7 +38,8 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		} else if (evtType == "request-info-presets") {			
 			this.api.getPresetInfoValues(this);
 			//this.debugSendInfoPresetResponse();
-		} else if (evtType == "request-capturePage") {
+        } else if (evtType == "request-capturePage") {
+            var jObj = JSON.parse(beJson);
 			var capID = jObj["captureID"];
 			this.api.getCapturePageById(this,capID);
 			// this.debugSendCapturePageReponse();

@@ -18,10 +18,8 @@ export class ProjectBEAbstraction implements IBEAbstractionGeneric {
 	
 	
 	
-	public sendBEUpdate(beJson: string): void {
+	public sendBEUpdate(beJson: string, evt : string): void {
 		
-		var jObj = JSON.parse(beJson);
-		var evt = jObj["event-type"];
 		if (evt == "request-info-presets")
 		{
 			this.api.getPresetValues(this);
