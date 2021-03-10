@@ -72,7 +72,7 @@ export class CaptureEditPage implements IPage{
 		this.requestBEPresets();
 		this.requestBEPresets();
 		this.requestPage();
-		this.requestBEStreams();
+	//	this.requestBEStreams();
 	
 	}
 	// BE init methods 
@@ -94,7 +94,7 @@ export class CaptureEditPage implements IPage{
 	{
 		var urlParams = new URLSearchParams(window.location.search);
 		var capID=urlParams.get('capid');
-		if (capID=="")
+		if (capID==null)
 		{
 			console.log("no capid provided");
 			capID = "3a51c229-cb22-4fc2-9292-73d509029632";
