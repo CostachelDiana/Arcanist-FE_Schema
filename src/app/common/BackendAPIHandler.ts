@@ -32,7 +32,7 @@ export class BackendAPIHandler {
 		this.presetTypes = new PresetTypesInfo();
 		
 		var useAPI = true;
-		useAPI= false;
+		useAPI= true;
 		
 		if (useAPI) {
 		

@@ -33,7 +33,7 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 		//var evtType = jObj["event-type"];
 		
 		var useAPI = true;
-		useAPI =false;
+		useAPI =true;
 		
 		console.log("cap edit request evt "+ evtType);
         if (evtType == "request-stream-info") {
