@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -228,10 +228,11 @@ export class BackendAPIHandler {
         this.http.get<any>(this.GET_LABELS_URL, { responseType: 'json' }).subscribe(data => {
             consumer.onBEDataReceived("get-all-labels",JSON.stringify(data));
         });
-    }
+	}
 
-	public searchCaptures(consumer: IBEApiConsumer, json: string){
-		this.http.get<any>(this.SEARCH_CAPTURES_URL, json, { responseType: 'json' }).subscribe(data => {
+	public searchCaptures(consumer: IBEApiConsumer, jsonString: string){
+		let params = new HttpParams().set("requestData", jsonString).set("responseType", "json");
+		this.http.get<any>(this.SEARCH_CAPTURES_URL, {params: params}).subscribe(data => {
             consumer.handleBEResponse(data, "search-captures-response");
         });
 	}
