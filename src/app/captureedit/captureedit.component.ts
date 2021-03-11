@@ -237,6 +237,30 @@ export class CaptureEditPage implements IPage{
 			);
 	}
 
+	public onX2ProtocolTransChange(newVal: string)
+	{
+		// this.pageInfo.captureX2Protocol=this.presetInfo.genericGetNameForID(this.presetInfo.capTransportTypes,newVal);
+		this.pageInfo.capX2Protocol=newVal;
+	}
+	public onX3ProtocolTransChange(newVal: string)
+	{
+		this.pageInfo.capX3Protocol=newVal;
+		// captureInjectionInfo.captureX3Protocol=this.presetInfo.genericGetNameForID(this.presetInfo.capTransportTypes,newVal);
+		
+	}
+	public onX2PortChange(newVal: string)
+	{
+		this.pageInfo.capX2Port=newVal;
+	}
+	public onX3PortChange(newVal: string)
+	{
+		this.pageInfo.capX3Port=newVal;
+	}
+	public onNameChange(newVal: string)
+	{
+		this.pageInfo.capName=newVal;
+	}
+	
   // button hooks
 	public onInjectCaptureClick(): void
 	{
