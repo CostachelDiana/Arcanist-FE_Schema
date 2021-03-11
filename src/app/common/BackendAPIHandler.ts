@@ -250,8 +250,11 @@ export class BackendAPIHandler {
 	}
 
 	public searchCaptures(consumer: IBEApiConsumer, jsonString: string){
-		let params = new HttpParams().set("requestData", jsonString).set("responseType", "json");
-		this.http.get<any>(this.SEARCH_CAPTURES_URL, {params: params}).subscribe(data => {
+		const httpOptions = {
+			headers: new HttpHeaders({'Content-Type': 'application/json'}),
+			responseType: 'json' 
+		  }
+		this.http.post<any>(this.SEARCH_CAPTURES_URL,jsonString, {headers: new HttpHeaders({'Content-Type': 'application/json'})}).subscribe(data => {
             consumer.handleBEResponse(data, "search-captures-response");
         });
 	}
