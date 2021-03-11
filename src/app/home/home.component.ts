@@ -82,19 +82,20 @@ export class HomeComponent implements OnInit, IBEApiConsumer {
     //this.api.getProjectsByOwner("mihai", this.callBackProjOwner);
     //this.api.getProjects(this.callBackProjOwner);
 
-    this.api.getProjects(this);
-    //this.api.getProjectsByOwner("mihai", this);
-    //this.api.getProjectsByContributor("mihai", this);
+    //this.api.getProjects(this);
+    this.api.getProjectsByOwner("mihai", this);
+    this.api.getProjectsByContributor("mihai", this);
 	}
 
   handleBEResponse(jObj: Object, evtType: string) {
     console.log("Homepage: requestBEProj: evtType response: " + evtType);
     console.log(jObj);
 
-    if (evtType == "full-project-list")
+   // if (evtType == "full-project-list")
+   //   this.projInfo_Owner = this.deserializeReqProjects(jObj);
+    //else 
+    if (evtType == "owner-project-list")
       this.projInfo_Owner = this.deserializeReqProjects(jObj);
-    //else if (evtType == "owner-project-list")
-    //  this.projInfo_Owner = this.deserializeReqProjects(jObj);
     else if (evtType == "contributor-project-list")
       this.projInfo_Assign = this.deserializeReqProjects(jObj);
     
