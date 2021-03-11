@@ -133,11 +133,11 @@ export class ProjectComponent implements IPage {
 
 		if (this.projectDetailsVisible == false) {
 			this.projectDetailsVisible = true;
-            btnProjectDetails.textContent = " - Collapse";
+            btnProjectDetails.textContent = "(-)";
 		}
 		else {
 			this.projectDetailsVisible = false;
-			btnProjectDetails.textContent = " + Expand";
+			btnProjectDetails.textContent = "(+)";
 		}
 	}
 
@@ -146,11 +146,11 @@ export class ProjectComponent implements IPage {
 
 		if (this.projectCaptureSetsVisible == false) {
 			this.projectCaptureSetsVisible = true;
-			btnProjectCaptureSets.textContent = " - Collapse";
+			btnProjectCaptureSets.textContent = "(-)";
 		}
 		else {
 			this.projectCaptureSetsVisible = false;
-			btnProjectCaptureSets.textContent = " + Expand";
+			btnProjectCaptureSets.textContent = "(+)";
 		}
 	}
 	
