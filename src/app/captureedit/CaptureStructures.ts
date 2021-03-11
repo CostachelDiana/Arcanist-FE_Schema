@@ -287,9 +287,9 @@ export class FullCaptureInfo {
 			{
 				if(!(this.capInfos[i].infoTypeName in infoArrays))
 				{
-					infoArrays[this.capInfos[i].infoTypeName] = [];
+					infoArrays[this.capInfos[i].infoTypeName+"s"] = [];
 				}
-				infoArrays[this.capInfos[i].infoTypeName].push(new Number(this.capInfos[i].infoValID));
+				infoArrays[this.capInfos[i].infoTypeName+"s"].push(new Number(this.capInfos[i].infoValID));
 			}		
 			for(var info in infoArrays)
 			{
