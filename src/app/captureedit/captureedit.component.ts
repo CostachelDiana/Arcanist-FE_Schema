@@ -259,7 +259,7 @@ export class CaptureEditPage implements IPage{
 	    cisArr.push(injSett);
 		
 			var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
-			{width:'1100px',
+			{width:'1500px',
 			height:'800px',
 	      data: { callback: this.onInjectCapturesSetCallback.bind(this), cap: injInfoArr, set: cisArr,justSetting:false, setIdx:-1, capN: -1,fromProjScreen:false, X2TransVals: this.presetInfo.capTransportTypes, X3TransVals: this.presetInfo.capTransportTypes}
 			}
