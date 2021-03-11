@@ -260,8 +260,8 @@ export class BackendAPIHandler {
 		
 		console.log("submiting capture with capID "+capId+" and json " + beParams);
 		var elURL = this.PUT_CAPTURE_EDIT_URL+"/"+capId;
-		
-		this.http.put<any>(elURL,beParams, { responseType: 'json' }).subscribe( data =>
+		const headers = new HttpHeaders().set('Content-Type', 'application/json');
+		this.http.put<any>(elURL,beParams, { headers: headers , responseType: 'json' }).subscribe( data =>
 			{
 				consumer.onBEDataReceived("update-success",JSON.stringify(data));
 			});
