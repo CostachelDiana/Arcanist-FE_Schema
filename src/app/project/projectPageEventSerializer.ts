@@ -110,7 +110,7 @@ export class ProjectPageEventSerializer {
                 var jCaps = jSet["captures"];
                 if (jCaps != undefined) {
                     for (var j = 0; j < jCaps.length; j++) {
-                        var jCap = jCaps[i];
+                        var jCap = jCaps[j];
                         var cii = new CaptureInjectInfo(jCap["name"], jCap["uuid"]);
                         cii.captureX2IP = jCap["cdIP"];
                         cii.captureX2Port = jCap["cdPort"];
