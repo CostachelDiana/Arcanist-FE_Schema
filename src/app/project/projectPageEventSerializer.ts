@@ -1,6 +1,6 @@
 
 import { CaptureSet, ProjMember, ProjPageInfo} from './projectPageComponents'
-import {PredefinedTypeStruct} from '../captureedit/CaptureStructures'
+import {PredefinedTypeStruct, PresetTypesInfo} from '../captureedit/CaptureStructures'
 import { CaptureInjectInfo, CaptureInjectionSettings } from '../utils/captureInfoComponents'
 
 
@@ -86,7 +86,7 @@ export class ProjectPageEventSerializer {
 		return rez;
     }
 
-    public deserializeProject(jObj: Object): ProjPageInfo
+    public deserializeProject(jObj: Object, pit: PresetTypesInfo): ProjPageInfo
     {
         var projInfo = new ProjPageInfo("");
         projInfo.projCreationDate = JSON.stringify(jObj["createdAt"]);
@@ -114,13 +114,13 @@ export class ProjectPageEventSerializer {
                         var cii = new CaptureInjectInfo(jCap["name"], jCap["uuid"]);
                         cii.captureX2IP = jCap["cdIP"];
                         cii.captureX2Port = jCap["cdPort"];
-                        cii.captureX2Protocol = jCap["cdProtocolId"];
-                        cii.captureX2Transport = jCap["cdTransportId"];
+                        cii.captureX2Protocol = pit.genericGetNameForID(pit.capX2Protos, jCap["cdProtocolId"]);
+                        cii.captureX2Transport = pit.genericGetNameForID(pit.capTransportTypes, jCap["cdTransportId"]);
 
                         cii.captureX3IP = jCap["ccIP"];
                         cii.captureX3Port = jCap["ccPort"];
-                        cii.captureX3Protocol = jCap["ccProtocolId"];
-                        cii.captureX3Transport = jCap["ccTransportId"];
+                        cii.captureX3Protocol = pit.genericGetNameForID(pit.capX3Protos,jCap["ccProtocolId"]);
+                        cii.captureX3Transport = pit.genericGetNameForID(pit.capTransportTypes, jCap["ccTransportId"]);
                         set.addCapture(cii);
                     }
                 }

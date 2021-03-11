@@ -435,7 +435,7 @@ export class ProjectComponent implements IPage {
 		var jObj = JSON.parse(evtJson);
         if (evtType == "fetch-project-page") {
             console.log("fetch - project - page received response");
-            this.projInfo = this.serializer.deserializeProject(jObj);
+            this.projInfo = this.serializer.deserializeProject(jObj, this.BEAbs.api.presetTypes);
             this.pageInited = true;
         }
         else if (evtType == "add-capture-set")

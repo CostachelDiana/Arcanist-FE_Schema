@@ -175,7 +175,7 @@
 							<ul style="list-style:none" >
 								<li *ngFor="let stream of this.getStreamInfos(); let idx= index">
 									<div>
-										{{idx+1}}.&nbsp;{{stream.trans}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
+										{{idx+1}}.&nbsp;{{stream.trans}}/{{stream.ip}}@{{stream.port}}&nbsp;{{stream.protocol}}&nbsp;{{stream.packets}} packets,&nbsp;{{stream.size}} bytes
 										<br>
 										<br>
 									</div>
