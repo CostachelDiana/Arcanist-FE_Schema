@@ -18,7 +18,7 @@
 					<input id="files"
 						name="fileToUpload" 
 						type="file" 
-						accept=".snoop, .torrent, .pcap, .pcapng"
+						accept=".snoop, .pcap, .pcapng"
 						(change)="onFileSelected($event.target.files)">
 					</div>				
 					<div *ngIf="this.showUploadError">
