@@ -112,11 +112,11 @@ export class BackendAPIHandler {
 		console.log("request cap page with url "+ elURL);
 		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
 			console.log("BEAPI: Received response with data "+JSON.stringify(data));
-            consumer.handleBEResponse("capture-page-received",JSON.stringify(data));
+            consumer.handleBEResponse(data,"capture-page-received");
         },
 		error => {
 			console.log("BEAPI: failed to retrieve capture with ID "+capID);
-            consumer.handleBEResponse("capture-retrieve-failed",JSON.stringify(error));
+            consumer.handleBEResponse(error, "capture-retrieve-failed");
 		}
 		);
 	}
