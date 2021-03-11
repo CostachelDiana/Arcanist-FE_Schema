@@ -62,6 +62,11 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
 			} else {
 			    this.debugSendCapturePageReponse();
 			}
+		} else if (evtType == "update-capture") {
+			
+			var jObj = JSON.parse(beJson);
+			var capID = jObj["uuid"];
+			this.api.submitCaptureChange(this, capID, beJson);
 		}
 	}
 	

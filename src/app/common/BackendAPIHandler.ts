@@ -41,6 +41,8 @@ export class BackendAPIHandler {
 	GET_PROJECTS_URL = this.API_PATH + '/projects';
 	GET_PROJECTS_OWNERS_URL = this.GET_PROJECTS_URL+ '/owner';
 	GET_PROJECTS_CONTRIBUTOR_URL = this.GET_PROJECTS_URL+ '/contributor';
+	
+	PUT_CAPTURE_EDIT_URL = this.API_PATH + '/captures';
 
 
 	presetTypes: PresetTypesInfo;
@@ -237,6 +239,18 @@ export class BackendAPIHandler {
 		this.http.get<any>(this.SEARCH_CAPTURES_URL, {params: params}).subscribe(data => {
             consumer.handleBEResponse(data, "search-captures-response");
         });
+	}
+	
+	public submitCaptureChange(consumer: IBEAbstractionGeneric, capId: string, beParams:string) {
+		
+		console.log("submiting capture with capID "+capId+" and json " + beParams);
+		var elURL = this.PUT_CAPTURE_EDIT_URL+"/"+capId;
+		
+		this.http.put<any>(elURL,beParams, { responseType: 'json' }).subscribe( data =>
+			{
+				consumer.onBEDataReceived("update-success",JSON.stringify(data));
+			});
+				
 	}
 
 	handlePresetResponse(jObj : Object){

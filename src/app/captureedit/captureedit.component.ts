@@ -464,7 +464,10 @@ export class CaptureEditPage implements IPage{
 
 	onSubmitChanges(){
 		var jsonString = this.pageInfo.serializeForCaptureUpdate(this.presetInfo);
-		console.log("Dooda" + jsonString);
+		
+		console.log("submiting changes");
+		this.backend.sendBEUpdate(jsonString,"update-capture");
+	
 	}
 		
 	testInit(): void {

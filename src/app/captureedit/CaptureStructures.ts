@@ -267,6 +267,7 @@ export class FullCaptureInfo {
 		jsonObj["cdTransportId"] = presets.genericGetIDForName(presets.capTransportTypes, this.capX2Trans);
 		jsonObj["cdPort"] = this.capX2Port;
 		jsonObj["cdIP"] = this.capX2IP;			
+		jsonObj["uuid"] = this.capID;
 
 		//tags
 		if(this.capTags.length > 0)
