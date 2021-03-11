@@ -39,8 +39,6 @@ export class ProjectComponent implements IPage {
 	serializer: ProjectPageEventSerializer;
 	captureInjectSerializer: CaptureInjectSerializer;
 	
-	capTransportTypes: PredefinedTypeStruct[];
-	
 	// CMS debug purposes
 	projNotes: HTMLInputElement;
 	
@@ -317,35 +315,35 @@ export class ProjectComponent implements IPage {
 	}*/
 	
 	public onInjectionSettingsClick(setN:number): void {
-		
+
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
 		{width:'1200px',
 		height:'800px',
 		 data: {callback: this.onSetDefaultCaptureSettingsCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:true,
-		 setIdx:setN,X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
+             setIdx: setN, X2TransVals: this.BEAbs.api.presetTypes.capTransportTypes, X3TransVals: this.BEAbs.api.presetTypes.capTransportTypes}
 		}
 		);	
 	}
 	
 	public onPlayAllClick(setN: number): void {
-		
+
 		var dialogRef = this.dialogue.open(InjectCapturesDialogue, 
 		{width:'1200px',
 		height:'800px',
 		 data: {callback: this.onInjectCapturesSetCallback.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures(),set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings(),justSetting:false, setIdx:setN,
-		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
+             X2TransVals: this.BEAbs.api.presetTypes.capTransportTypes, X3TransVals: this.BEAbs.api.presetTypes.capTransportTypes}
 		}
 		);
 	}
 	
 	public onSingleCaptureSettingsClick(setN: number, capN:number): void {
-		
-		
 		var dialogRef = this.dialogue.open(SingleInjectCaptureDialogue, 
-		{width:'1000px',
+		{width:'1500px',
 		height:'800px',
-		 data: {callback: this.onSingleInjectSettingCb.bind(this), cap:this.projInfo.projCapSets[setN].getCaptures()[capN],set:this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN],justSetting:true, setIdx:setN, capN: capN,
-		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}		 
+            data: {
+                callback: this.onSingleInjectSettingCb.bind(this), cap: this.projInfo.projCapSets[setN].getCaptures()[capN], set: this.projInfo.projCapSets[setN].getCaptureInjectionSettings()[capN], justSetting: true, setIdx: setN, capN: capN,
+                X2TransVals: this.BEAbs.api.presetTypes.capTransportTypes, X3TransVals: this.BEAbs.api.presetTypes.capTransportTypes
+            }		 
 		 }		
 		);
 	}
@@ -361,7 +359,7 @@ export class ProjectComponent implements IPage {
 		{width:'1000px',
 		height:'800px',
 		 data: {callback: this.onSingleInjectCapCb.bind(this), cap:cii,set:cis,justSetting:false, setIdx:setN, capN: capN,
-		 X2TransVals:this.capTransportTypes , X3TransVals: this.capTransportTypes}
+             X2TransVals: this.BEAbs.api.presetTypes.capTransportTypes, X3TransVals: this.BEAbs.api.presetTypes.capTransportTypes}
 		}
 		);
 	}
@@ -435,10 +433,7 @@ export class ProjectComponent implements IPage {
 	public onBEEventReceived(evtType: string, evtJson: string): void {
 		
 		var jObj = JSON.parse(evtJson);
-        if (evtType == "request-presets") {
-            this.capTransportTypes = this.serializer.deserializePresetsReceived(jObj);
-        }
-        else if (evtType == "fetch-project-page") {
+        if (evtType == "fetch-project-page") {
             console.log("fetch - project - page received response");
             this.projInfo = this.serializer.deserializeProject(jObj);
             this.pageInited = true;
