@@ -52,8 +52,8 @@ export class BackendAPIHandler {
 		this.serializer = new CaptureEditPageSerializer();
 		this.presetTypes = new PresetTypesInfo();
 
-		var useAPI = true;
-		useAPI= true;
+		var useAPI = false;
+		useAPI= false;
 
 		if (useAPI) {
 

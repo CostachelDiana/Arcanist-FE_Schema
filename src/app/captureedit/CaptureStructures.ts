@@ -132,7 +132,7 @@ export class FullCaptureInfo {
 		Object.assign(obj,jObj);
 		obj.rawObj=jObj;
 		
-		
+		console.log("setting be Obj");
 		this.beObj = obj;
 		
 		this.capBEPath = obj.filepath;
@@ -195,8 +195,8 @@ export class FullCaptureInfo {
 		{
 			// for each type try to get an entry
 			var name =presets.capInfoTypesList[i].displayName;
-			console.log("requesting arr for "+name);
-			var infoArr = jObj[name];
+			console.log("requesting arr for "+name+"s");
+			var infoArr = jObj[name+"s"];
 			if (infoArr!=null)
 			{
 				console.log("got arr with size "+infoArr.length+" and data " +infoArr);
