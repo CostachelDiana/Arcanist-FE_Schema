@@ -268,13 +268,16 @@ export class CaptureEditPage implements IPage{
 
 	    var captureInjectionInfo = new CaptureInjectInfo(this.pageInfo.capName, this.pageInfo.capID);
 	    captureInjectionInfo.captureLength = this.pageInfo.capLength;
+
 	    captureInjectionInfo.captureX2IP = this.pageInfo.capX2IP;
 	    captureInjectionInfo.captureX2Port = this.pageInfo.capX2Port;
 	    captureInjectionInfo.captureX2Protocol = this.pageInfo.capX2Protocol;
+		captureInjectionInfo.captureX2Transport = this.pageInfo.capX2Trans;
 
 	    captureInjectionInfo.captureX3IP = this.pageInfo.capX3IP;
 	    captureInjectionInfo.captureX3Port = this.pageInfo.capX3Port;
 	    captureInjectionInfo.captureX3Protocol = this.pageInfo.capX3Protocol;
+		captureInjectionInfo.captureX3Transport = this.pageInfo.capX3Trans;
 
 	    injInfoArr.push(captureInjectionInfo);
 
@@ -295,7 +298,7 @@ export class CaptureEditPage implements IPage{
 		var jSon = this.captureInjectSerializer.serializeCaptureInject(this.pageInfo.capID, null, setts, cap,false);
 
           this.backend.sendBEUpdate(jSon, "play-capture");
-		(<HTMLInputElement>document.querySelector(".usrNotes")).value = jSon;
+		  console.log("onInjectCapturesSetCallback " + jSon);
 	  }
 
 	public onAddToFavoritesClick(): void {
