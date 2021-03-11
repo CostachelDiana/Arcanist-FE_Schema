@@ -102,7 +102,7 @@ export class CaptureEditPage implements IPage{
 	
 	public requestPage()
 	{
-		var debug=true;
+		var debug=false;
 		
 		if (debug)
 		{
