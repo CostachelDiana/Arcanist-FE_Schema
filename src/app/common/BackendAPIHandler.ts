@@ -105,7 +105,17 @@ export class BackendAPIHandler {
             consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
         }
 		);
-	}
+    }
+
+    public getCaptureStreamsById(consumer: IBEAbstractionGeneric, capID: string): void {
+        var elURL = this.GET_CAPTURE_PAGE_URL + "/analysis/" + capID;
+        this.http.get<any>(elURL, { responseType: 'json' }).subscribe(data => {
+            console.log("BEAPI: Received response with data " + JSON.stringify(data));
+            consumer.onBEDataReceived("capture-streams-received", JSON.stringify(data));
+        }
+        );
+    }
+
 	
 	public getCaptureById(consumer:IBEApiConsumer, capID:string): void {
 		var elURL = this.GET_CAPTURE_PAGE_URL+"/"+capID;
@@ -174,7 +184,7 @@ export class BackendAPIHandler {
     }
 
     public getProjectByID(projID: string, consumer: IBEAbstractionGeneric) {
-        var elURL = this.PROJECTS_URL + "/" + projID;
+        var elURL = this.PROJECTS_URL + "/" + projID + "/full";
         console.log("request proj page with url " + elURL);
         this.http.get<any>(elURL, { responseType: 'json' }).subscribe(data => {
             console.log("received BE proj page with json " + JSON.stringify(data));
@@ -201,7 +211,7 @@ export class BackendAPIHandler {
     }
 
     public addCaptureSet(beJson: string, projID: string, consumer: IBEAbstractionGeneric) {
-        var elURL = this.PROJECTS_URL + "/" + projID + "/sets";
+        var elURL = this.PROJECTS_URL + "/sets";
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
         this.http.post<any>(elURL, beJson, { headers: headers, responseType: 'json' }).subscribe(data => {
             if (consumer != undefined)

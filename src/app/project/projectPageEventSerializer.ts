@@ -65,12 +65,14 @@ export class ProjectPageEventSerializer {
     public serializeCaptureSet(aSet: CaptureSet, projID: string): string {
         console.log("capture set id: " + aSet.capSetID);
         var jsObj = {
-            "projectID": projID,
+            "projectId": projID,
             "name": aSet.capSetName,
             "x2SetProtocolId": new Number(aSet.capSetX2Protocol),
             "x3SetProtocolId": new Number(aSet.capSetX3Protocol),
-            "id": new Number(Math.floor(Math.random() * 100)) // TODO modify this afte BE update
         }
+        // TOD set capture set id for update?
+//        "id": new Number(Math.floor(Math.random() * 100)) // TODO modify this afte BE update
+
         return JSON.stringify(jsObj);
     }
 
@@ -93,22 +95,41 @@ export class ProjectPageEventSerializer {
         projInfo.projLastEdit = JSON.stringify(jObj["lastUpdatedAt"]);
         projInfo.projName = jObj["name"];
         projInfo.projOwner = jObj["owner"];
-        var sets = projInfo["sets"];
+        var sets = jObj["projectSetDtoList"];
+        console.log("deserialize project sets: " + sets);
         projInfo.projCapSets = [];
         projInfo.projMembers = [];
         if (sets != undefined) {
-            for (var i = 0; i < projInfo["sets"]; i++) {
+            for (var i = 0; i < sets.length; i++) {
                 var jSet = sets[i];
                 var set = new CaptureSet(jSet["name"]);
                 set.capSetID = jSet["id"];
                 set.capSetX2Protocol = jSet["x2SetProtocolId"];
                 set.capSetX3Protocol = jSet["x3SetProtocolId"];
                 projInfo.projCapSets.push(set);
+                var jCaps = jSet["captures"];
+                if (jCaps != undefined) {
+                    for (var j = 0; j < jCaps.length; j++) {
+                        var jCap = jCaps[i];
+                        var cii = new CaptureInjectInfo(jCap["name"], jCap["id"]);
+                        cii.captureX2IP = jCap["cdIP"];
+                        cii.captureX2Port = jCap["cdPort"];
+                        cii.captureX2Protocol = jCap["cdProtocolId"];
+                        cii.captureX2Transport = jCap["cdTransportId"];
+
+                        cii.captureX3IP = jCap["ccIP"];
+                        cii.captureX3Port = jCap["ccPort"];
+                        cii.captureX3Protocol = jCap["ccProtocolId"];
+                        cii.captureX3Transport = jCap["ccTransportId"];
+                        set.addCapture(cii);
+                    }
+                }
+                
             }
         }
         else
             projInfo.projCapSets = [];
-        //var members = projInfo["memebers"];
+        projInfo.projMembers = jObj["contributors"];
         
         return projInfo;
     } 

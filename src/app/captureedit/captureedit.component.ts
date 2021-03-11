@@ -144,7 +144,7 @@ export class CaptureEditPage implements IPage{
 		{
 			this.serializer.deserializePresetValues(jObj, this.presetInfo);
 		}
-		else if (evt=="streams-received")
+        else if (evt =="capture-streams-received")
 		{
 			this.capStreams = this.serializer.deserializeStreamInfo(jObj);
 			this.streamsReady=true;
@@ -371,7 +371,16 @@ export class CaptureEditPage implements IPage{
 	}
 	
 	public onGetStreamsClick() {
-		this.streamsReady=true;
+        var urlParams = new URLSearchParams(window.location.search);
+        var capID = urlParams.get('capid');
+        if (capID == null) {
+            console.log("no capid provided");
+            capID = "3a51c229-cb22-4fc2-9292-73d509029632";
+        }
+        console.log("requesting page for id " + capID);
+
+        var req = this.serializer.serializeRequestCapturePage(capID);
+        this.backend.sendBEUpdate(req, "get-streams");
 	}
 	
 	
