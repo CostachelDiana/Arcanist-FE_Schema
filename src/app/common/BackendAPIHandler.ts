@@ -103,7 +103,22 @@ export class BackendAPIHandler {
 		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
 			console.log("BEAPI: Received response with data "+JSON.stringify(data));
             consumer.onBEDataReceived("capture-page-received",JSON.stringify(data));
-        });
+        }
+		);
+	}
+	
+	public getCaptureById(consumer:IBEApiConsumer, capID:string): void {
+		var elURL = this.GET_CAPTURE_PAGE_URL+"/"+capID;
+		console.log("request cap page with url "+ elURL);
+		this.http.get<any>(elURL,{responseType: 'json'}).subscribe(data => {
+			console.log("BEAPI: Received response with data "+JSON.stringify(data));
+            consumer.handleBEResponse("capture-page-received",JSON.stringify(data));
+        },
+		error => {
+			console.log("BEAPI: failed to retrieve capture with ID "+capID);
+            consumer.handleBEResponse("capture-retrieve-failed",JSON.stringify(error));
+		}
+		);
 	}
 
 	public postFileUploadRequest(consumer: IBEApiConsumer, file: File)

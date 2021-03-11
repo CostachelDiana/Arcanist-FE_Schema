@@ -19,6 +19,11 @@ import { catchError, retry } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 
+// cms debug 
+
+import {SelectCaptureDialogue} from '../dialogues/SelectCaptureDialogue' 
+
+
 
 
 @Component({
@@ -218,7 +223,18 @@ export class CaptureEditPage implements IPage{
 	
 	
 	// to be called from html 
-	public requestBackendData(capID: string) {
+	public testCback (capInfo: CaptureInjectInfo, capSet: number) {
+		
+		console.log(" Received cap info "+JSON.stringify(capInfo));
+	}
+	public onRequestBEUpdateClick(capID: string) {
+		
+			var dialogRef = this.dialogue.open(SelectCaptureDialogue, 
+			{width:'1100px',
+			height:'800px',
+	      data: { callback: this.testCback.bind(this), capSet:5}
+			}
+			);
 	}
 
   // button hooks

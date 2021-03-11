@@ -9,6 +9,9 @@
 			<input matInput #captureID>			
 		</mat-form-field>
 		<br>
+		<div *ngIf="this.showError">
+			<p style="color:#DD0000">*Cannot find capture with id: {{this.searchedID}}</p>
+		</div>
 		<br>
 		&nbsp;
 		&nbsp;
