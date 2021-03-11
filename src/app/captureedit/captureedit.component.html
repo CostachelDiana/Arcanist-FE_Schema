@@ -9,6 +9,7 @@
 		<h1 class="text-center"> Capture: {{this.getPageInfo().capName}}</h1>	
 		<button class="btn btn-primary" type="button" (click)="this.onInjectCaptureClick()"> Inject Capture </button>
 		<button class="btn btn-primary" type="button"> Add to Favorites </button>
+		<button class="btn btn-primary" type="button" (click)="this.onRequestBEUpdateClick()"> Request Page from BE</button>
 		<!--  CMS Debug buttons no longer needing them
 		<button class="btn btn-primary" type="button" (click)="onRequestBEPresetsClick()">Force request BE Presets</button>
 		<button class="btn btn-primary" type="button" (click)="onRequestBEInfoPresetsClick()">Force request BE Info Presets</button>
