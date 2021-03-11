@@ -44,7 +44,7 @@ export class SelectCaptureDialogue implements IBEApiConsumer{
 			var capInfo = new FullCaptureInfo();
 			capInfo.setBeObj(jObj,this.api.presetTypes);
 			
-			var aCapture = new CaptureInjectInfo(this.searchedID,capInfo.capName);
+            var aCapture = new CaptureInjectInfo(capInfo.capName,this.searchedID);
 			aCapture.captureX2Port=capInfo.capX2Port;
 			aCapture.captureX2Transport=capInfo.capX2Trans;
 			aCapture.captureX2Protocol=capInfo.capX2Protocol;

@@ -127,7 +127,7 @@ export class CaptureEditPageSerializer {
 
     public deserializeStreamInfo(jObj: Object): StreamInfo[] {
         var rez = [];
-        var b64 = jObj["streams-info"];
+        var b64 = jObj["analysis"];
         var dec = atob(b64);
         var recvWorkerData = JSON.parse(dec);
         var jData = recvWorkerData["data"];

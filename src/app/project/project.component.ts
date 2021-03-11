@@ -169,7 +169,8 @@ export class ProjectComponent implements IPage {
 	public onAddCaptureCallback(aCap: CaptureInjectInfo, setN: number)
 	{
 	        if (setN > -1 && setN < this.projInfo.projCapSets.length) {
-	            this.projInfo.projCapSets[setN].addCapture(aCap);
+                this.projInfo.projCapSets[setN].addCapture(aCap);
+                console.log(" capture id: " + aCap.captureID);
 	            this.BEAbs.GetBackendAPI().addCaptureInSet(this.projInfo.projCapSets[setN].capSetID, aCap.captureID, this.BEAbs);
 	        }
 		 

@@ -40,28 +40,32 @@ export class CaptureEditBEAbstraction implements IBEAbstractionGeneric {
             this.debugSendRequestStreamInfo();
         } else if (evtType == "play-capture") {
             console.log("Sending capture play");
-            this.api.playCaptures(beJson,this);
-		} else if (evtType == "request-presets") {
-			if (useAPI) {
-				this.api.getPresetValues(this);
-			} else {
-				this.debugSendPresetResponse();
-			}
-		} else if (evtType == "request-info-presets") {			
-			if (useAPI) {
-				this.api.getPresetInfoValues(this);
-			} else {
-				this.debugSendInfoPresetResponse();
-			}
+            this.api.playCaptures(beJson, this);
+        } else if (evtType == "request-presets") {
+            if (useAPI) {
+                this.api.getPresetValues(this);
+            } else {
+                this.debugSendPresetResponse();
+            }
+        } else if (evtType == "request-info-presets") {
+            if (useAPI) {
+                this.api.getPresetInfoValues(this);
+            } else {
+                this.debugSendInfoPresetResponse();
+            }
         } else if (evtType == "request-capturePage") {
             var jObj = JSON.parse(beJson);
-			var capID = jObj["captureID"];
-			if (useAPI) {
-				console.log("requesting capture for ID" + capID);
-				this.api.getCapturePageById(this,capID);
-			} else {
-			    this.debugSendCapturePageReponse();
-			}
+            var capID = jObj["captureID"];
+            if (useAPI) {
+                console.log("requesting capture for ID" + capID);
+                this.api.getCapturePageById(this, capID);
+            } else {
+                this.debugSendCapturePageReponse();
+            }
+        } else if (evtType == "get-streams") {
+            var jObj = JSON.parse(beJson);
+            var capID = jObj["captureID"];
+            this.api.getCaptureStreamsById(this, capID);
 		} else if (evtType == "update-capture") {
 			
 			var jObj = JSON.parse(beJson);
