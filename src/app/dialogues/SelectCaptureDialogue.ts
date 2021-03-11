@@ -36,6 +36,7 @@ export class SelectCaptureDialogue implements IBEApiConsumer{
 		
 	handleBEResponse(jObj: Object, evtType: string) {
 		
+		console.log("received evt type" +evtType);
 		if (evtType=="capture-page-received")
 		{
 			console.log("received capture with jObj "+JSON.stringify(jObj));
@@ -62,6 +63,7 @@ export class SelectCaptureDialogue implements IBEApiConsumer{
 			this.dialogRef.close();
 		
 		} else if (evtType == "capture-retrieve-failed") {
+			console.log("setting error to true");
 			this.showError=true;
 		}
 	}
@@ -84,6 +86,7 @@ export class SelectCaptureDialogue implements IBEApiConsumer{
 		}
 		this.searchedID=capId;
 		// CMS debug
+		this.showError=false;
 		this.api.getCaptureById(this,capId);
 		/* var jObj = {
 			"event-type" : "capture-retrieve-failed"
