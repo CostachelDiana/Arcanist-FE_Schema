@@ -113,14 +113,28 @@
             <div class="card">
                 <img class="card-img-top" src="assets/profile-picture.jpg" alt="Card image cap">
                 <div class="card-body">
-                    <br><p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content. Maybe a 'TO DO' list...
-                    <br>To DO List :
-                    <br> - smth1
-                    <br> - smth1
-                    <br> - smth3
-                    </p>
-                    <button class="btn btn-outline-dark" disabled>Edit</button>
+                    <br><p class="card-text">{{this.getA_text()}}</p>
+                    <button class="btn btn-outline-dark" data-toggle="modal" data-target="#editModal">Edit</button>
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="editModalLabel">Avatar Text</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="message-text" class="col-form-label">Message:</label>
+                                <textarea #msg_txt class="form-control" id="message-text"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="this.onSubmitClick(msg_txt.value)">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>
@@ -159,8 +173,8 @@
 
         <div class="col-sm-5">
             <div class="card">
-                <h5 class="card-title">Owned Proj</h5>
-                <div class="card-body">
+                <h5 class="card-title">Owned Projects</h5>
+                <div class="card-body" *ngIf="this.projInfo_Owner.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Owner; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>
@@ -169,8 +183,8 @@
             <br>
 
             <div class="card">
-                <h5 class="card-title">Assign Proj</h5>
-                <div class="card-body">
+                <h5 class="card-title">Assign Projects</h5>
+                <div class="card-body" *ngIf="this.projInfo_Assign.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Assign; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>
@@ -182,7 +196,7 @@
         <div class="col-4">
             <div class="card">
                 <h5 class="card-title">Favorites</h5>
-                <div class="card-body">
+                <div class="card-body" *ngIf="this.projInfo_Fav.length!=0">
                     <ul style="list-style:none"*ngFor="let prj of this.projInfo_Fav; let idx = index">
                         <li>{{idx+1}}. {{prj.projName}}</li>
                     </ul>

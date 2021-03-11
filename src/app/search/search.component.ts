@@ -6,6 +6,7 @@ import {AddCaptureInfoDialogue} from '../dialogues/AddCaptureInfoDialogue'
 import { ProjMember } from '../project/projectPageComponents';
 import {BackendAPIHandler, IBEApiConsumer} from '../common/BackendAPIHandler'
 
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -37,13 +38,18 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
   handleBEResponse(jObj: Object, evtType: string){
 	  if(evtType == "search-captures-response")
 	  {
+		if(!Array.isArray(jObj)){
+			console.log("response was not an array!")
+			return;
+		}		
 
+		for(var res in jObj)
+		{
+			var searchResult = new FullCaptureInfo();
+			searchResult.setBeObj(jObj[res], this._typesInfo);
+			this._searchResults.push(searchResult);
+		}
 	  }
-  }
-
-
-  private testInit(): void {
-	  
   }
 
   get typesInfo() : PresetTypesInfo{
@@ -63,7 +69,6 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
   }
 
   public onGeneratePageClick(): void {
-		this.testInit();
 		this._pageInited=true;
 	}
 	
@@ -126,7 +131,7 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
 		this._searchParameters.removeCaptureInfo(index);
 	}
 
-  public onAddCaptureTagCallback(tagID: number): void {
+  	public onAddCaptureTagCallback(tagID: number): void {
 		
 		for (var i=0;i<this._typesInfo.capTagList.length;i++)
 		{
@@ -156,12 +161,19 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
 
   	public onSearchClick():void {
 		this._searchFinished = false;
-		var request = this._searchParameters.serializeSearchParams();
-		this.api.searchCaptures(this,request);
-		//this.testFillSearchResults();
+
+		//connect to BE
+		//var request = this._searchParameters.serializeSearchParams();
+		//this.api.searchCaptures(this,request);
+		
+		//test without BE api
+		var json = '[{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"Target-to-Target-origination-8157.pcap","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}]';
+		var obj = JSON.parse(json);
+		this.handleBEResponse(obj,"search-captures-response");
+
 		this._searchFinished = true;
 	}  
-
+/*
 	private testFillSearchResults() : void {
 		this.addTestCaptureResult();
 		this.addTestCaptureResult();
@@ -303,7 +315,9 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
 	
 		this._searchResults.push(pgInfo);
   }
+  */
 }
+
 
 export class MinMaxNumberOption {
   min: number;

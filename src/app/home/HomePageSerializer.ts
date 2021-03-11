@@ -2,6 +2,8 @@ import { ProjPageInfo } from "../project/projectPageComponents";
 
 export class HomePageSerializer {
 	
+    constructor () {}
+
 	/* API: api/projects/owner/{username}
     
     Response pt 'Get Owned Projects'
