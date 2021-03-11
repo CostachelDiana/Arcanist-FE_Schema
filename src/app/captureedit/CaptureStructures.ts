@@ -208,7 +208,7 @@ export class FullCaptureInfo {
 					
 					infoEntry.infoTypeID = presets.genericGetIDForName(presets.capInfoTypesList,name);
 					infoEntry.infoTypeName = name;
-					infoEntry.infoValID = 0;// infoArr[j]; // waiting for api change
+					infoEntry.infoValID = 1;// infoArr[j]; // waiting for api change
 					infoEntry.infoValName = presets.genericGetValNameForInfoIdValId(infoEntry.infoTypeID,infoEntry.infoValID);
 					
 					console.log("pushing entry type ["+infoEntry.infoTypeID+":"+infoEntry.infoTypeName+"] val["+infoEntry.infoValID+":"+infoEntry.infoValName+"]");
@@ -388,8 +388,8 @@ export class PresetTypesInfo {
 		
 		if (idx >-1 && idx < this.capInfoValsList.length)
 		{
-			var valArr = this.capInfoValsList[idx];
-			return this.genericGetNameForID(valArr,valId);
+			
+			return this.genericGetNameForID(this.capInfoValsList[idx],valId);
 		} else {
 			return "undefinedzor";
 		}
