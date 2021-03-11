@@ -208,7 +208,7 @@ export class FullCaptureInfo {
 					
 					infoEntry.infoTypeID = presets.genericGetIDForName(presets.capInfoTypesList,name);
 					infoEntry.infoTypeName = name;
-					infoEntry.infoValID = infoArr[j];
+					infoEntry.infoValID = 0;// infoArr[j]; // waiting for api change
 					infoEntry.infoValName = presets.genericGetValNameForInfoIdValId(infoEntry.infoTypeID,infoEntry.infoValID);
 					
 					console.log("pushing entry type ["+infoEntry.infoTypeID+":"+infoEntry.infoTypeName+"] val["+infoEntry.infoValID+":"+infoEntry.infoValName+"]");
