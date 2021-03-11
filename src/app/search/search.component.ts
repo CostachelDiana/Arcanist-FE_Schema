@@ -161,161 +161,20 @@ export class SearchComponent implements OnInit, IBEApiConsumer {
 
   	public onSearchClick():void {
 		this._searchFinished = false;
+		this._searchResults = [];
 
 		//connect to BE
-		//var request = this._searchParameters.serializeSearchParams();
-		//this.api.searchCaptures(this,request);
-		
+		var request = this._searchParameters.serializeSearchParams();
+		console.log("Search request: "+ request);
+		this.api.searchCaptures(this,request);
+	
 		//test without BE api
-		var json = '[{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"Target-to-Target-origination-8157.pcap","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}]';
-		var obj = JSON.parse(json);
-		this.handleBEResponse(obj,"search-captures-response");
+		//var json = '[{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"filepath":"Target-to-Target-origination-8157.pcap","size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}]';
+		//var obj = JSON.parse(json);
+		//this.handleBEResponse(obj,"search-captures-response");
 
 		this._searchFinished = true;
 	}  
-/*
-	private testFillSearchResults() : void {
-		this.addTestCaptureResult();
-		this.addTestCaptureResult();
-		this.addTestCaptureResult();
-		this.addTestCaptureResult();
-	}
-
-  private addTestCaptureResult() : void{
-    var pgInfo = new FullCaptureInfo();
-		
-		pgInfo.capID = "d443KAv";
-		pgInfo.capName = "Leo RX VoLTE Simple Call 1" + Math.random();
-		pgInfo.capSize= "32531";
-		pgInfo.capLength = "312";
-		pgInfo.capUserNotes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-		
-		pgInfo.lastUpdateDate = "08.03.2021";		
-		var aMember = new ProjMember("Haldan");
-		aMember.name="Daniel";
-		aMember.surname="Ciotoracu";
-		aMember.email="daniel.ciotoracu@cognyte.com";
-		aMember.id="DS341sa";		
-		pgInfo.lastUpdater=aMember;
-		
-		pgInfo.uploadDate="02.03.2021";
-		aMember = new ProjMember("Cuatu");
-		aMember.name="Mihai";
-		aMember.surname="Cuatu";
-		aMember.email="mihai.cuatu@cognyte.com";
-		aMember.id="CMS69";		
-		pgInfo.uploader=aMember;
-		
-		aMember = new ProjMember("Arnaut");
-		aMember.name="Stefan";
-		aMember.surname="Arnaut";
-		aMember.email="stefan.arnaut@cognyte.com";
-		aMember.id="SDA332";
-		pgInfo.verifier = aMember;
-		pgInfo.verifyDate="02.05.2021";
-		
-		pgInfo.capX2Protocol="ETSI 102 232-5 v331";
-		pgInfo.capX2Trans="FTP";
-		pgInfo.capX2Port="22";
-		
-		pgInfo.capX3Protocol="ULIC EPS";
-		pgInfo.capX3Trans="TCP";
-		pgInfo.capX3Port="6001";
-		
-		var aStruct = new PredefinedTypeStruct();
-		aStruct.displayName="VoLTE";
-		aStruct.id=1;		
-		pgInfo.capTechnology=aStruct;
-		
-		var aStruct = new PredefinedTypeStruct();
-		aStruct.displayName="Verified";
-		aStruct.id=2;
-		pgInfo.capStatus = aStruct;
-			
-		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID=1;
-		aCapInfo.infoTypeName="LIID";
-		aCapInfo.infoValID=-1;
-		aCapInfo.infoValName="12334";
-		pgInfo.capIC=aCapInfo;		
-		
-		pgInfo.capSwitchDate="15.01.2020";
-		
-		// TAGS
-		var aCapTag=  new PredefinedTypeStruct();
-		aCapTag.id=1;
-		aCapTag.displayName="Target to Target";
-		
-		pgInfo.addCaptureTag(aCapTag);
-		
-		aCapTag=  new PredefinedTypeStruct();
-		aCapTag.id=2;
-		aCapTag.displayName="X3 DTMF";
-		
-		pgInfo.addCaptureTag(aCapTag);
-		
-		aCapTag=  new PredefinedTypeStruct();
-		aCapTag.id=3
-		aCapTag.displayName="Dynamic Codecs";
-		
-		pgInfo.addCaptureTag(aCapTag);
-		
-		// INFOS
-		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID=2;
-		aCapInfo.infoTypeName="Event";
-		aCapInfo.infoValID=2;
-		aCapInfo.infoValName="Bearer Activation";
-		
-		pgInfo.addCaptureInfo(aCapInfo);
-		
-		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID=1;
-		aCapInfo.infoTypeName="Event";
-		aCapInfo.infoValID=2;
-		aCapInfo.infoValName="Incoming call";		
-		pgInfo.addCaptureInfo(aCapInfo);
-		
-		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID=1;
-		aCapInfo.infoTypeName="Codec";
-		aCapInfo.infoValID=2;
-		aCapInfo.infoValName="EVS";
-		
-		pgInfo.addCaptureInfo(aCapInfo);
-		
-		var aCapInfo = new CaptureInfo();
-		aCapInfo.infoTypeID=1;
-		aCapInfo.infoTypeName="Codec";
-		aCapInfo.infoValID=2;
-		aCapInfo.infoValName="AMR-WB";		
-		pgInfo.addCaptureInfo(aCapInfo);
-		
-		var aCapProjLink = new CapProjLink();
-		aCapProjLink.projName="Leo RX";
-		aCapProjLink.projID="da3FVAd";
-		aCapProjLink.capSetNames.push("VoLTE simple call Tests");
-		aCapProjLink.capSetNames.push("VoLTE Full test");
-		aCapProjLink.capSetIDs.push("adarv");
-		aCapProjLink.capSetIDs.push("aggav");
-		
-		pgInfo.addCapProjLink(aCapProjLink);
-		
-		var aCapProjLink = new CapProjLink();
-		aCapProjLink.projName="Zeus RX";
-		aCapProjLink.projID="da3FVAd";
-		aCapProjLink.capSetNames.push("VoLTE simple call");
-		aCapProjLink.capSetNames.push("VoLTE Regression");
-		aCapProjLink.capSetNames.push("VoLTE Operator Orange");
-		aCapProjLink.capSetIDs.push("adarv");
-		aCapProjLink.capSetIDs.push("aggav");
-		aCapProjLink.capSetIDs.push("aggavzor");
-		
-		pgInfo.addCapProjLink(aCapProjLink);
-	
-		this._searchResults.push(pgInfo);
-  }
-  */
 }
 
 
@@ -449,7 +308,9 @@ export class SearchParameters {
 
 	public serializeSearchParams() : string{
 		var jsonObj = [];
-		
+		var lowerNumber : Number;
+		var upperNumber : Number;
+
 		if(this._searchName)
 		{
 			jsonObj.push({
@@ -467,7 +328,7 @@ export class SearchParameters {
 			jsonObj.push({
 				["field"] : "cdProtocolId",
 				["operator"] : "EQUALS",
-				["value"] : this._cdProtocolSelectedId,
+				["value"] : new Number(this._cdProtocolSelectedId),
 				["values"] : null,
 				["lower"] : null,
 				["upper"] : null
@@ -479,7 +340,7 @@ export class SearchParameters {
 			jsonObj.push({
 				["field"] : "ccProtocolId",
 				["operator"] : "EQUALS",
-				["value"] : this._ccProtocolSelectedId,
+				["value"] : new Number(this._ccProtocolSelectedId),
 				["values"] : null,
 				["lower"] : null,
 				["upper"] : null
@@ -489,9 +350,9 @@ export class SearchParameters {
 		if(this._technologySelectedId)
 		{
 			jsonObj.push({
-				["field"] : "ccProtocolId",
+				["field"] : "technologyId",
 				["operator"] : "EQUALS",
-				["value"] : this._technologySelectedId,
+				["value"] : new Number(this._technologySelectedId),
 				["values"] : null,
 				["lower"] : null,
 				["upper"] : null
@@ -500,41 +361,41 @@ export class SearchParameters {
 
 		if(this.durationMin || this.durationMax)
 		{
-			var lower = (this.durationMin) ? this.durationMin : null;
-			var upper = (this.durationMax) ? this.durationMax : null;
+			lowerNumber = (this.durationMin) ? new Number(this.durationMin) : null;
+			upperNumber = (this.durationMax) ? new Number(this.durationMax) : null;
 			jsonObj.push({
 				["field"] : "length",
-				["operator"] : "BETWEEN_SIZE",
+				["operator"] : "BETWEEN_LENGTH",
 				["value"] : null,
 				["values"] : null,
-				["lower"] : lower,
-				["upper"] : upper
+				["lower"] : lowerNumber,
+				["upper"] : upperNumber
 			});			
 		}
 		if(this.projectsMin || this.projectsMax)
 		{
-			var lower = (this.projectsMin) ? this.projectsMin : null;
-			var upper = (this.projectsMax) ? this.projectsMax : null;
+			lowerNumber = (this.projectsMin) ? new Number(this.projectsMin) : null;
+			upperNumber = (this.projectsMax) ? new Number(this.projectsMax) : null;
 			jsonObj.push({
 				["field"] : "projectsCount",
 				["operator"] : "BETWEEN_SIZE",
 				["value"] : null,
 				["values"] : null,
-				["lower"] : lower,
-				["upper"] : upper
+				["lower"] : lowerNumber,
+				["upper"] : upperNumber
 			});				
 		}
 		if(this.referencesMin || this.referencesMax)
 		{
-			var lower = (this.referencesMin) ? this.referencesMin : null;
-			var upper = (this.referencesMax) ? this.referencesMax : null;
+			lowerNumber = (this.referencesMin) ? new Number(this.referencesMin) : null;
+			upperNumber = (this.referencesMax) ? new Number(this.referencesMax) : null;
 			jsonObj.push({
 				["field"] : "referencesCount",
 				["operator"] : "BETWEEN_SIZE",
 				["value"] : null,
 				["values"] : null,
-				["lower"] : lower,
-				["upper"] : upper
+				["lower"] : lowerNumber,
+				["upper"] : upperNumber
 			});				
 		}		
 		if(this._statusSelectedId)
