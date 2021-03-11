@@ -78,6 +78,8 @@ export class CaptureBackendObj {
 	// verifiedAt: ExplicitDate;
 	verifiedAt: string;
 	verifiedBy: string;
+	
+	rawObj: Object;
 }
 
 export class FullCaptureInfo {
@@ -128,6 +130,7 @@ export class FullCaptureInfo {
 		
 		var obj = new CaptureBackendObj();
 		Object.assign(obj,jObj);
+		obj.rawObj=jObj;
 		
 		
 		this.beObj = obj;
@@ -170,6 +173,59 @@ export class FullCaptureInfo {
 		this.capIC.infoValID = -1;
 		this.capIC.infoValName = obj.icIdentifier;
 		this.capSwitchDate = obj.switchTime;
+		
+		// add tags
+		var tagArr = jObj["tags"];
+		
+		console.log("fetched tagArr with length "+tagArr.length+" data "+tagArr);
+		if (tagArr!=null)
+		{
+			for (let item in tagArr)
+			{
+				var entry = new PredefinedTypeStruct();
+				entry.id = tagArr[item]["tagId"];				
+				entry.displayName=presets.genericGetNameForID(presets.capTagList,entry.id);
+				
+				console.log("pushing tag "+entry);
+				this.capTags.push(entry);
+			}
+		}
+		console.log("parsing infos for jObj " +JSON.stringify(jObj));
+		for (var i=0;i<presets.capInfoTypesList.length;i++)
+		{
+			// for each type try to get an entry
+			var name =presets.capInfoTypesList[i].displayName;
+			console.log("requesting arr for "+name);
+			var infoArr = jObj[name];
+			if (infoArr!=null)
+			{
+				console.log("got arr with size "+infoArr.length+" and data " +infoArr);
+				for (var j=0;j<infoArr.length;j++)
+				{
+					
+					
+					var infoEntry = new CaptureInfo();
+					
+					infoEntry.infoTypeID = presets.genericGetIDForName(presets.capInfoTypesList,name);
+					infoEntry.infoTypeName = name;
+					infoEntry.infoValID = infoArr[j];
+					infoEntry.infoValName = presets.genericGetValNameForInfoIdValId(infoEntry.infoTypeID,infoEntry.infoValID);
+					
+					console.log("pushing entry type ["+infoEntry.infoTypeID+":"+infoEntry.infoTypeName+"] val["+infoEntry.infoValID+":"+infoEntry.infoValName+"]");
+					this.capInfos.push(infoEntry);					
+				
+				}
+				
+			}
+		}
+		/*
+		for (let item in jObj) {			  
+			  var entry = new ProjEntry();
+			  entry.projectName=jObj[item]["name"];
+			  entry.projectId=jObj[item]["id"];
+			  entry.projectLink="/ProjectPage?projId="+entry.projectId;
+			  this.projs.push(entry);
+		  }*/
 	}
 	// updates be obj according to cap info
 	// only updates user editable fields
@@ -324,6 +380,18 @@ export class PresetTypesInfo {
 		this.capTagList=[];
 		this.capInfoValsList=[];
 		this.capInfoTypesList=[];
+	}
+	
+	public genericGetValNameForInfoIdValId(infoId: number, valId:number): string {
+		var idx = this.genericGetIdxForID(this.capInfoTypesList, infoId);
+		
+		if (idx >-1 && idx < this.capInfoValsList.length)
+		{
+			var valArr = this.capInfoValsList[idx];
+			return this.genericGetNameForID(valArr,valId);
+		} else {
+			return "undefinedzor";
+		}
 	}
 	
 	public genericGetNameForID(arr: PredefinedTypeStruct[], ID: number): string {

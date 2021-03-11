@@ -93,20 +93,35 @@ export class CaptureEditPage implements IPage{
 		var beStr = this.serializer.serializeStreamRequest(capID);
         this.backend.sendBEUpdate(beStr, "request-stream-info");
 	}
+	public debugRequest() {		
+		var theJson ='{"uuid":"3a51c229-cb22-4fc2-9292-73d509029632","name":"Untitled Capture, 2021/03/10 10:43:05.777","status":1,"size":817772,"length":10,"notes":"capture notes","switchTime":"2021-03-10T12:35:01.968+00:00","icIdentifier":"12345678","interceptionCriteriaId":2,"technologyId":2,"ccProtocolId":2,"cdProtocolId":2,"ccTransportId":2,"cdTransportId":2,"ccPort":"5010","cdPort":"5000","lastUpdatedBy":"updator user","lastUpdatedAt":"2021-03-10T12:35:01.968+00:00","events":[{"eventId":2,"captureId":1},{"eventId":4,"captureId":1},{"eventId":6,"captureId":1},{"eventId":8,"captureId":1},{"eventId":10,"captureId":1}],"tags":[],"products":[],"scenarios":[],"codecs":[],"verifiedBy":"validator user","verifiedAt":"2021-03-10T12:35:01.968+00:00","uploadedBy":"Anonymous","uploadedAt":"2021-03-10T10:43:05.825+00:00"}';
+		
+		this.onBEEventReceived("capture-page-received",theJson);		
+		
+	}
+	
 	public requestPage()
 	{
-		var urlParams = new URLSearchParams(window.location.search);
-		var capID=urlParams.get('capid');
-		if (capID==null)
-		{
-			console.log("no capid provided");
-			capID = "3a51c229-cb22-4fc2-9292-73d509029632";
-		}
-		console.log("requesting page for id "+ capID);
+		var debug=true;
 		
-		var req = this.serializer.serializeRequestCapturePage(capID);
-        this.backend.sendBEUpdate(req, "request-capturePage");
-		console.log("req done");
+		if (debug)
+		{
+			this.debugRequest();
+		} else {
+		// CMS debug
+			var urlParams = new URLSearchParams(window.location.search);
+			var capID=urlParams.get('capid');
+			if (capID==null)
+			{
+				console.log("no capid provided");
+				capID = "3a51c229-cb22-4fc2-9292-73d509029632";
+			}
+			console.log("requesting page for id "+ capID);
+			
+			var req = this.serializer.serializeRequestCapturePage(capID);
+			this.backend.sendBEUpdate(req, "request-capturePage");
+			console.log("req done");
+		}
 	}
 	
 	public onBEEventReceived(evtType: string, evtJson: string): void {
